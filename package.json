@@ -1,15 +1,15 @@
 {
   "name": "crusader",
   "version": "1.0.0",
-  "description": "",
+  "description": "Warhammer 40K Crusade tracker",
   "main": "./build/index.js",
   "scripts": {
     "prestart": "tsc",
     "start": "node ./build/index.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["warhammer 40000", "warhammer 40k", "40k", "crusade"],
+  "author": "Francois Laubscher",
+  "license": "MIT",
   "dependencies": {
     "chalk": "^4.1.2",
     "express": "^4.17.1",

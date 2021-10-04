@@ -1,18 +1,13 @@
 # What is Crusader?
 
 Crusader is a Warhammer 40K Crusade tracker.<br/>
-It's still very much a work in progress and only consists of an API at this stage.<br/>
-I'm planning on building a React PWA to consume the API in the coming weeks.
+It's still very much a work in progress and consists of an Express API and a React PWA.
 
-# Getting Started
-```
-npm install
-```
+# Contents
 
-# Running
-```
-npm start
-```
+- [Express API](api/README.md)
+- [React PWA](web/README.md)
+
 
 # Contributors
 
@@ -20,7 +15,7 @@ npm start
 
 # Contributing
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on the code of conduct, and the process for submitting pull requests.
+Please read [CONTRIBUTING](CONTRIBUTING.md) for details on the code of conduct, and the process for submitting pull requests.
 
 # License
 

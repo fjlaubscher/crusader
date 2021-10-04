@@ -1,5 +1,5 @@
 {
-  "name": "crusader",
+  "name": "crusader-api",
   "version": "1.0.0",
   "description": "Warhammer 40K Crusade tracker",
   "main": "./build/index.js",

@@ -5,10 +5,20 @@ import {
   createCrusadeAsync,
   getCrusadeByIdAsync,
   getCrusadesAsync,
+  updateCrusadeAsync
 } from "../db/crusade";
 import { getOrdersOfBattleByCrusadeIdAsync } from '../db/order-of-battle';
 
 const router = Router();
+
+router.put("/", async (req, res) => {
+  try {
+    const crusade = await updateCrusadeAsync(req.body as Crusader.Crusade);
+    return res.status(200).json({ status: "ok", data: crusade });
+  } catch (ex: any) {
+    return res.status(500).json({ status: "error", data: ex.message });
+  }
+});
 
 router.post("/", async (req, res) => {
   try {

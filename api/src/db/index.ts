@@ -1,6 +1,6 @@
-import sqlite from "sqlite3";
+import sqlite from 'sqlite3';
 
-export const DATABASE = "./build/crusader.sqlite";
+export const DATABASE = './build/crusader.sqlite';
 
 const createTables = (db: sqlite.Database) => {
   db.exec(`
@@ -13,14 +13,26 @@ const createTables = (db: sqlite.Database) => {
   `);
 
   db.exec(`
+    DROP TABLE IF EXISTS Player;
+    CREATE TABLE Player (
+      id INTEGER PRIMARY KEY,
+      name TEXT NOT NULL
+    );
+    CREATE INDEX ix_Player ON Player (id);
+  `);
+
+  db.exec(`
     DROP TABLE IF EXISTS Crusade;
     CREATE TABLE Crusade (
       id INTEGER PRIMARY KEY,
       createdDate TEXT NOT NULL,
+      createdById INTEGER NOT NULL,
       name TEXT NOT NULL,
-      notes TEXT NOT NULL
+      notes TEXT NOT NULL,
+      FOREIGN KEY (createdById) REFERENCES Player(id)
     );
     CREATE INDEX ix_Crusade ON Crusade (id);
+    CREATE INDEX ix_PlayerCrusade ON Crusade (createdById);
   `);
 
   db.exec(`
@@ -30,15 +42,6 @@ const createTables = (db: sqlite.Database) => {
       name TEXT NOT NULL
     );
     CREATE INDEX ix_Faction ON Faction (id);
-  `);
-
-  db.exec(`
-    DROP TABLE IF EXISTS Player;
-    CREATE TABLE Player (
-      id INTEGER PRIMARY KEY,
-      name TEXT NOT NULL
-    );
-    CREATE INDEX ix_Player ON Player (id);
   `);
 
   db.exec(`
@@ -108,13 +111,13 @@ const seedStandingData = (db: sqlite.Database) => {
   `);
 
   db.exec(`
-    INSERT INTO Faction (name) VALUES ('Imperium');
-    INSERT INTO Faction (name) VALUES ('Chaos');
     INSERT INTO Faction (name) VALUES ('Aeldari');
-    INSERT INTO Faction (name) VALUES ('Tyranids');
-    INSERT INTO Faction (name) VALUES ('Orks');
+    INSERT INTO Faction (name) VALUES ('Chaos');
+    INSERT INTO Faction (name) VALUES ('Imperium');
     INSERT INTO Faction (name) VALUES ('Necrons');
+    INSERT INTO Faction (name) VALUES ('Orks');
     INSERT INTO Faction (name) VALUES ('Tau Empire');
+    INSERT INTO Faction (name) VALUES ('Tyranids');
   `);
 };
 

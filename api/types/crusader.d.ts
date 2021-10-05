@@ -7,6 +7,8 @@ declare namespace Crusader {
   interface Crusade {
     id: number;
     createdDate: string;
+    createdById: number;
+    createdBy: string;
     name: string;
     notes: string;
   }
@@ -46,11 +48,14 @@ declare namespace Crusader {
     battles: number;
     battlesWon: number;
     crusadeId: number;
+    crusade: string;
     crusadePoints: number;
     factionId: number;
+    faction: string;
     name: string;
     notes: string;
     playerId: number;
+    player: string;
     requisition: number;
     supplyLimit: number;
     supplyUsed: number;

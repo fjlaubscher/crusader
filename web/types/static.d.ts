@@ -52,3 +52,12 @@ declare module '*.png' {
   const ref: string;
   export default ref;
 }
+
+interface SelectOption {
+  value: string;
+  description: string;
+}
+
+interface IdParams {
+  id: string;
+}

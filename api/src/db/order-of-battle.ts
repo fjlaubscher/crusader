@@ -1,6 +1,20 @@
-import sqlite from "sqlite3";
+import sqlite from 'sqlite3';
 
-import { DATABASE } from ".";
+import { DATABASE } from '.';
+
+const selectOrderOfBattle = (id: number) => `
+  SELECT 
+    OrderOfBattle.*, 
+    IFNULL(SUM(CrusadeCard.crusadePoints), 0) as crusadePoints,
+    IFNULL(SUM(CrusadeCard.powerRating), 0) as supplyUsed,
+    Crusade.name as crusade,
+    Player.name as Player
+  FROM OrderOfBattle
+  INNER JOIN Crusade ON OrderOfBattle.crusadeId = Crusade.Id
+  INNER JOIN Player ON OrderOfBattle.playerId = Player.id
+  LEFT OUTER JOIN CrusadeCard ON OrderOfBattle.id = CrusadeCard.orderOfBattleId
+  WHERE OrderOfBattle.id = ${id}
+  GROUP BY OrderOfBattle.id`;
 
 export const createOrderOfBattleAsync = (input: Crusader.OrderOfBattle) => {
   return new Promise<Crusader.OrderOfBattle>((resolve, reject) => {
@@ -18,7 +32,7 @@ export const createOrderOfBattleAsync = (input: Crusader.OrderOfBattle) => {
         $notes: input.notes,
         $playerId: input.playerId,
         $requisition: input.requisition,
-        $supplyLimit: input.supplyLimit,
+        $supplyLimit: input.supplyLimit
       },
       function (this, err) {
         if (err) {
@@ -26,20 +40,13 @@ export const createOrderOfBattleAsync = (input: Crusader.OrderOfBattle) => {
           return reject(err);
         }
 
-        db.get(
-          `SELECT OrderOfBattle.*, IFNULL(SUM(CrusadeCard.crusadePoints), 0) as crusadePoints, IFNULL(SUM(CrusadeCard.powerRating), 0) as supplyUsed
-           FROM OrderOfBattle
-           LEFT OUTER JOIN CrusadeCard ON CrusadeCard.orderOfBattleId = OrderOfBattle.id
-           WHERE OrderOfBattle.id = ${this.lastID}
-           GROUP BY OrderOfBattle.id`,
-          function (this, err, row: Crusader.OrderOfBattle) {
-            if (err) {
-              return reject(err);
-            }
-
-            return resolve(row);
+        db.get(selectOrderOfBattle(this.lastID), function (this, err, row: Crusader.OrderOfBattle) {
+          if (err) {
+            return reject(err);
           }
-        );
+
+          return resolve(row);
+        });
       }
     );
   });
@@ -49,17 +56,13 @@ export const deleteOrderOfBattleAsync = (id: number) =>
   new Promise<boolean>((resolve, reject) => {
     const db = new sqlite.Database(DATABASE);
 
-    db.run(
-      `DELETE FROM OrderOfBattle WHERE id = $id`,
-      { $id: id },
-      function (this, err) {
-        if (err) {
-          return reject(err);
-        }
-
-        return resolve(true);
+    db.run(`DELETE FROM OrderOfBattle WHERE id = $id`, { $id: id }, function (this, err) {
+      if (err) {
+        return reject(err);
       }
-    );
+
+      return resolve(true);
+    });
 
     db.close();
   });
@@ -68,20 +71,13 @@ export const getOrderOfBattleByIdAsync = (id: number) => {
   return new Promise<Crusader.OrderOfBattle>((resolve, reject) => {
     const db = new sqlite.Database(DATABASE);
 
-    db.get(
-      `SELECT OrderOfBattle.*, IFNULL(SUM(CrusadeCard.crusadePoints), 0) as crusadePoints, IFNULL(SUM(CrusadeCard.powerRating), 0) as supplyUsed
-       FROM OrderOfBattle
-       LEFT OUTER JOIN CrusadeCard ON CrusadeCard.orderOfBattleId = OrderOfBattle.id
-       WHERE OrderOfBattle.id = ${id}
-       GROUP BY OrderOfBattle.id`,
-      function (this, err, row: Crusader.OrderOfBattle) {
-        if (err) {
-          return reject(err);
-        }
-
-        return resolve(row);
+    db.get(selectOrderOfBattle(id), function (this, err, row: Crusader.OrderOfBattle) {
+      if (err) {
+        return reject(err);
       }
-    );
+
+      return resolve(row);
+    });
   });
 };
 
@@ -89,10 +85,19 @@ export const getOrdersOfBattleByCrusadeIdAsync = (crusadeId: number) => {
   return new Promise<Crusader.OrderOfBattle[]>((resolve, reject) => {
     const db = new sqlite.Database(DATABASE);
 
-    db.all(
-      `SELECT OrderOfBattle.*, IFNULL(SUM(CrusadeCard.crusadePoints), 0) as crusadePoints, IFNULL(SUM(CrusadeCard.powerRating), 0) as supplyUsed
+    db.all(`
+      SELECT
+        OrderOfBattle.*, 
+        IFNULL(SUM(CrusadeCard.crusadePoints), 0) as crusadePoints,
+        IFNULL(SUM(CrusadeCard.powerRating), 0) as supplyUsed,
+        Crusade.name as crusade,\
+        Faction.name as faction,
+        Player.name as player
       FROM OrderOfBattle
-      LEFT OUTER JOIN CrusadeCard ON CrusadeCard.orderOfBattleId = OrderOfBattle.id
+      INNER JOIN Crusade ON OrderOfBattle.crusadeId = Crusade.id
+      INNER JOIN Faction ON OrderOfBattle.factionId = Faction.id
+      INNER JOIN Player ON OrderOfBattle.playerId = Player.id
+      LEFT OUTER JOIN CrusadeCard ON OrderOfBattle.id = CrusadeCard.orderOfBattleId
       WHERE OrderOfBattle.crusadeId = $crusadeId
       GROUP BY OrderOfBattle.id`,
       { $crusadeId: crusadeId },
@@ -114,11 +119,18 @@ export const getOrdersOfBattleByPlayerIdAsync = (playerId: number) => {
     const db = new sqlite.Database(DATABASE);
 
     db.all(
-      `SELECT OrderOfBattle.*, IFNULL(SUM(CrusadeCard.crusadePoints), 0) as crusadePoints, IFNULL(SUM(CrusadeCard.powerRating), 0) as supplyUsed
-       FROM OrderOfBattle
-       LEFT OUTER JOIN CrusadeCard ON CrusadeCard.orderOfBattleId = OrderOfBattle.id
-       WHERE OrderOfBattle.playerId = $playerId
-       GROUP BY OrderOfBattle.id`,
+      `SELECT
+        OrderOfBattle.*, 
+        IFNULL(SUM(CrusadeCard.crusadePoints), 0) as crusadePoints,
+        IFNULL(SUM(CrusadeCard.powerRating), 0) as supplyUsed,
+        Crusade.name as crusade,
+        Player.name as Player
+      FROM OrderOfBattle
+      INNER JOIN Crusade ON OrderOfBattle.crusadeId = Crusade.Id
+      INNER JOIN Player ON OrderOfBattle.playerId = Player.id
+      LEFT OUTER JOIN CrusadeCard ON OrderOfBattle.id = CrusadeCard.orderOfBattleId
+      WHERE OrderOfBattle.playerId = $playerId
+      GROUP BY OrderOfBattle.id`,
       { $playerId: playerId },
       function (this, err: Error, rows: Crusader.OrderOfBattle[]) {
         if (err) {
@@ -155,7 +167,7 @@ export const updateOrderOfBattleAsync = (input: Crusader.OrderOfBattle) => {
         $name: input.name,
         $notes: input.notes,
         $requisition: input.requisition,
-        $supplyLimit: input.supplyLimit,
+        $supplyLimit: input.supplyLimit
       },
       function (this, err) {
         if (err) {
@@ -163,20 +175,13 @@ export const updateOrderOfBattleAsync = (input: Crusader.OrderOfBattle) => {
           return reject(err);
         }
 
-        db.get(
-          `SELECT OrderOfBattle.*, IFNULL(SUM(CrusadeCard.crusadePoints), 0) as crusadePoints, IFNULL(SUM(CrusadeCard.powerRating), 0) as supplyUsed
-           FROM OrderOfBattle
-           LEFT OUTER JOIN CrusadeCard ON CrusadeCard.orderOfBattleId = OrderOfBattle.id
-           WHERE OrderOfBattle.id = ${input.id}
-           GROUP BY OrderOfBattle.id`,
-          function (this, err, row: Crusader.OrderOfBattle) {
-            if (err) {
-              return reject(err);
-            }
-
-            return resolve(row);
+        db.get(selectOrderOfBattle(input.id), function (this, err, row: Crusader.OrderOfBattle) {
+          if (err) {
+            return reject(err);
           }
-        );
+
+          return resolve(row);
+        });
       }
     );
   });

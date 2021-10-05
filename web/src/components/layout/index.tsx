@@ -17,10 +17,10 @@ interface Props {
   title: string;
   children: React.ReactNode;
   actionComponent?: React.ReactNode;
-  fullHeight?: boolean;
+  isFullHeight?: boolean;
 }
 
-const Layout = ({ children, title, actionComponent, fullHeight }: Props) => {
+const Layout = ({ children, title, actionComponent, isFullHeight }: Props) => {
   const background = useColorModeValue('gray.50', 'gray.900');
 
   return (
@@ -48,14 +48,14 @@ const Layout = ({ children, title, actionComponent, fullHeight }: Props) => {
         </Container>
       </Box>
       <Box
-        height={fullHeight ? '100%' : undefined}
+        height={isFullHeight ? '100%' : undefined}
         mt="0 !important"
         width="100%"
         background={background}
         flex={1}
       >
-        <Container height={fullHeight ? '100%' : undefined} width="100%" p={4} maxW="container.xl">
-          <VStack height={fullHeight ? '100%' : undefined} width="100%">
+        <Container height={isFullHeight ? '100%' : undefined} width="100%" p={4} maxW="container.xl">
+          <VStack height={isFullHeight ? '100%' : undefined} width="100%">
             {children}
           </VStack>
         </Container>

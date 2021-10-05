@@ -20,6 +20,7 @@ import { updatePlayerAsync } from '../api/player';
 import Layout from '../components/layout';
 
 // helpers
+import { SUCCESS_MESSAGE, ERROR_MESSAGE } from '../helpers/messages';
 import { PLAYER } from '../helpers/storage';
 
 // state
@@ -45,7 +46,7 @@ const Settings = () => {
 
           toast({
             status: 'success',
-            title: 'Success',
+            title: SUCCESS_MESSAGE,
             description: 'Settings updated.'
           });
         }
@@ -53,7 +54,7 @@ const Settings = () => {
     } catch (ex: any) {
       toast({
         status: 'error',
-        title: 'Error',
+        title: ERROR_MESSAGE,
         description: ex.message
       });
     }

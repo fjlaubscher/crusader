@@ -19,6 +19,9 @@ import Search from '../../components/search';
 import { OrderOfBattleAtom } from '../../state/order-of-battle';
 import { PlayerAtom } from '../../state/player';
 
+// styles
+import styles from '../../styles/markdown.module.css';
+
 const OrderOfBattle = () => {
   const { id } = useParams<IdParams>();
 
@@ -55,7 +58,6 @@ const OrderOfBattle = () => {
             as={Link}
             to={`/order-of-battle/${currentOrderOfBattle.id}/edit`}
             aria-label="Edit"
-            fontSize="1.5rem"
             icon={<MdEdit />}
             colorScheme="blue"
           />
@@ -65,7 +67,7 @@ const OrderOfBattle = () => {
     >
       {currentOrderOfBattle && currentOrderOfBattle.notes && (
         <>
-          <ReactMarkdown linkTarget="_blank" className="markdown">
+          <ReactMarkdown linkTarget="_blank" className={styles.markdown}>
             {currentOrderOfBattle.notes}
           </ReactMarkdown>
           <Divider my="1rem !important" />

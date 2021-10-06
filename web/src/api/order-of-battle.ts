@@ -11,3 +11,6 @@ export const getOrderOfBattleAsync = (orderOfBattleId: string | number) =>
 
 export const getPlayerOrdersOfBattleAsync = (playerId: string | number) =>
   Fetch<Crusader.OrderOfBattle[]>(`/api/player/${playerId}/orders-of-battle`, { method: 'GET' });
+
+export const updateOrderOfBattleAsync = (body: Crusader.OrderOfBattle) =>
+  Fetch<Crusader.OrderOfBattle>('/api/order-of-battle', { method: 'PUT', body });

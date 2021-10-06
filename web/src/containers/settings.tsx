@@ -59,7 +59,6 @@ const Settings = () => {
       actionComponent={
         <IconButton
           aria-label="Save"
-          fontSize="1.5rem"
           icon={<MdSave />}
           disabled={playerName.length <= 6}
           onClick={updatePlayer}

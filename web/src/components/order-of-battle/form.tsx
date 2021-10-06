@@ -1,4 +1,5 @@
 import React from 'react';
+import { SimpleGrid } from '@chakra-ui/react';
 import { useFormContext, useController } from 'react-hook-form';
 import { useRecoilValue } from 'recoil';
 
@@ -11,10 +12,11 @@ import TextAreaField from '../field/textarea';
 import { FactionAtom } from '../../state/config';
 
 interface Props {
+  isCompact?: boolean;
   onSubmit: (values: Crusader.OrderOfBattle) => Promise<void>;
 }
 
-const OrderOfBattleForm = ({ onSubmit }: Props) => {
+const OrderOfBattleForm = ({ isCompact, onSubmit }: Props) => {
   const factions = useRecoilValue(FactionAtom);
 
   const { control, register, handleSubmit } = useFormContext<Crusader.OrderOfBattle>();
@@ -39,12 +41,37 @@ const OrderOfBattleForm = ({ onSubmit }: Props) => {
       />
       <InputField
         label="Name"
-        type="input"
+        type="text"
         placeholder="Eg. Crusaders"
         {...register('name', { required: true })}
       />
+      {!isCompact && (
+        <SimpleGrid columns={2} columnGap={4}>
+          <InputField
+            label="Supply Limit"
+            type="number"
+            {...register('supplyLimit', { required: true, valueAsNumber: true })}
+          />
+          <InputField
+            label="Requisition"
+            type="number"
+            {...register('requisition', { required: true, valueAsNumber: true })}
+          />
+          <InputField
+            label="Battle Tally"
+            type="number"
+            {...register('battles', { required: true, valueAsNumber: true })}
+          />
+          <InputField
+            label="Battles Won"
+            type="number"
+            {...register('battlesWon', { required: true, valueAsNumber: true })}
+          />
+        </SimpleGrid>
+      )}
       <TextAreaField
         label="Notes"
+        isFullHeight
         placeholder="Use Markdown to add some fluff to your Order of Battle!"
         {...register('notes', { required: false })}
       />

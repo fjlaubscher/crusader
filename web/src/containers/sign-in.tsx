@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { useForm } from 'react-hook-form';
 import { Button, Input, Progress, useToast } from '@chakra-ui/react';
+import { MdLogin } from 'react-icons/md';
 import slugify from 'slugify';
 
 // api
@@ -10,6 +11,9 @@ import { createPlayerAsync, getPlayersAsync } from '../api/player';
 
 // components
 import AuthLayout from '../components/layout/auth';
+
+// helpers
+import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '../helpers/messages';
 
 // state
 import { PlayerAtom } from '../state/player';
@@ -51,13 +55,13 @@ const SignIn = () => {
 
       toast({
         status: 'success',
-        title: 'Success',
+        title: SUCCESS_MESSAGE,
         description: 'Signed in'
       });
     } catch (ex: any) {
       toast({
         status: 'error',
-        title: 'Error',
+        title: ERROR_MESSAGE,
         description: ex.message
       });
     }
@@ -84,7 +88,13 @@ const SignIn = () => {
               validate: (value) => value.length > 6
             })}
           />
-          <Button disabled={!formState.isValid} type="submit" colorScheme="blue" isFullWidth>
+          <Button
+            disabled={!formState.isValid}
+            type="submit"
+            leftIcon={<MdLogin />}
+            colorScheme="blue"
+            isFullWidth
+          >
             Sign In
           </Button>
         </form>

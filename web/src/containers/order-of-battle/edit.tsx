@@ -7,25 +7,25 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';
 
 // api
-import { getCrusadeAsync, updateCrusadeAsync } from '../../api/crusade';
+import { getOrderOfBattleAsync, updateOrderOfBattleAsync } from '../../api/order-of-battle';
 
 // components
-import CrusadeForm from '../../components/crusade/form';
 import Layout from '../../components/layout';
+import OrderOfBattleForm from '../../components/order-of-battle/form';
 
 // helpers
 import { SUCCESS_MESSAGE, ERROR_MESSAGE } from '../../helpers/messages';
 
 // state
-import { CrusadeAtom } from '../../state/crusade';
+import { OrderOfBattleAtom } from '../../state/order-of-battle';
 import { PlayerAtom } from '../../state/player';
 
-const EditCrusade = () => {
+const EditOrderOfBattle = () => {
   const { id } = useParams<IdParams>();
   const history = useHistory();
   const toast = useToast();
 
-  const [currentCrusade, setCurrentCrusade] = useRecoilState(CrusadeAtom);
+  const [currentOrderOfBattle, setCurrentOrderOfBattle] = useRecoilState(OrderOfBattleAtom);
   const player = useRecoilValue(PlayerAtom);
 
   const form = useForm<Crusader.Crusade>({ mode: 'onChange' });
@@ -35,30 +35,30 @@ const EditCrusade = () => {
   } = form;
 
   const { loading } = useAsync(async () => {
-    if (!currentCrusade || currentCrusade.id !== parseInt(id)) {
-      const crusade = await getCrusadeAsync(id);
+    if (!currentOrderOfBattle || currentOrderOfBattle.id !== parseInt(id)) {
+      const orderOfBattle = await getOrderOfBattleAsync(id);
       
-      if (crusade) {
-        setCurrentCrusade(crusade);
-        reset(crusade);
+      if (orderOfBattle) {
+        setCurrentOrderOfBattle(orderOfBattle);
+        reset(orderOfBattle);
       }
-    } else if (currentCrusade) {
-      reset(currentCrusade);
+    } else if (currentOrderOfBattle) {
+      reset(currentOrderOfBattle);
     }
-  }, [id, currentCrusade, reset]);
+  }, [id, currentOrderOfBattle, reset]);
 
   const playerId = player ? player.id : 0;
-  const createdById = currentCrusade ? currentCrusade.createdById : 0;
+  const createdById = currentOrderOfBattle ? currentOrderOfBattle.playerId : 0;
   const isOwner = playerId && createdById && playerId === createdById;
 
   if (!loading && !isOwner) {
-    return <Redirect to={`/crusade/${id}`} />;
+    return <Redirect to={`/order-of-battle/${id}`} />;
   }
 
   return (
     <FormProvider {...form}>
       <Layout
-        title={currentCrusade ? currentCrusade.name : 'Loading'}
+        title={currentOrderOfBattle ? currentOrderOfBattle.name : 'Loading'}
         actionComponent={
           <IconButton
             aria-label="Save"
@@ -67,30 +67,30 @@ const EditCrusade = () => {
             colorScheme="blue"
             isLoading={isSubmitting}
             type="submit"
-            form="crusade-form"
+            form="order-of-battle-form"
           />
         }
         isFullHeight
         isLoading={loading}
       >
-        <CrusadeForm
+        <OrderOfBattleForm
           onSubmit={async (values) => {
             try {
-              if (currentCrusade && player) {
-                const updatedCrusade = await updateCrusadeAsync({
-                  ...currentCrusade,
+              if (currentOrderOfBattle && player) {
+                const updatedOrderOfBattle = await updateOrderOfBattleAsync({
+                  ...currentOrderOfBattle,
                   ...values
                 });
 
-                if (updatedCrusade) {
+                if (updatedOrderOfBattle) {
                   toast({
                     status: 'success',
                     title: SUCCESS_MESSAGE,
-                    description: 'Crusade updated'
+                    description: 'Order of Battle updated.'
                   });
 
-                  setCurrentCrusade(updatedCrusade);
-                  history.push(`/crusade/${updatedCrusade.id}`);
+                  setCurrentOrderOfBattle(updatedOrderOfBattle);
+                  history.push(`/order-of-battle/${updatedOrderOfBattle.id}`);
                 }
               }
             } catch (ex: any) {
@@ -107,4 +107,4 @@ const EditCrusade = () => {
   );
 };
 
-export default EditCrusade;
+export default EditOrderOfBattle;

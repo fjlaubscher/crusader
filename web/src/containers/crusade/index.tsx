@@ -19,6 +19,9 @@ import Search from '../../components/search';
 import { CrusadeAtom } from '../../state/crusade';
 import { PlayerAtom } from '../../state/player';
 
+// styles
+import styles from '../../styles/markdown.module.css';
+
 const Crusade = () => {
   const { id } = useParams<IdParams>();
   const [searchTerm, setSearchTerm] = useState('');
@@ -53,7 +56,6 @@ const Crusade = () => {
             as={Link}
             to={`/crusade/${currentCrusade.id}/edit`}
             aria-label="Edit"
-            fontSize="1.5rem"
             icon={<MdEdit />}
             colorScheme="blue"
           />
@@ -63,7 +65,7 @@ const Crusade = () => {
     >
       {currentCrusade && currentCrusade.notes && (
         <>
-          <ReactMarkdown linkTarget="_blank" className="markdown">
+          <ReactMarkdown linkTarget="_blank" className={styles.markdown}>
             {currentCrusade.notes}
           </ReactMarkdown>
           <Divider my="1rem !important" />

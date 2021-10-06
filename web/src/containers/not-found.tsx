@@ -5,7 +5,7 @@ import { GiBolterGun } from 'react-icons/gi';
 // components
 import Layout from '../components/layout';
 
-import styles from './not-found.module.css';
+import styles from '../styles/not-found.module.css';
 
 const NotFound = () => (
   <Layout title="Not Found" isFullHeight>

@@ -11,8 +11,8 @@ import {
   Progress,
   useColorModeValue
 } from '@chakra-ui/react';
-import { GiBolterGun } from 'react-icons/gi';
 import { Helmet } from 'react-helmet';
+import { MdHome } from 'react-icons/md';
 
 interface Props {
   title: string;
@@ -32,13 +32,7 @@ const Layout = ({ children, title, actionComponent, isFullHeight, isLoading }: P
         <Container width="100%" maxW="container.xl">
           <Grid alignItems="center" py={4} width="100%" templateColumns="2.5rem auto 2.5rem">
             <GridItem>
-              <IconButton
-                as={Link}
-                to="/"
-                aria-label="Home"
-                fontSize="1.5rem"
-                icon={<GiBolterGun />}
-              />
+              <IconButton as={Link} to="/" aria-label="Home" icon={<MdHome />} />
             </GridItem>
             <GridItem alignContent="center">
               <Heading textAlign="center" size="sm">

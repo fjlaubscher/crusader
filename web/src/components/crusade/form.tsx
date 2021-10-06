@@ -20,7 +20,7 @@ const CrusadeForm = ({ onSubmit }: Props) => {
     >
       <InputField
         label="Name"
-        type="input"
+        type="text"
         placeholder="Eg. My FLGS Crusade"
         {...register('name', { required: true })}
       />

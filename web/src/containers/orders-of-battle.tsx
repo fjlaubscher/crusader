@@ -43,7 +43,7 @@ const OrdersOfBattle = () => {
       <Layout
         title="Orders of Battle"
         actionComponent={
-          <IconButton aria-label="Settings" fontSize="1.5rem" icon={<MdMenu />} onClick={onOpen} />
+          <IconButton aria-label="Settings" icon={<MdMenu />} onClick={onOpen} />
         }
         isLoading={loading}
       >

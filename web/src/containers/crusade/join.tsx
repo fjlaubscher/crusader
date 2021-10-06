@@ -58,7 +58,6 @@ const JoinCrusade = () => {
         actionComponent={
           <IconButton
             aria-label="Save"
-            fontSize="1.5rem"
             icon={<MdSave />}
             disabled={!form.formState.isValid || form.formState.isSubmitting}
             colorScheme="blue"
@@ -82,6 +81,7 @@ const JoinCrusade = () => {
           </Box>
         </Alert>
         <OrderOfBattleForm
+          isCompact
           onSubmit={async (values) => {
             try {
               if (currentCrusade && player) {
@@ -101,7 +101,7 @@ const JoinCrusade = () => {
                     title: SUCCESS_MESSAGE,
                     description: `Joined ${currentCrusade.name}`
                   });
-                  history.push(`/order-of-battle/${newOrderOfBattle.id}`);
+                  history.push(`/order-of-battle/${newOrderOfBattle.id}/edit`);
                 }
               }
             } catch (ex: any) {

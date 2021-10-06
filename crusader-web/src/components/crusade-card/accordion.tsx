@@ -35,7 +35,9 @@ const Item = ({ title, children }: ItemProps) => (
         <AccordionIcon />
       </AccordionButton>
     </Heading>
-    <AccordionPanel px={0} pb={4}>{children}</AccordionPanel>
+    <AccordionPanel px={0} pb={4}>
+      {children}
+    </AccordionPanel>
   </AccordionItem>
 );
 

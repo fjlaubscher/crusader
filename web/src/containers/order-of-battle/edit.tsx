@@ -37,7 +37,7 @@ const EditOrderOfBattle = () => {
   const { loading } = useAsync(async () => {
     if (!currentOrderOfBattle || currentOrderOfBattle.id !== parseInt(id)) {
       const orderOfBattle = await getOrderOfBattleAsync(id);
-      
+
       if (orderOfBattle) {
         setCurrentOrderOfBattle(orderOfBattle);
         reset(orderOfBattle);

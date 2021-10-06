@@ -8,9 +8,11 @@ const selectOrderOfBattle = (id: number) => `
     IFNULL(SUM(CrusadeCard.crusadePoints), 0) as crusadePoints,
     IFNULL(SUM(CrusadeCard.powerRating), 0) as supplyUsed,
     Crusade.name as crusade,
-    Player.name as Player
+    Faction.name as faction,
+    Player.name as player
   FROM OrderOfBattle
   INNER JOIN Crusade ON OrderOfBattle.crusadeId = Crusade.Id
+  INNER JOIN Faction ON OrderOfBattle.factionId = Faction.id
   INNER JOIN Player ON OrderOfBattle.playerId = Player.id
   LEFT OUTER JOIN CrusadeCard ON OrderOfBattle.id = CrusadeCard.orderOfBattleId
   WHERE OrderOfBattle.id = ${id}

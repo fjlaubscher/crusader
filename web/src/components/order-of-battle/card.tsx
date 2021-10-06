@@ -14,9 +14,10 @@ import { MdVisibility, MdDelete } from 'react-icons/md';
 
 interface Props {
   orderOfBattle: Crusader.OrderOfBattle;
+  showPlayerName?: boolean;
 }
 
-const OrderOfBattleCard = ({ orderOfBattle }: Props) => {
+const OrderOfBattleCard = ({ orderOfBattle, showPlayerName }: Props) => {
   const background = useColorModeValue('white', 'gray.800');
 
   return (
@@ -24,12 +25,12 @@ const OrderOfBattleCard = ({ orderOfBattle }: Props) => {
       <VStack alignItems="flex-start" width="100%">
         <Text>{orderOfBattle.name}</Text>
         <HStack width="100%">
-          <Tag size="sm">{orderOfBattle.player}</Tag>
+          <Tag size="sm">{showPlayerName ? orderOfBattle.player : orderOfBattle.crusade}</Tag>
           <Tag size="sm" colorScheme="blue">
             {orderOfBattle.faction}
           </Tag>
           <Tag size="sm" colorScheme="green">
-            {orderOfBattle.supplyUsed}/{orderOfBattle.supplyLimit}
+            {orderOfBattle.supplyUsed}/{orderOfBattle.supplyLimit}PL
           </Tag>
         </HStack>
         <Button

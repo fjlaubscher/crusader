@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 
-export const OrdersOfBattleAtom = atom<Crusader.OrderOfBattle[]>({
-  key: 'player-orders-of-battle',
-  default: []
+export const OrderOfBattleAtom = atom<Crusader.OrderOfBattle | null>({
+  key: 'order-of-battle',
+  default: null
 });

@@ -1,6 +1,19 @@
-import sqlite from "sqlite3";
+import sqlite from 'sqlite3';
 
-import { DATABASE } from ".";
+import { DATABASE } from '.';
+
+const selectCrusadeCard = (id: number) => `
+  SELECT
+    CrusadeCard.*, 
+    BattlefieldRole.name as battlefieldRole, 
+    OrderOfBattle.name as orderOfBattle, 
+    SUM(CrusadeCard.unitsDestroyedMelee + CrusadeCard.unitsDestroyedPsychic + CrusadeCard.unitsDestroyedRanged) as unitsDestroyed
+  FROM CrusadeCard
+  INNER JOIN BattlefieldRole on BattlefieldRole.id = CrusadeCard.battlefieldRoleId
+  INNER JOIN OrderOfBattle on OrderOfBattle.id = CrusadeCard.orderOfBattleId
+  WHERE id = ${id}
+  GROUP BY CrusadeCard.id
+`;
 
 export const createCrusadeCardAsync = (input: Crusader.CrusadeCard) => {
   return new Promise<Crusader.CrusadeCard>((resolve, reject) => {
@@ -29,23 +42,20 @@ export const createCrusadeCardAsync = (input: Crusader.CrusadeCard) => {
         $unitsDestroyedMelee: input.unitsDestroyedMelee,
         $unitsDestroyedPsychic: input.unitsDestroyedPsychic,
         $unitsDestroyedRanged: input.unitsDestroyedRanged,
-        $warlordTraits: input.warlordTraits,
+        $warlordTraits: input.warlordTraits
       },
       function (this, err) {
         if (err) {
           return reject(err);
         }
 
-        db.get(
-          `SELECT * from CrusadeCard WHERE id = ${this.lastID}`,
-          function (this, err, row: Crusader.CrusadeCard) {
-            if (err) {
-              return reject(err);
-            }
-
-            return resolve(row);
+        db.get(selectCrusadeCard(this.lastID), function (this, err, row: Crusader.CrusadeCard) {
+          if (err) {
+            return reject(err);
           }
-        );
+
+          return resolve(row);
+        });
       }
     );
 
@@ -57,17 +67,13 @@ export const deleteCrusadeCardAsync = (id: number) =>
   new Promise<boolean>((resolve, reject) => {
     const db = new sqlite.Database(DATABASE);
 
-    db.run(
-      `DELETE FROM CrusadeCard WHERE id = $id`,
-      { $id: id },
-      function (this, err) {
-        if (err) {
-          return reject(err);
-        }
-
-        return resolve(true);
+    db.run(`DELETE FROM CrusadeCard WHERE id = $id`, { $id: id }, function (this, err) {
+      if (err) {
+        return reject(err);
       }
-    );
+
+      return resolve(true);
+    });
 
     db.close();
   });
@@ -76,30 +82,35 @@ export const getCrusadeCardByIdAsync = (id: number) => {
   return new Promise<Crusader.CrusadeCard>((resolve, reject) => {
     const db = new sqlite.Database(DATABASE);
 
-    db.get(
-      `SELECT * FROM CrusadeCard WHERE id = $id`,
-      { $id: id },
-      function (this, err: Error, row: Crusader.CrusadeCard) {
-        if (err) {
-          return reject(err);
-        }
-
-        return resolve(row);
+    db.get(selectCrusadeCard(id), function (this, err: Error, row: Crusader.CrusadeCard) {
+      if (err) {
+        return reject(err);
       }
-    );
+
+      return resolve(row);
+    });
 
     db.close();
   });
 };
 
-export const getCrusadeCardsByOrderOfBattleIdAsync = (
-  orderOfBattleId: number
-) => {
+export const getCrusadeCardsByOrderOfBattleIdAsync = (orderOfBattleId: number) => {
   return new Promise<Crusader.CrusadeCard[]>((resolve, reject) => {
     const db = new sqlite.Database(DATABASE);
 
     db.all(
-      `SELECT * FROM CrusadeCard WHERE orderOfBattleId = $orderOfBattleId`,
+      `
+      SELECT
+        CrusadeCard.*, 
+        BattlefieldRole.name as battlefieldRole, 
+        OrderOfBattle.name as orderOfBattle, 
+        SUM(CrusadeCard.unitsDestroyedMelee + CrusadeCard.unitsDestroyedPsychic + CrusadeCard.unitsDestroyedRanged) as unitsDestroyed
+      FROM CrusadeCard
+      INNER JOIN BattlefieldRole on BattlefieldRole.id = CrusadeCard.battlefieldRoleId
+      INNER JOIN OrderOfBattle on OrderOfBattle.id = CrusadeCard.orderOfBattleId
+      WHERE CrusadeCard.orderOfBattleId = $orderOfBattleId
+      GROUP BY CrusadeCard.id
+    `,
       { $orderOfBattleId: orderOfBattleId },
       function (this, err: Error, rows: Crusader.CrusadeCard[]) {
         if (err) {
@@ -161,23 +172,20 @@ export const updateCrusadeCardAsync = (input: Crusader.CrusadeCard) => {
         $unitsDestroyedMelee: input.unitsDestroyedMelee,
         $unitsDestroyedPsychic: input.unitsDestroyedPsychic,
         $unitsDestroyedRanged: input.unitsDestroyedRanged,
-        $warlordTraits: input.warlordTraits,
+        $warlordTraits: input.warlordTraits
       },
       function (this, err) {
         if (err) {
           return reject(err);
         }
 
-        db.get(
-          `SELECT * from CrusadeCard WHERE id = ${input.id}`,
-          function (this, err, row: Crusader.CrusadeCard) {
-            if (err) {
-              return reject(err);
-            }
-
-            return resolve(row);
+        db.get(selectCrusadeCard(input.id), function (this, err, row: Crusader.CrusadeCard) {
+          if (err) {
+            return reject(err);
           }
-        );
+
+          return resolve(row);
+        });
       }
     );
 

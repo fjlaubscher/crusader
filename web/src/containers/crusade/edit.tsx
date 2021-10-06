@@ -3,11 +3,11 @@ import { Redirect, useHistory, useParams } from 'react-router-dom';
 import { IconButton, Progress, useToast } from '@chakra-ui/react';
 import { MdSave } from 'react-icons/md';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';
 
 // api
-import { getCrusadeAsync, getPlayerCrusadesAsync, updateCrusadeAsync } from '../../api/crusade';
+import { getCrusadeAsync, updateCrusadeAsync } from '../../api/crusade';
 
 // components
 import CrusadeForm from '../../components/crusade/form';
@@ -17,7 +17,7 @@ import Layout from '../../components/layout';
 import { SUCCESS_MESSAGE, ERROR_MESSAGE } from '../../helpers/messages';
 
 // state
-import { CurrentCrusadeAtom, CrusadesAtom } from '../../state/crusade';
+import { CrusadeAtom } from '../../state/crusade';
 import { PlayerAtom } from '../../state/player';
 
 const EditCrusade = () => {
@@ -25,8 +25,7 @@ const EditCrusade = () => {
   const history = useHistory();
   const toast = useToast();
 
-  const [currentCrusade, setCurrentCrusade] = useRecoilState(CurrentCrusadeAtom);
-  const setCrusades = useSetRecoilState(CrusadesAtom);
+  const [currentCrusade, setCurrentCrusade] = useRecoilState(CrusadeAtom);
   const player = useRecoilValue(PlayerAtom);
 
   const form = useForm<Crusader.Crusade>({ mode: 'onChange' });
@@ -80,18 +79,14 @@ const EditCrusade = () => {
                 });
 
                 if (updatedCrusade) {
+                  toast({
+                    status: 'success',
+                    title: SUCCESS_MESSAGE,
+                    description: 'Crusade updated'
+                  });
+                  
                   setCurrentCrusade(updatedCrusade);
-                  const crusades = await getPlayerCrusadesAsync(player.id);
-
-                  if (crusades) {
-                    setCrusades(crusades);
-                    toast({
-                      status: 'success',
-                      title: SUCCESS_MESSAGE,
-                      description: 'Crusade updated'
-                    });
-                    history.push(`/crusade/${updatedCrusade.id}`);
-                  }
+                  history.push(`/crusade/${updatedCrusade.id}`);
                 }
               }
             } catch (ex: any) {

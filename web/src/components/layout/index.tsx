@@ -8,6 +8,7 @@ import {
   VStack,
   Container,
   Heading,
+  Progress,
   useColorModeValue
 } from '@chakra-ui/react';
 import { GiBolterGun } from 'react-icons/gi';
@@ -18,9 +19,10 @@ interface Props {
   children: React.ReactNode;
   actionComponent?: React.ReactNode;
   isFullHeight?: boolean;
+  isLoading?: boolean;
 }
 
-const Layout = ({ children, title, actionComponent, isFullHeight }: Props) => {
+const Layout = ({ children, title, actionComponent, isFullHeight, isLoading }: Props) => {
   const background = useColorModeValue('gray.50', 'gray.900');
 
   return (
@@ -54,11 +56,20 @@ const Layout = ({ children, title, actionComponent, isFullHeight }: Props) => {
         background={background}
         flex={1}
       >
-        <Container height={isFullHeight ? '100%' : undefined} width="100%" p={4} maxW="container.xl">
-          <VStack height={isFullHeight ? '100%' : undefined} width="100%">
-            {children}
-          </VStack>
-        </Container>
+        {isLoading ? (
+          <Progress isIndeterminate />
+        ) : (
+          <Container
+            height={isFullHeight ? '100%' : undefined}
+            width="100%"
+            p={4}
+            maxW="container.xl"
+          >
+            <VStack height={isFullHeight ? '100%' : undefined} width="100%">
+              {children}
+            </VStack>
+          </Container>
+        )}
       </Box>
     </VStack>
   );

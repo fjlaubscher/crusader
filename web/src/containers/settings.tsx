@@ -1,17 +1,8 @@
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
-import {
-  Button,
-  Input,
-  Progress,
-  Heading,
-  useToast,
-  IconButton,
-  Alert,
-  AlertIcon
-} from '@chakra-ui/react';
-import slugify from 'slugify';
+import { Input, useToast, IconButton, Alert, AlertIcon } from '@chakra-ui/react';
 import { MdSave } from 'react-icons/md';
+import slugify from 'slugify';
 
 // api
 import { updatePlayerAsync } from '../api/player';
@@ -31,11 +22,11 @@ const Settings = () => {
 
   const [player, setPlayer] = useRecoilState(PlayerAtom);
   const [playerName, setPlayerName] = useState(player ? player.name : '');
-  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   async function updatePlayer() {
     try {
-      setLoading(true);
+      setSubmitting(true);
       const sluggedName = slugify(playerName);
       if (player) {
         const updatedPlayer = await updatePlayerAsync({ id: player.id, name: sluggedName });
@@ -59,7 +50,7 @@ const Settings = () => {
       });
     }
 
-    setLoading(false);
+    setSubmitting(false);
   }
 
   return (
@@ -73,7 +64,7 @@ const Settings = () => {
           disabled={playerName.length <= 6}
           onClick={updatePlayer}
           colorScheme="blue"
-          isLoading={loading}
+          isLoading={submitting}
         />
       }
     >
@@ -82,7 +73,7 @@ const Settings = () => {
         Update your username here.
       </Alert>
       <Input
-        disabled={loading}
+        disabled={submitting}
         type="text"
         value={playerName}
         onChange={(e) => setPlayerName(e.currentTarget.value)}

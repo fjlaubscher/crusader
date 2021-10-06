@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { IconButton, useToast } from '@chakra-ui/react';
 import { MdSave } from 'react-icons/md';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 // api
-import { createCrusadeAsync, getPlayerCrusadesAsync } from '../../api/crusade';
+import { createCrusadeAsync } from '../../api/crusade';
 
 // components
 import CrusadeForm from '../../components/crusade/form';
@@ -16,7 +16,6 @@ import Layout from '../../components/layout';
 import { SUCCESS_MESSAGE, ERROR_MESSAGE } from '../../helpers/messages';
 
 // state
-import { CrusadesAtom } from '../../state/crusade';
 import { PlayerAtom } from '../../state/player';
 
 const CreateCrusade = () => {
@@ -24,7 +23,6 @@ const CreateCrusade = () => {
 
   const toast = useToast();
   const player = useRecoilValue(PlayerAtom);
-  const setCrusades = useSetRecoilState(CrusadesAtom);
 
   const form = useForm<Crusader.Crusade>({ mode: 'onChange' });
 
@@ -57,17 +55,12 @@ const CreateCrusade = () => {
                 });
 
                 if (newCrusade) {
-                  const crusades = await getPlayerCrusadesAsync(player.id);
-
-                  if (crusades) {
-                    setCrusades(crusades);
-                    toast({
-                      status: 'success',
-                      title: SUCCESS_MESSAGE,
-                      description: 'Crusade created'
-                    });
-                    history.push(`/crusade/${newCrusade.id}`);
-                  }
+                  toast({
+                    status: 'success',
+                    title: SUCCESS_MESSAGE,
+                    description: 'Crusade created'
+                  });
+                  history.push(`/crusade/${newCrusade.id}`);
                 }
               }
             } catch (ex: any) {

@@ -81,7 +81,12 @@ export const getCrusadesByPlayerIdAsync = (playerId: number) => {
     const db = new sqlite.Database(DATABASE);
 
     db.all(
-      `SELECT c.* FROM Crusade c LEFT OUTER JOIN OrderOfBattle o ON o.crusadeId = c.id WHERE o.playerId = $playerId OR c.createdById = $playerId`,
+      `
+      SELECT Crusade.*
+      FROM Crusade
+      LEFT OUTER JOIN OrderOfBattle ON OrderOfBattle.crusadeId = Crusade.id
+      WHERE OrderOfBattle.playerId = $playerId OR Crusade.createdById = $playerId
+      GROUP BY Crusade.id`,
       { $playerId: playerId },
       function (this, err: Error, rows: Crusader.Crusade[]) {
         if (err) {

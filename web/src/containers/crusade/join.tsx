@@ -10,14 +10,14 @@ import {
   AlertTitle,
   AlertDescription
 } from '@chakra-ui/react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';
 import { FormProvider, useForm } from 'react-hook-form';
 import { MdSave } from 'react-icons/md';
 
 // api
 import { getCrusadeAsync } from '../../api/crusade';
-import { getPlayerOrdersOfBattleAsync, createOrderOfBattleAsync } from '../../api/order-of-battle';
+import { createOrderOfBattleAsync } from '../../api/order-of-battle';
 
 // components
 import Layout from '../../components/layout';
@@ -27,8 +27,7 @@ import OrderOfBattleForm from '../../components/order-of-battle/form';
 import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '../../helpers/messages';
 
 // state
-import { CurrentCrusadeAtom } from '../../state/crusade';
-import { OrdersOfBattleAtom } from '../../state/order-of-battle';
+import { CrusadeAtom } from '../../state/crusade';
 import { PlayerAtom } from '../../state/player';
 
 const JoinCrusade = () => {
@@ -36,8 +35,7 @@ const JoinCrusade = () => {
   const history = useHistory();
   const toast = useToast();
 
-  const [currentCrusade, setCurrentCrusade] = useRecoilState(CurrentCrusadeAtom);
-  const setOrdersOfBattle = useSetRecoilState(OrdersOfBattleAtom);
+  const [currentCrusade, setCurrentCrusade] = useRecoilState(CrusadeAtom);
   const player = useRecoilValue(PlayerAtom);
 
   const { loading } = useAsync(async () => {
@@ -98,17 +96,12 @@ const JoinCrusade = () => {
                 });
 
                 if (newOrderOfBattle) {
-                  const orders = await getPlayerOrdersOfBattleAsync(player.id);
-
-                  if (orders) {
-                    setOrdersOfBattle(orders);
-                    toast({
-                      status: 'success',
-                      title: SUCCESS_MESSAGE,
-                      description: 'Crusade joined.'
-                    });
-                    history.push(`/order-of-battle/${newOrderOfBattle.id}`);
-                  }
+                  toast({
+                    status: 'success',
+                    title: SUCCESS_MESSAGE,
+                    description: `Joined ${currentCrusade.name}`
+                  });
+                  history.push(`/order-of-battle/${newOrderOfBattle.id}`);
                 }
               }
             } catch (ex: any) {

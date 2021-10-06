@@ -3,22 +3,22 @@ import { Redirect } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 
 // state
-import { CrusadesAtom } from '../state/crusade';
-import { OrdersOfBattleAtom } from '../state/order-of-battle';
+import { CrusadeAtom } from '../state/crusade';
+import { OrderOfBattleAtom } from '../state/order-of-battle';
 import { PlayerAtom } from '../state/player';
 
 // storage
 import { PLAYER } from '../helpers/storage';
 
 const SignOut = () => {
-  const setCrusades = useSetRecoilState(CrusadesAtom);
-  const setOrdersOfBattle = useSetRecoilState(OrdersOfBattleAtom);
+  const setCrusade = useSetRecoilState(CrusadeAtom);
+  const setOrderOfBattle = useSetRecoilState(OrderOfBattleAtom);
   const setPlayer = useSetRecoilState(PlayerAtom);
 
   useEffect(() => {
     localStorage.removeItem(PLAYER);
-    setCrusades([]);
-    setOrdersOfBattle([]);
+    setCrusade(null);
+    setOrderOfBattle(null);
     setPlayer(null);
   }, []);
 

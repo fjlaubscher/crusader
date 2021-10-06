@@ -16,6 +16,10 @@ import {
   VStack
 } from '@chakra-ui/react';
 import { MdMenu, MdChevronRight, MdAdd } from 'react-icons/md';
+import { useAsync } from 'react-use';
+
+// api
+import { getPlayerCrusadesAsync } from '../api/crusade';
 
 // components
 import Layout from '../components/layout';
@@ -23,16 +27,27 @@ import Search from '../components/search';
 import Sidebar from '../components/sidebar';
 
 // state
-import { CrusadesAtom } from '../state/crusade';
 import { PlayerAtom } from '../state/player';
 
 const Home = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const crusades = useRecoilValue(CrusadesAtom);
   const player = useRecoilValue(PlayerAtom);
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredCrusades, setFilteredCrusades] = useState(crusades);
+  const [filteredCrusades, setFilteredCrusades] = useState<Crusader.Crusade[]>([]);
+
+  const { loading, value: crusades } = useAsync(async () => {
+    if (player) {
+      const crusades = await getPlayerCrusadesAsync(player.id);
+
+      if (crusades) {
+        setFilteredCrusades(crusades);
+        return crusades;
+      }
+    }
+
+    return undefined;
+  }, [player]);
 
   return (
     <>
@@ -42,6 +57,7 @@ const Home = () => {
         actionComponent={
           <IconButton aria-label="Settings" fontSize="1.5rem" icon={<MdMenu />} onClick={onOpen} />
         }
+        isLoading={loading}
       >
         <Alert mb={4} height="auto" status="info">
           <AlertIcon alignSelf="flex-start" />
@@ -72,7 +88,7 @@ const Home = () => {
         >
           New Crusade
         </Button>
-        {crusades.length && (
+        {crusades && crusades.length && (
           <>
             <Divider my="1rem !important" />
             <Search
@@ -84,8 +100,7 @@ const Home = () => {
                 );
               }}
             />
-            <Divider my="1rem !important" />
-            <VStack width="100%">
+            <VStack mt="0 !important" width="100%">
               {filteredCrusades.map((c) => (
                 <Button
                   rightIcon={<MdChevronRight />}

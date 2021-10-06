@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, Input, InputGroup, InputRightElement, useColorModeValue } from '@chakra-ui/react';
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 const Search = ({ value, onChange }: Props) => {
   const background = useColorModeValue('white', 'gray.900');
   return (
-    <InputGroup mt="0 !important">
+    <InputGroup mb="1rem !important" mt="0 !important">
       <Input
         background={background}
         value={value}

@@ -85,12 +85,13 @@ export const getOrdersOfBattleByCrusadeIdAsync = (crusadeId: number) => {
   return new Promise<Crusader.OrderOfBattle[]>((resolve, reject) => {
     const db = new sqlite.Database(DATABASE);
 
-    db.all(`
+    db.all(
+      `
       SELECT
         OrderOfBattle.*, 
         IFNULL(SUM(CrusadeCard.crusadePoints), 0) as crusadePoints,
         IFNULL(SUM(CrusadeCard.powerRating), 0) as supplyUsed,
-        Crusade.name as crusade,\
+        Crusade.name as crusade,
         Faction.name as faction,
         Player.name as player
       FROM OrderOfBattle
@@ -124,9 +125,11 @@ export const getOrdersOfBattleByPlayerIdAsync = (playerId: number) => {
         IFNULL(SUM(CrusadeCard.crusadePoints), 0) as crusadePoints,
         IFNULL(SUM(CrusadeCard.powerRating), 0) as supplyUsed,
         Crusade.name as crusade,
-        Player.name as Player
+        Faction.name as faction,
+        Player.name as player
       FROM OrderOfBattle
       INNER JOIN Crusade ON OrderOfBattle.crusadeId = Crusade.Id
+      INNER JOIN Faction ON OrderOfBattle.factionId = Faction.id
       INNER JOIN Player ON OrderOfBattle.playerId = Player.id
       LEFT OUTER JOIN CrusadeCard ON OrderOfBattle.id = CrusadeCard.orderOfBattleId
       WHERE OrderOfBattle.playerId = $playerId

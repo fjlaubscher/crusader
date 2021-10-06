@@ -17,6 +17,7 @@ declare namespace Crusader {
     id: number;
     abilities: string;
     battlefieldRoleId: number;
+    battlefieldRole: string;
     battleHonours: string;
     battleScars: string;
     battles: number;
@@ -27,6 +28,7 @@ declare namespace Crusader {
     name: string;
     notes: string;
     orderOfBattleId: number;
+    orderOfBattle: string;
     powerRating: number;
     psychicPowers: string;
     relics: string;

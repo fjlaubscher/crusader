@@ -16,13 +16,13 @@ import OrderOfBattleCard from '../../components/order-of-battle/card';
 import Search from '../../components/search';
 
 // state
-import { CurrentCrusadeAtom } from '../../state/crusade';
+import { CrusadeAtom } from '../../state/crusade';
 import { PlayerAtom } from '../../state/player';
 
 const Crusade = () => {
   const { id } = useParams<IdParams>();
   const [searchTerm, setSearchTerm] = useState('');
-  const [currentCrusade, setCurrentCrusade] = useRecoilState(CurrentCrusadeAtom);
+  const [currentCrusade, setCurrentCrusade] = useRecoilState(CrusadeAtom);
   const [ordersOfBattle, setOrdersOfBattle] = useState<Crusader.OrderOfBattle[]>([]);
   const [filteredOrdersOfBattle, setFilteredOrdersOfBattle] = useState<Crusader.OrderOfBattle[]>(
     []
@@ -48,43 +48,41 @@ const Crusade = () => {
     <Layout
       title={currentCrusade ? currentCrusade.name : 'Loading'}
       actionComponent={
-        currentCrusade && currentCrusade.id === playerId ? (
+        currentCrusade && currentCrusade.createdById === playerId ? (
           <IconButton
             as={Link}
             to={`/crusade/${currentCrusade.id}/edit`}
-            aria-label="Invite"
+            aria-label="Edit"
             fontSize="1.5rem"
             icon={<MdEdit />}
             colorScheme="blue"
           />
         ) : undefined
       }
+      isLoading={loading}
     >
-      {loading ? (
-        <Progress isIndeterminate />
-      ) : (
+      {currentCrusade && currentCrusade.notes && (
         <>
           <ReactMarkdown linkTarget="_blank" className="markdown">
-            {currentCrusade ? currentCrusade.notes : ''}
+            {currentCrusade.notes}
           </ReactMarkdown>
           <Divider my="1rem !important" />
-          <Search
-            value={searchTerm}
-            onChange={(term) => {
-              setSearchTerm(term);
-              setFilteredOrdersOfBattle(
-                ordersOfBattle.filter((c) => c.name.toLowerCase().includes(term.toLowerCase()))
-              );
-            }}
-          />
-          <Divider my="1rem !important" />
-          <VStack width="100%">
-            {filteredOrdersOfBattle.map((oob) => (
-              <OrderOfBattleCard key={oob.id} orderOfBattle={oob} />
-            ))}
-          </VStack>
         </>
       )}
+      <Search
+        value={searchTerm}
+        onChange={(term) => {
+          setSearchTerm(term);
+          setFilteredOrdersOfBattle(
+            ordersOfBattle.filter((c) => c.name.toLowerCase().includes(term.toLowerCase()))
+          );
+        }}
+      />
+      <VStack width="100%">
+        {filteredOrdersOfBattle.map((oob) => (
+          <OrderOfBattleCard key={oob.id} orderOfBattle={oob} showPlayerName />
+        ))}
+      </VStack>
     </Layout>
   );
 };

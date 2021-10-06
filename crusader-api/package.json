@@ -4,6 +4,7 @@
   "description": "Warhammer 40K Crusade tracker",
   "main": "./build/index.js",
   "scripts": {
+    "build": "tsc",
     "prestart": "tsc",
     "start": "node ./build/index.js"
   },

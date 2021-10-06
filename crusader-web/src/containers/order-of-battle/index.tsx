@@ -157,12 +157,7 @@ const OrderOfBattle = () => {
             </Alert>
           )}
           {crusadeCards && !crusadeCards.length && isOwner && (
-            <Button
-              leftIcon={<MdAdd />}
-              colorScheme="blue"
-              size="lg"
-              isFullWidth
-            >
+            <Button leftIcon={<MdAdd />} colorScheme="blue" size="lg" isFullWidth>
               New Crusade Card
             </Button>
           )}

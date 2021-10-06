@@ -3,10 +3,32 @@
 Crusader is a Warhammer 40K Crusade tracker.<br/>
 It's still very much a work in progress and consists of an Express API and a React PWA.
 
-# Contents
+## Getting Started
 
-- [Express API](api/README.md)
-- [React PWA](web/README.md)
+This project uses Yarn workspaces. 
+You need to install yarn first if you do not have it.
+
+```
+npm install -g yarn
+```
+
+## Installing Dependencies
+
+```
+yarn
+```
+
+## Development
+
+```
+yarn run start
+```
+
+## Building for Production
+
+```
+yarn run build
+```
 
 
 # Contributors

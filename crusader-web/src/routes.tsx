@@ -14,7 +14,6 @@ const OrdersOfBattle = lazy(() => import('./containers/orders-of-battle'));
 const OrderOfBattleOverview = lazy(() => import('./containers/order-of-battle'));
 const EditOrderOfBattle = lazy(() => import('./containers/order-of-battle/edit'));
 
-
 const Home = lazy(() => import('./containers/home'));
 const NotFound = lazy(() => import('./containers/not-found'));
 const Settings = lazy(() => import('./containers/settings'));

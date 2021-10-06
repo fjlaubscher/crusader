@@ -42,9 +42,7 @@ const OrdersOfBattle = () => {
       <Sidebar isOpen={isOpen} onClose={onClose} />
       <Layout
         title="Orders of Battle"
-        actionComponent={
-          <IconButton aria-label="Settings" icon={<MdMenu />} onClick={onOpen} />
-        }
+        actionComponent={<IconButton aria-label="Settings" icon={<MdMenu />} onClick={onOpen} />}
         isLoading={loading}
       >
         {ordersOfBattle && ordersOfBattle.length && (

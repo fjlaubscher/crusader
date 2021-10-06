@@ -54,9 +54,7 @@ const Home = () => {
       <Sidebar isOpen={isOpen} onClose={onClose} />
       <Layout
         title="Crusader"
-        actionComponent={
-          <IconButton aria-label="Settings" icon={<MdMenu />} onClick={onOpen} />
-        }
+        actionComponent={<IconButton aria-label="Settings" icon={<MdMenu />} onClick={onOpen} />}
         isLoading={loading}
       >
         <Alert mb={4} height="auto" status="info">

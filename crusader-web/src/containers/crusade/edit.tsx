@@ -37,7 +37,7 @@ const EditCrusade = () => {
   const { loading } = useAsync(async () => {
     if (!currentCrusade || currentCrusade.id !== parseInt(id)) {
       const crusade = await getCrusadeAsync(id);
-      
+
       if (crusade) {
         setCurrentCrusade(crusade);
         reset(crusade);

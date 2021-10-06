@@ -26,8 +26,8 @@ const Layout = ({ children, title, actionComponent, isFullHeight, isLoading }: P
   const background = useColorModeValue('gray.50', 'gray.900');
 
   return (
-    <VStack height="100%">
-      <Helmet title={`${title} | Crusader`} />
+    <VStack display="flex" flexDirection="column" minHeight="100%">
+      <Helmet title={`${isLoading ? 'Loading' : title} | Crusader`} />
       <Box width="100%">
         <Container width="100%" maxW="container.xl">
           <Grid alignItems="center" py={4} width="100%" templateColumns="2.5rem auto 2.5rem">
@@ -59,7 +59,7 @@ const Layout = ({ children, title, actionComponent, isFullHeight, isLoading }: P
             p={4}
             maxW="container.xl"
           >
-            <VStack height={isFullHeight ? '100%' : undefined} width="100%">
+            <VStack alignItems="flex-start" height={isFullHeight ? '100%' : undefined} width="100%">
               {children}
             </VStack>
           </Container>

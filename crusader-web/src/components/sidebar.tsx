@@ -36,7 +36,7 @@ const Sidebar = ({ isOpen, onClose }: Props) => (
             iconSpacing={4}
             onClick={onClose}
           >
-            Your Crusades
+            Home
           </Button>
           <Button
             isFullWidth

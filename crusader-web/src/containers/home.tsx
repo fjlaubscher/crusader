@@ -53,7 +53,7 @@ const Home = () => {
     <>
       <Sidebar isOpen={isOpen} onClose={onClose} />
       <Layout
-        title="Crusader"
+        title="Home"
         actionComponent={<IconButton aria-label="Settings" icon={<MdMenu />} onClick={onOpen} />}
         isLoading={loading}
       >

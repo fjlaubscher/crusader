@@ -1,64 +1,62 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, Redirect, useHistory, useParams } from 'react-router-dom';
 import { Button, IconButton, useToast } from '@chakra-ui/react';
 import { MdArrowBack, MdSave } from 'react-icons/md';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';
 
 // api
-import { getCrusadeAsync, updateCrusadeAsync } from '../../api/crusade';
+import { getCrusadeCardAsync, updateCrusadeCardAsync } from '../../api/crusade-card';
+import { getOrderOfBattleAsync } from '../../api/order-of-battle';
 
 // components
-import CrusadeForm from '../../components/crusade/form';
+import CrusadeCardForm from '../../components/crusade-card/form';
 import Layout from '../../components/layout';
 
 // helpers
 import { SUCCESS_MESSAGE, ERROR_MESSAGE } from '../../helpers/messages';
 
 // state
-import { CrusadeAtom } from '../../state/crusade';
 import { PlayerAtom } from '../../state/player';
 
-const EditCrusade = () => {
+const EditCrusadeCard = () => {
   const { id } = useParams<IdParams>();
   const history = useHistory();
   const toast = useToast();
 
-  const [currentCrusade, setCurrentCrusade] = useRecoilState(CrusadeAtom);
   const player = useRecoilValue(PlayerAtom);
+  const [createdPlayerId, setCreatedPlayerId] = useState<number | undefined>(undefined);
 
-  const form = useForm<Crusader.Crusade>({ mode: 'onChange' });
+  const form = useForm<Crusader.CrusadeCard>({ mode: 'onChange' });
   const {
     reset,
     formState: { isSubmitting, isValid }
   } = form;
 
-  const { loading } = useAsync(async () => {
-    if (!currentCrusade || currentCrusade.id !== parseInt(id)) {
-      const crusade = await getCrusadeAsync(id);
+  const { loading, value: crusadeCard } = useAsync(async () => {
+    const crusadeCard = await getCrusadeCardAsync(id);
 
-      if (crusade) {
-        setCurrentCrusade(crusade);
-        reset(crusade);
-      }
-    } else if (currentCrusade) {
-      reset(currentCrusade);
+    if (crusadeCard) {
+      reset(crusadeCard);
+      const orderOfBattle = await getOrderOfBattleAsync(crusadeCard.orderOfBattleId);
+      setCreatedPlayerId(orderOfBattle ? orderOfBattle.playerId : undefined);
     }
-  }, [id, currentCrusade, reset]);
+
+    return crusadeCard;
+  }, [id, setCreatedPlayerId, reset]);
 
   const playerId = player ? player.id : 0;
-  const createdById = currentCrusade ? currentCrusade.createdById : 0;
-  const isOwner = playerId && createdById && playerId === createdById;
+  const isOwner = playerId && createdPlayerId && playerId === createdPlayerId;
 
   if (!loading && !isOwner) {
-    return <Redirect to={`/crusade/${id}`} />;
+    return <Redirect to={`/crusade-care/${id}`} />;
   }
 
   return (
     <FormProvider {...form}>
       <Layout
-        title="Edit Crusade"
+        title="Edit Crusade Card"
         actionComponent={
           <IconButton
             aria-label="Save"
@@ -67,33 +65,32 @@ const EditCrusade = () => {
             colorScheme="blue"
             isLoading={isSubmitting}
             type="submit"
-            form="crusade-form"
+            form="crusade-card-form"
           />
         }
         isFullHeight
         isLoading={loading}
       >
-        <Button leftIcon={<MdArrowBack />} as={Link} to={`/crusade/${id}`}>
+        <Button leftIcon={<MdArrowBack />} as={Link} to={`/crusade-card/${id}`}>
           Back
         </Button>
-        <CrusadeForm
+        <CrusadeCardForm
           onSubmit={async (values) => {
             try {
-              if (currentCrusade && player) {
-                const updatedCrusade = await updateCrusadeAsync({
-                  ...currentCrusade,
+              if (crusadeCard) {
+                const updatedCrusadeCard = await updateCrusadeCardAsync({
+                  ...crusadeCard,
                   ...values
                 });
 
-                if (updatedCrusade) {
+                if (updatedCrusadeCard) {
                   toast({
                     status: 'success',
                     title: SUCCESS_MESSAGE,
-                    description: 'Crusade updated'
+                    description: 'Crusade Card updated.'
                   });
 
-                  setCurrentCrusade(updatedCrusade);
-                  history.push(`/crusade/${updatedCrusade.id}`);
+                  history.push(`/crusade-card/${updatedCrusadeCard.id}`);
                 }
               }
             } catch (ex: any) {
@@ -110,4 +107,4 @@ const EditCrusade = () => {
   );
 };
 
-export default EditCrusade;
+export default EditCrusadeCard;

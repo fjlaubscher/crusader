@@ -1,16 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {
-  Box,
-  Button,
-  IconButton,
-  VStack,
-  Tag,
-  Text,
-  useColorModeValue,
-  HStack
-} from '@chakra-ui/react';
-import { MdVisibility, MdDelete } from 'react-icons/md';
+import { Box, Button, VStack, Tag, Text, useColorModeValue, HStack } from '@chakra-ui/react';
+import { MdVisibility } from 'react-icons/md';
 
 interface Props {
   orderOfBattle: Crusader.OrderOfBattle;
@@ -25,12 +16,12 @@ const OrderOfBattleCard = ({ orderOfBattle, showPlayerName }: Props) => {
       <VStack alignItems="flex-start" width="100%">
         <Text>{orderOfBattle.name}</Text>
         <HStack width="100%">
-          <Tag size="sm">{showPlayerName ? orderOfBattle.player : orderOfBattle.crusade}</Tag>
           <Tag size="sm" colorScheme="blue">
-            {orderOfBattle.faction}
+            {showPlayerName ? orderOfBattle.player : orderOfBattle.crusade}
           </Tag>
+          <Tag size="sm">{orderOfBattle.faction}</Tag>
           <Tag size="sm" colorScheme="green">
-            {orderOfBattle.supplyUsed}/{orderOfBattle.supplyLimit}PL
+            {orderOfBattle.supplyUsed}PL
           </Tag>
         </HStack>
         <Button

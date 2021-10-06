@@ -1,7 +1,7 @@
 import React from 'react';
-import { Redirect, useHistory, useParams } from 'react-router-dom';
-import { IconButton, useToast } from '@chakra-ui/react';
-import { MdSave } from 'react-icons/md';
+import { Link, Redirect, useHistory, useParams } from 'react-router-dom';
+import { Button, IconButton, useToast } from '@chakra-ui/react';
+import { MdArrowBack, MdSave } from 'react-icons/md';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';
@@ -58,7 +58,7 @@ const EditOrderOfBattle = () => {
   return (
     <FormProvider {...form}>
       <Layout
-        title={currentOrderOfBattle ? currentOrderOfBattle.name : 'Loading'}
+        title="Edit Order of Battle"
         actionComponent={
           <IconButton
             aria-label="Save"
@@ -73,6 +73,9 @@ const EditOrderOfBattle = () => {
         isFullHeight
         isLoading={loading}
       >
+        <Button leftIcon={<MdArrowBack />} as={Link} to={`/order-of-battle/${id}`}>
+          Back
+        </Button>
         <OrderOfBattleForm
           onSubmit={async (values) => {
             try {

@@ -1,7 +1,7 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
-import { IconButton, useToast } from '@chakra-ui/react';
-import { MdSave } from 'react-icons/md';
+import { Link, useHistory } from 'react-router-dom';
+import { Button, IconButton, useToast } from '@chakra-ui/react';
+import { MdArrowBack, MdSave } from 'react-icons/md';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useRecoilValue } from 'recoil';
 
@@ -33,7 +33,6 @@ const CreateCrusade = () => {
         actionComponent={
           <IconButton
             aria-label="Save"
-            fontSize="1.5rem"
             icon={<MdSave />}
             disabled={!form.formState.isValid || form.formState.isSubmitting}
             colorScheme="blue"
@@ -44,6 +43,9 @@ const CreateCrusade = () => {
         }
         isFullHeight
       >
+        <Button leftIcon={<MdArrowBack />} as={Link} to="/">
+          Back
+        </Button>
         <CrusadeForm
           onSubmit={async (values) => {
             try {

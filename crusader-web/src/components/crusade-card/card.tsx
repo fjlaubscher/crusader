@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -13,11 +14,10 @@ import { MdVisibility, MdDelete } from 'react-icons/md';
 
 interface Props {
   crusadeCard: Crusader.CrusadeCard;
-  onClick: () => void;
   onDeleteClick?: () => void;
 }
 
-const CrusadeCard = ({ crusadeCard, onClick, onDeleteClick }: Props) => {
+const CrusadeCard = ({ crusadeCard, onDeleteClick }: Props) => {
   const background = useColorModeValue('white', 'gray.800');
 
   return (
@@ -38,18 +38,21 @@ const CrusadeCard = ({ crusadeCard, onClick, onDeleteClick }: Props) => {
       <VStack alignItems="flex-start" width="100%">
         <Text>{crusadeCard.name}</Text>
         <HStack width="100%">
-          <Tag size="sm">{crusadeCard.unitType}</Tag>
           <Tag size="sm" colorScheme="blue">
             {crusadeCard.battlefieldRole}
           </Tag>
+          <Tag size="sm">{crusadeCard.unitType}</Tag>
           <Tag size="sm" colorScheme="green">
             {crusadeCard.powerRating}PL
           </Tag>
-          <Tag size="sm" colorScheme="green">
-            {crusadeCard.crusadePoints}CP
-          </Tag>
         </HStack>
-        <Button type="button" onClick={onClick} size="sm" leftIcon={<MdVisibility />}>
+        <Button
+          type="button"
+          as={Link}
+          to={`/crusade-card/${crusadeCard.id}`}
+          size="sm"
+          leftIcon={<MdVisibility />}
+        >
           View
         </Button>
       </VStack>

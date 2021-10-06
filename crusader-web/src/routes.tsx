@@ -14,6 +14,10 @@ const OrdersOfBattle = lazy(() => import('./containers/orders-of-battle'));
 const OrderOfBattleOverview = lazy(() => import('./containers/order-of-battle'));
 const EditOrderOfBattle = lazy(() => import('./containers/order-of-battle/edit'));
 
+const CreateCrusadeCard = lazy(() => import('./containers/crusade-card/create'));
+const CrusadeCard = lazy(() => import('./containers/crusade-card'));
+const EditCrusadeCard = lazy(() => import('./containers/crusade-card/edit'));
+
 const Home = lazy(() => import('./containers/home'));
 const NotFound = lazy(() => import('./containers/not-found'));
 const Settings = lazy(() => import('./containers/settings'));
@@ -24,8 +28,11 @@ const Routes = () => (
     <ProtectedRoute path="/sign-out" exact component={SignOut} />
     <ProtectedRoute path="/settings" exact component={Settings} />
     <ProtectedRoute path="/orders-of-battle" exact component={OrdersOfBattle} />
+    <ProtectedRoute path="/order-of-battle/:id/crusade-card" exact component={CreateCrusadeCard} />
     <ProtectedRoute path="/order-of-battle/:id/edit" exact component={EditOrderOfBattle} />
     <ProtectedRoute path="/order-of-battle/:id" exact component={OrderOfBattleOverview} />
+    <ProtectedRoute path="/crusade-card/:id/edit" exact component={EditCrusadeCard} />
+    <ProtectedRoute path="/crusade-card/:id" exact component={CrusadeCard} />
     <ProtectedRoute path="/crusade/:id/join" exact component={JoinCrusade} />
     <ProtectedRoute path="/crusade/:id/edit" exact component={EditCrusade} />
     <Route path="/crusade/:id" exact component={CrusadeOverview} />

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Divider, IconButton, Progress, VStack } from '@chakra-ui/react';
+import { Divider, IconButton, Tag, VStack } from '@chakra-ui/react';
 import { MdEdit } from 'react-icons/md';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import ReactMarkdown from 'react-markdown';
 import { useAsync } from 'react-use';
+import { parseISO, format } from 'date-fns';
+import ReactMarkdown from 'react-markdown';
 
 // api
 import { getCrusadeAsync } from '../../api/crusade';
@@ -13,6 +14,7 @@ import { getCrusadeOrdersOfBattleAsync } from '../../api/order-of-battle';
 // components
 import Layout from '../../components/layout';
 import OrderOfBattleCard from '../../components/order-of-battle/card';
+import PageHeading from '../../components/page-heading';
 import Search from '../../components/search';
 
 // state
@@ -49,7 +51,7 @@ const Crusade = () => {
 
   return (
     <Layout
-      title={currentCrusade ? currentCrusade.name : 'Loading'}
+      title="Crusade"
       actionComponent={
         currentCrusade && currentCrusade.createdById === playerId ? (
           <IconButton
@@ -63,12 +65,19 @@ const Crusade = () => {
       }
       isLoading={loading}
     >
+      {currentCrusade && (
+        <PageHeading name={currentCrusade.name}>
+          <Tag>{format(parseISO(currentCrusade.createdDate), 'yyyy-MM-dd')}</Tag>
+          <Tag colorScheme="blue">@{currentCrusade.createdBy}</Tag>
+        </PageHeading>
+      )}
       {currentCrusade && currentCrusade.notes && (
         <>
+          <Divider mt="1rem !important" mb="0 !important" />
           <ReactMarkdown linkTarget="_blank" className={styles.markdown}>
             {currentCrusade.notes}
           </ReactMarkdown>
-          <Divider my="1rem !important" />
+          <Divider mt="0 !important" mb="1rem !important" />
         </>
       )}
       <Search

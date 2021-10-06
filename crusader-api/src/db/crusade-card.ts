@@ -11,7 +11,7 @@ const selectCrusadeCard = (id: number) => `
   FROM CrusadeCard
   INNER JOIN BattlefieldRole on BattlefieldRole.id = CrusadeCard.battlefieldRoleId
   INNER JOIN OrderOfBattle on OrderOfBattle.id = CrusadeCard.orderOfBattleId
-  WHERE id = ${id}
+  WHERE CrusadeCard.id = ${id}
   GROUP BY CrusadeCard.id
 `;
 
@@ -138,6 +138,7 @@ export const updateCrusadeCardAsync = (input: Crusader.CrusadeCard) => {
            battles = $battles,
            battlesSurvived = $battlesSurvived,
            crusadePoints = $crusadePoints,
+           equipment = $equipment,
            experiencePoints = $experiencePoints,
            name = $name,
            notes = $notes,

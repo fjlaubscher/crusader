@@ -6,15 +6,15 @@ import {
   Button,
   Divider,
   IconButton,
-  Link,
   SimpleGrid,
   Stat,
   StatLabel,
   StatNumber,
+  Tag,
   useMediaQuery,
   VStack
 } from '@chakra-ui/react';
-import { MdAdd, MdEdit } from 'react-icons/md';
+import { MdAdd, MdArrowBack, MdEdit } from 'react-icons/md';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';
 import ReactMarkdown from 'react-markdown';
@@ -26,6 +26,7 @@ import { getOrderOfBattleAsync } from '../../api/order-of-battle';
 // components
 import CrusadeCard from '../../components/crusade-card/card';
 import Layout from '../../components/layout';
+import PageHeading from '../../components/page-heading';
 import Search from '../../components/search';
 
 // state
@@ -41,7 +42,6 @@ const OrderOfBattle = () => {
   const [currentOrderOfBattle, setCurrentOrderOfBattle] = useRecoilState(OrderOfBattleAtom);
   const player = useRecoilValue(PlayerAtom);
 
-  const [idToDelete, setIdToDelete] = useState<number | undefined>(undefined);
   const [searchTerm, setSearchTerm] = useState('');
   const [crusadeCards, setCrusadeCards] = useState<Crusader.CrusadeCard[]>([]);
   const [filteredCrusadeCards, setFilteredCrusadeCards] = useState<Crusader.CrusadeCard[]>([]);
@@ -66,7 +66,7 @@ const OrderOfBattle = () => {
 
   return (
     <Layout
-      title={currentOrderOfBattle ? currentOrderOfBattle.name : 'Loading'}
+      title="Order of Battle"
       actionComponent={
         isOwner ? (
           <IconButton
@@ -82,28 +82,22 @@ const OrderOfBattle = () => {
     >
       {currentOrderOfBattle && (
         <>
-          <SimpleGrid width="100%" columns={isTabletOrLarger ? 6 : 2} rowGap={4}>
+          <Button
+            leftIcon={<MdArrowBack />}
+            as={ReactRouterLink}
+            to={`/crusade/${currentOrderOfBattle.crusadeId}`}
+          >
+            {currentOrderOfBattle.crusade}
+          </Button>
+          <PageHeading name={currentOrderOfBattle.name}>
+            <Tag colorScheme="blue">@{currentOrderOfBattle.player}</Tag>
+            <Tag>{currentOrderOfBattle.faction}</Tag>
+            <Tag colorScheme="green">{currentOrderOfBattle.supplyUsed}PL</Tag>
+          </PageHeading>
+          <SimpleGrid width="100%" columns={isTabletOrLarger ? 4 : 2} rowGap={4}>
             <Stat>
-              <StatLabel>Player</StatLabel>
-              <StatNumber color="blue.200">
-                <Link
-                  textDecoration="underline"
-                  as={ReactRouterLink}
-                  to={`/player/${currentOrderOfBattle.playerId}`}
-                >
-                  {currentOrderOfBattle.player}
-                </Link>
-              </StatNumber>
-            </Stat>
-            <Stat>
-              <StatLabel>Faction</StatLabel>
-              <StatNumber>{currentOrderOfBattle.faction}</StatNumber>
-            </Stat>
-            <Stat>
-              <StatLabel>Supply</StatLabel>
-              <StatNumber>
-                {currentOrderOfBattle.supplyUsed}/{currentOrderOfBattle.supplyLimit}PL
-              </StatNumber>
+              <StatLabel>Supply Limit</StatLabel>
+              <StatNumber>{currentOrderOfBattle.supplyLimit}PL</StatNumber>
             </Stat>
             <Stat>
               <StatLabel>Crusade Points</StatLabel>
@@ -125,11 +119,27 @@ const OrderOfBattle = () => {
               <ReactMarkdown linkTarget="_blank" className={styles.markdown}>
                 {currentOrderOfBattle.notes}
               </ReactMarkdown>
+            </>
+          )}
+          {isOwner && (
+            <>
               <Divider my="1rem !important" />
+              <Button
+                my="0 !important"
+                leftIcon={<MdAdd />}
+                as={ReactRouterLink}
+                to={`/order-of-battle/${id}/crusade-card`}
+                colorScheme="blue"
+                size="lg"
+                isFullWidth
+              >
+                New Crusade Card
+              </Button>
             </>
           )}
           {crusadeCards && crusadeCards.length ? (
             <>
+              <Divider my="1rem !important" />
               <Search
                 value={searchTerm}
                 onChange={(term) => {
@@ -141,12 +151,7 @@ const OrderOfBattle = () => {
               />
               <VStack mt="0 !important" width="100%">
                 {filteredCrusadeCards.map((c) => (
-                  <CrusadeCard
-                    key={c.id}
-                    crusadeCard={c}
-                    onClick={() => console.log('click')}
-                    onDeleteClick={isOwner ? () => setIdToDelete(c.id) : undefined}
-                  />
+                  <CrusadeCard key={c.id} crusadeCard={c} />
                 ))}
               </VStack>
             </>
@@ -155,11 +160,6 @@ const OrderOfBattle = () => {
               <AlertIcon />
               This Order of Battle doesn&apos;t have any Crusade Cards yet.
             </Alert>
-          )}
-          {crusadeCards && !crusadeCards.length && isOwner && (
-            <Button leftIcon={<MdAdd />} colorScheme="blue" size="lg" isFullWidth>
-              New Crusade Card
-            </Button>
           )}
         </>
       )}

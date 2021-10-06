@@ -1,7 +1,6 @@
 import React from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import {
-  Progress,
   useToast,
   IconButton,
   Alert,
@@ -49,12 +48,10 @@ const JoinCrusade = () => {
     mode: 'onChange'
   });
 
-  return loading ? (
-    <Progress isIndeterminate />
-  ) : (
+  return (
     <FormProvider {...form}>
       <Layout
-        title={currentCrusade ? currentCrusade.name : 'Loading'}
+        title="Join Crusade"
         actionComponent={
           <IconButton
             aria-label="Save"
@@ -66,9 +63,10 @@ const JoinCrusade = () => {
             form="order-of-battle-form"
           />
         }
+        isLoading={loading}
         isFullHeight
       >
-        <Alert height="14rem" mb={4} status="info">
+        <Alert mb={4} status="info">
           <AlertIcon alignSelf="flex-start" />
           <Box flex="1">
             <AlertTitle>😎 You&apos;re invited!</AlertTitle>

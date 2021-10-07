@@ -30,9 +30,9 @@ const Routes = () => (
     <ProtectedRoute path="/orders-of-battle" exact component={OrdersOfBattle} />
     <ProtectedRoute path="/order-of-battle/:id/crusade-card" exact component={CreateCrusadeCard} />
     <ProtectedRoute path="/order-of-battle/:id/edit" exact component={EditOrderOfBattle} />
-    <ProtectedRoute path="/order-of-battle/:id" exact component={OrderOfBattleOverview} />
+    <Route path="/order-of-battle/:id" exact component={OrderOfBattleOverview} />
     <ProtectedRoute path="/crusade-card/:id/edit" exact component={EditCrusadeCard} />
-    <ProtectedRoute path="/crusade-card/:id" exact component={CrusadeCard} />
+    <Route path="/crusade-card/:id" exact component={CrusadeCard} />
     <ProtectedRoute path="/crusade/:id/join" exact component={JoinCrusade} />
     <ProtectedRoute path="/crusade/:id/edit" exact component={EditCrusade} />
     <Route path="/crusade/:id" exact component={CrusadeOverview} />

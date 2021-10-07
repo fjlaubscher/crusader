@@ -8,7 +8,7 @@ import Layout from '../components/layout';
 import styles from '../styles/not-found.module.css';
 
 const NotFound = () => (
-  <Layout title="Not Found" isFullHeight>
+  <Layout title="Not Found">
     <Alert status="error" variant="left-accent">
       <AlertIcon />
       This page doesn&apos;t exist.

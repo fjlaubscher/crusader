@@ -41,7 +41,6 @@ const CreateCrusade = () => {
             form="crusade-form"
           />
         }
-        isFullHeight
       >
         <Button leftIcon={<MdArrowBack />} as={Link} to="/">
           Back

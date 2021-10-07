@@ -66,7 +66,6 @@ const CreateCrusadeCard = () => {
           />
         }
         isLoading={loading}
-        isFullHeight
       >
         {currentOrderOfBattle && (
           <Button

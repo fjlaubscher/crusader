@@ -18,11 +18,10 @@ interface Props {
   title: string;
   children: React.ReactNode;
   actionComponent?: React.ReactNode;
-  isFullHeight?: boolean;
   isLoading?: boolean;
 }
 
-const Layout = ({ children, title, actionComponent, isFullHeight, isLoading }: Props) => {
+const Layout = ({ children, title, actionComponent, isLoading }: Props) => {
   const background = useColorModeValue('gray.50', 'gray.900');
 
   return (
@@ -43,7 +42,7 @@ const Layout = ({ children, title, actionComponent, isFullHeight, isLoading }: P
       </Container>
       <Box mt="0 !important" width="100%" background={background} display="flex" flex={1}>
         {isLoading ? (
-          <Progress isIndeterminate />
+          <Progress width="100%" isIndeterminate />
         ) : (
           <Container display="flex" flex={1} width="100%" p={4} maxW="container.xl">
             <VStack alignItems="flex-start" width="100%">

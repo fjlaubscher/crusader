@@ -70,7 +70,6 @@ const EditOrderOfBattle = () => {
             form="order-of-battle-form"
           />
         }
-        isFullHeight
         isLoading={loading}
       >
         <Button leftIcon={<MdArrowBack />} as={Link} to={`/order-of-battle/${id}`}>

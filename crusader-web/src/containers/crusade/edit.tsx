@@ -70,7 +70,6 @@ const EditCrusade = () => {
             form="crusade-form"
           />
         }
-        isFullHeight
         isLoading={loading}
       >
         <Button leftIcon={<MdArrowBack />} as={Link} to={`/crusade/${id}`}>

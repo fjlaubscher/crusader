@@ -64,7 +64,6 @@ const JoinCrusade = () => {
           />
         }
         isLoading={loading}
-        isFullHeight
       >
         <Alert mb={4} status="info">
           <AlertIcon alignSelf="flex-start" />

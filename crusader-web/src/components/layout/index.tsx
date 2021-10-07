@@ -28,38 +28,25 @@ const Layout = ({ children, title, actionComponent, isFullHeight, isLoading }: P
   return (
     <VStack display="flex" flexDirection="column" minHeight="100%">
       <Helmet title={`${isLoading ? 'Loading' : title} | Crusader`} />
-      <Box width="100%">
-        <Container width="100%" maxW="container.xl">
-          <Grid alignItems="center" py={4} width="100%" templateColumns="2.5rem auto 2.5rem">
-            <GridItem>
-              <IconButton as={Link} to="/" aria-label="Home" icon={<MdHome />} />
-            </GridItem>
-            <GridItem alignContent="center">
-              <Heading textAlign="center" size="sm">
-                {title}
-              </Heading>
-            </GridItem>
-            <GridItem>{actionComponent}</GridItem>
-          </Grid>
-        </Container>
-      </Box>
-      <Box
-        height={isFullHeight ? '100%' : undefined}
-        mt="0 !important"
-        width="100%"
-        background={background}
-        flex={1}
-      >
+      <Container width="100%" maxW="container.xl">
+        <Grid alignItems="center" py={4} width="100%" templateColumns="2.5rem auto 2.5rem">
+          <GridItem>
+            <IconButton as={Link} to="/" aria-label="Home" icon={<MdHome />} />
+          </GridItem>
+          <GridItem alignContent="center">
+            <Heading textAlign="center" size="sm">
+              {title}
+            </Heading>
+          </GridItem>
+          <GridItem>{actionComponent}</GridItem>
+        </Grid>
+      </Container>
+      <Box mt="0 !important" width="100%" background={background} display="flex" flex={1}>
         {isLoading ? (
           <Progress isIndeterminate />
         ) : (
-          <Container
-            height={isFullHeight ? '100%' : undefined}
-            width="100%"
-            p={4}
-            maxW="container.xl"
-          >
-            <VStack alignItems="flex-start" height={isFullHeight ? '100%' : undefined} width="100%">
+          <Container display="flex" flex={1} width="100%" p={4} maxW="container.xl">
+            <VStack alignItems="flex-start" width="100%">
               {children}
             </VStack>
           </Container>

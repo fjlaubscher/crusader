@@ -81,7 +81,7 @@ const createTables = (db: sqlite.Database) => {
       name TEXT NOT NULL,
       notes TEXT NOT NULL,
       orderOfBattleId INTEGER NOT NULL,
-      powerRating TEXT NOT NULL,
+      powerRating INTEGER NOT NULL,
       psychicPowers TEXT NOT NULL,
       relics TEXT NOT NULL,
       unitType TEXT NOT NULL,

@@ -134,3 +134,19 @@ export const updateCrusadeAsync = (input: Crusader.Crusade) => {
     db.close();
   });
 };
+
+export const deleteCrusadeAsync = (id: number) => {
+  return new Promise<boolean>((resolve, reject) => {
+    const db = new sqlite.Database(DATABASE);
+
+    db.run(`DELETE FROM Crusade WHERE id = $id`, { $id: id }, function (this, err) {
+      if (err) {
+        return reject(err);
+      }
+
+      return resolve(true);
+    });
+
+    db.close();
+  });
+};

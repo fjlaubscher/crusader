@@ -11,7 +11,7 @@ interface Props {
 const SelectField = ({ label, value, options, onChange }: Props) => {
   const background = useColorModeValue('white', 'gray.900');
   return (
-    <FormControl mb="2">
+    <FormControl isRequired mb="2">
       <FormLabel>{label}</FormLabel>
       <Select
         background={background}

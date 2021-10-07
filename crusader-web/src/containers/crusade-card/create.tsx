@@ -37,7 +37,17 @@ const CreateCrusadeCard = () => {
   }, [id]);
 
   const form = useForm<Crusader.CrusadeCard>({
-    mode: 'onChange'
+    mode: 'onChange',
+    defaultValues: {
+      battles: 0,
+      battlesSurvived: 0,
+      crusadePoints: 0,
+      experiencePoints: 0,
+      powerRating: 0,
+      unitsDestroyedMelee: 0,
+      unitsDestroyedPsychic: 0,
+      unitsDestroyedRanged: 0
+    }
   });
 
   return (

@@ -10,7 +10,7 @@ interface Props {
 }
 
 const CrusadeForm = ({ onSubmit }: Props) => {
-  const { register, handleSubmit } = useFormContext<Crusader.Crusade>();
+  const { register, handleSubmit, formState: { errors } } = useFormContext<Crusader.Crusade>();
 
   return (
     <form
@@ -22,6 +22,8 @@ const CrusadeForm = ({ onSubmit }: Props) => {
         label="Name"
         type="text"
         placeholder="Eg. My FLGS Crusade"
+        isRequired
+        errorMessage={errors.name ? 'Required' : undefined}
         {...register('name', { required: true })}
       />
       <TextAreaField

@@ -19,12 +19,16 @@ const CrusadeCardForm = ({ onSubmit }: Props) => {
   const battlefieldRoles = useRecoilValue(BattlefieldRoleAtom);
   const [isTabletOrLarger] = useMediaQuery('(min-width: 767px)');
 
-  const { control, register, handleSubmit } = useFormContext<Crusader.CrusadeCard>();
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useFormContext<Crusader.CrusadeCard>();
 
   const { field: battlefieldRoleField } = useController({
     control,
-    name: 'battlefieldRoleId',
-    defaultValue: 0
+    name: 'battlefieldRoleId'
   });
 
   return (
@@ -44,12 +48,16 @@ const CrusadeCardForm = ({ onSubmit }: Props) => {
           label="Name"
           type="text"
           placeholder="Eg. Squad Sigvis"
+          isRequired
+          errorMessage={errors.name ? 'Required' : undefined}
           {...register('name', { required: true })}
         />
         <InputField
           label="Unit Type"
           type="text"
           placeholder="Eg. Intercessor Squad"
+          isRequired
+          errorMessage={errors.unitType ? 'Required' : undefined}
           {...register('unitType', { required: true })}
         />
       </SimpleGrid>
@@ -57,26 +65,36 @@ const CrusadeCardForm = ({ onSubmit }: Props) => {
         <InputField
           label="Power Rating"
           type="number"
+          isRequired
+          errorMessage={errors.powerRating ? 'Required' : undefined}
           {...register('powerRating', { required: true, valueAsNumber: true })}
         />
         <InputField
           label="Crusade Points"
           type="number"
+          isRequired
+          errorMessage={errors.crusadePoints ? 'Required' : undefined}
           {...register('crusadePoints', { required: true, valueAsNumber: true })}
         />
         <InputField
           label="Experience Points"
           type="number"
+          isRequired
+          errorMessage={errors.experiencePoints ? 'Required' : undefined}
           {...register('experiencePoints', { required: true, valueAsNumber: true })}
         />
         <InputField
           label="Battle Tally"
           type="number"
+          isRequired
+          errorMessage={errors.battles ? 'Required' : undefined}
           {...register('battles', { required: true, valueAsNumber: true })}
         />
         <InputField
           label="Battles Survived"
           type="number"
+          isRequired
+          errorMessage={errors.battlesSurvived ? 'Required' : undefined}
           {...register('battlesSurvived', { required: true, valueAsNumber: true })}
         />
         {isTabletOrLarger && <GridItem />}
@@ -85,16 +103,22 @@ const CrusadeCardForm = ({ onSubmit }: Props) => {
         <InputField
           label="Units Destroyed (Melee)"
           type="number"
+          isRequired
+          errorMessage={errors.unitsDestroyedMelee ? 'Required' : undefined}
           {...register('unitsDestroyedMelee', { required: true, valueAsNumber: true })}
         />
         <InputField
           label="Units Destroyed (Psychic)"
           type="number"
+          isRequired
+          errorMessage={errors.unitsDestroyedPsychic ? 'Required' : undefined}
           {...register('unitsDestroyedPsychic', { required: true, valueAsNumber: true })}
         />
         <InputField
           label="Units Destroyed (Ranged)"
           type="number"
+          isRequired
+          errorMessage={errors.unitsDestroyedRanged ? 'Required' : undefined}
           {...register('unitsDestroyedRanged', { required: true, valueAsNumber: true })}
         />
       </SimpleGrid>
@@ -118,6 +142,8 @@ const CrusadeCardForm = ({ onSubmit }: Props) => {
         <TextAreaField
           label="Equipment"
           placeholder="Use Markdown to describe this unit's Equipment."
+          isRequired
+          errorMessage={errors.equipment ? 'Required' : undefined}
           {...register('equipment', { required: true })}
         />
         <TextAreaField

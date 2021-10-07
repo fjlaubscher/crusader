@@ -19,12 +19,16 @@ interface Props {
 const OrderOfBattleForm = ({ isCompact, onSubmit }: Props) => {
   const factions = useRecoilValue(FactionAtom);
 
-  const { control, register, handleSubmit } = useFormContext<Crusader.OrderOfBattle>();
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useFormContext<Crusader.OrderOfBattle>();
 
   const { field: factionField } = useController({
     control,
-    name: 'factionId',
-    defaultValue: 0
+    name: 'factionId'
   });
 
   return (
@@ -43,6 +47,8 @@ const OrderOfBattleForm = ({ isCompact, onSubmit }: Props) => {
         label="Name"
         type="text"
         placeholder="Eg. Crusaders"
+        isRequired
+        errorMessage={errors.name ? 'Required' : undefined}
         {...register('name', { required: true })}
       />
       {!isCompact && (
@@ -50,21 +56,29 @@ const OrderOfBattleForm = ({ isCompact, onSubmit }: Props) => {
           <InputField
             label="Supply Limit"
             type="number"
+            isRequired
+            errorMessage={errors.supplyLimit ? 'Required' : undefined}
             {...register('supplyLimit', { required: true, valueAsNumber: true })}
           />
           <InputField
             label="Requisition"
             type="number"
+            isRequired
+            errorMessage={errors.requisition ? 'Required' : undefined}
             {...register('requisition', { required: true, valueAsNumber: true })}
           />
           <InputField
             label="Battle Tally"
             type="number"
+            isRequired
+            errorMessage={errors.battles ? 'Required' : undefined}
             {...register('battles', { required: true, valueAsNumber: true })}
           />
           <InputField
             label="Battles Won"
             type="number"
+            isRequired
+            errorMessage={errors.battlesWon ? 'Required' : undefined}
             {...register('battlesWon', { required: true, valueAsNumber: true })}
           />
         </SimpleGrid>

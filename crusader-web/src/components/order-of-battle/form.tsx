@@ -55,28 +55,28 @@ const OrderOfBattleForm = ({ isCompact, onSubmit }: Props) => {
         <SimpleGrid columns={2} columnGap={4}>
           <InputField
             label="Supply Limit"
-            type="number"
+            type="tel"
             isRequired
             errorMessage={errors.supplyLimit ? 'Required' : undefined}
             {...register('supplyLimit', { required: true, valueAsNumber: true })}
           />
           <InputField
             label="Requisition"
-            type="number"
+            type="tel"
             isRequired
             errorMessage={errors.requisition ? 'Required' : undefined}
             {...register('requisition', { required: true, valueAsNumber: true })}
           />
           <InputField
             label="Battle Tally"
-            type="number"
+            type="tel"
             isRequired
             errorMessage={errors.battles ? 'Required' : undefined}
             {...register('battles', { required: true, valueAsNumber: true })}
           />
           <InputField
             label="Battles Won"
-            type="number"
+            type="tel"
             isRequired
             errorMessage={errors.battlesWon ? 'Required' : undefined}
             {...register('battlesWon', { required: true, valueAsNumber: true })}

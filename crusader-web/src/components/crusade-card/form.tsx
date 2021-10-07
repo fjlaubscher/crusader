@@ -64,35 +64,35 @@ const CrusadeCardForm = ({ onSubmit }: Props) => {
       <SimpleGrid columns={isTabletOrLarger ? 3 : 2} columnGap={4}>
         <InputField
           label="Power Rating"
-          type="number"
+          type="tel"
           isRequired
           errorMessage={errors.powerRating ? 'Required' : undefined}
           {...register('powerRating', { required: true, valueAsNumber: true })}
         />
         <InputField
           label="Crusade Points"
-          type="number"
+          type="tel"
           isRequired
           errorMessage={errors.crusadePoints ? 'Required' : undefined}
           {...register('crusadePoints', { required: true, valueAsNumber: true })}
         />
         <InputField
           label="Experience Points"
-          type="number"
+          type="tel"
           isRequired
           errorMessage={errors.experiencePoints ? 'Required' : undefined}
           {...register('experiencePoints', { required: true, valueAsNumber: true })}
         />
         <InputField
           label="Battle Tally"
-          type="number"
+          type="tel"
           isRequired
           errorMessage={errors.battles ? 'Required' : undefined}
           {...register('battles', { required: true, valueAsNumber: true })}
         />
         <InputField
           label="Battles Survived"
-          type="number"
+          type="tel"
           isRequired
           errorMessage={errors.battlesSurvived ? 'Required' : undefined}
           {...register('battlesSurvived', { required: true, valueAsNumber: true })}
@@ -102,21 +102,21 @@ const CrusadeCardForm = ({ onSubmit }: Props) => {
       <SimpleGrid columns={isTabletOrLarger ? 3 : 2} columnGap={4}>
         <InputField
           label="Units Destroyed (Melee)"
-          type="number"
+          type="tel"
           isRequired
           errorMessage={errors.unitsDestroyedMelee ? 'Required' : undefined}
           {...register('unitsDestroyedMelee', { required: true, valueAsNumber: true })}
         />
         <InputField
           label="Units Destroyed (Psychic)"
-          type="number"
+          type="tel"
           isRequired
           errorMessage={errors.unitsDestroyedPsychic ? 'Required' : undefined}
           {...register('unitsDestroyedPsychic', { required: true, valueAsNumber: true })}
         />
         <InputField
           label="Units Destroyed (Ranged)"
-          type="number"
+          type="tel"
           isRequired
           errorMessage={errors.unitsDestroyedRanged ? 'Required' : undefined}
           {...register('unitsDestroyedRanged', { required: true, valueAsNumber: true })}

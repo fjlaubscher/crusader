@@ -17,7 +17,9 @@ const AuthLayout = ({ children, title }: Props) => (
       </Heading>
       <GiBolterGun fontSize="5rem" />
     </VStack>
-    <Container mt="0 !important" maxW="xl">{children}</Container>
+    <Container mt="0 !important" maxW="xl">
+      {children}
+    </Container>
     <VStack mt="0 !important">
       <Text mt="0" textAlign="center" fontSize="xs">
         francois.codes

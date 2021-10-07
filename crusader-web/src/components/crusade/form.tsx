@@ -10,7 +10,11 @@ interface Props {
 }
 
 const CrusadeForm = ({ onSubmit }: Props) => {
-  const { register, handleSubmit, formState: { errors } } = useFormContext<Crusader.Crusade>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useFormContext<Crusader.Crusade>();
 
   return (
     <form

@@ -1,6 +1,11 @@
-/** @type {import("snowpack").SnowpackUserConfig } */
+const dotenv = require('dotenv');
 const httpProxy = require('http-proxy');
-const proxy = httpProxy.createServer({ target: 'http://localhost:5000' });
+dotenv.config();
+
+const API_URL = process.env.API_URL || 'http://localhost:5000';
+const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
+
+const proxy = httpProxy.createServer({ target: API_URL });
 
 module.exports = {
   mount: {
@@ -13,7 +18,7 @@ module.exports = {
     '@snowpack/plugin-typescript'
   ],
   devOptions: {
-    port: 3000
+    port: PORT
   },
   routes: [
     {
@@ -22,5 +27,5 @@ module.exports = {
     },
     /* Enable an SPA Fallback in development: */
     { match: 'routes', src: '.*', dest: '/index.html' }
-  ],
+  ]
 };

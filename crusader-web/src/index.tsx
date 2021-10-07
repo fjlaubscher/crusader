@@ -9,7 +9,7 @@ import './styles/global.css';
 const theme = extendTheme({
   config: {
     initialColorMode: 'dark',
-    useSystemColorMode: false
+    useSystemColorMode: true
   }
 });
 
@@ -33,4 +33,17 @@ ReactDOM.render(
 // Learn more: https://snowpack.dev/concepts/hot-module-replacement
 if (import.meta.hot) {
   import.meta.hot.accept();
+}
+
+if (import.meta.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').then(() =>
+      caches.keys().then((cacheNames) => {
+        // delete all caches
+        cacheNames.forEach((cacheName) => {
+          caches.delete(cacheName);
+        });
+      })
+    );
+  });
 }

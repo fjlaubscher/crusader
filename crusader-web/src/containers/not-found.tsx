@@ -13,7 +13,7 @@ const NotFound = () => (
       <AlertIcon />
       This page doesn&apos;t exist.
     </Alert>
-    <VStack height="100%" justifyContent="center">
+    <VStack width="100%" height="100%" alignItems="center" justifyContent="center">
       <GiBolterGun fontSize="8rem" className={styles.notFound} />
     </VStack>
   </Layout>

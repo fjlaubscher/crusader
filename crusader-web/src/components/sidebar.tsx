@@ -10,8 +10,7 @@ import {
   DrawerOverlay,
   VStack
 } from '@chakra-ui/react';
-import { GiBolterGun } from 'react-icons/gi';
-import { MdListAlt, MdLogout, MdSettings } from 'react-icons/md';
+import { MdHome, MdListAlt, MdLogout, MdSettings } from 'react-icons/md';
 
 interface Props {
   isOpen: boolean;
@@ -28,7 +27,7 @@ const Sidebar = ({ isOpen, onClose }: Props) => (
         <VStack width="100%">
           <Button
             isFullWidth
-            leftIcon={<GiBolterGun />}
+            leftIcon={<MdHome />}
             justifyContent="flex-start"
             as={ReactRouterLink}
             to="/"
@@ -36,7 +35,7 @@ const Sidebar = ({ isOpen, onClose }: Props) => (
             iconSpacing={4}
             onClick={onClose}
           >
-            Home
+            Your Crusades
           </Button>
           <Button
             isFullWidth

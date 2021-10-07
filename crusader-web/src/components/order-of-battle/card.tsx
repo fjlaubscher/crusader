@@ -17,7 +17,7 @@ const OrderOfBattleCard = ({ orderOfBattle, showPlayerName }: Props) => {
         <Text>{orderOfBattle.name}</Text>
         <HStack width="100%">
           <Tag size="sm" colorScheme="blue">
-            {showPlayerName ? orderOfBattle.player : orderOfBattle.crusade}
+            {showPlayerName ? `@${orderOfBattle.player}` : orderOfBattle.crusade}
           </Tag>
           <Tag size="sm">{orderOfBattle.faction}</Tag>
           <Tag size="sm" colorScheme="green">

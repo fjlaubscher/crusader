@@ -1,19 +1,12 @@
-import sqlite from 'sqlite3';
+import { Client } from 'pg';
+import { mapFromPSQL } from '../helpers';
 
-import { DATABASE } from '.';
+export const getBattlefieldRolesAsync = async () => {
+  const client = new Client();
+  await client.connect();
 
-export const getBattlefieldRolesAsync = () => {
-  return new Promise<Crusader.ListItem[]>((resolve, reject) => {
-    const db = new sqlite.Database(DATABASE);
+  const { rows } = await client.query<TableRow>('SELECT * from battlefield_role');
+  await client.end();
 
-    db.all(`SELECT * FROM BattlefieldRole`, function (this, err: Error, rows: Crusader.ListItem[]) {
-      if (err) {
-        return reject(err);
-      }
-
-      return resolve(rows);
-    });
-
-    db.close();
-  });
+  return mapFromPSQL<Crusader.ListItem>(rows);
 };

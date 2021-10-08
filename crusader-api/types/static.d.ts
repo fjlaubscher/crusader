@@ -1,3 +1,3 @@
-interface TableDefinition {
-  [key: string]: string | boolean | number;
+interface TableRow {
+  [key: string]: string | number | Date;
 }

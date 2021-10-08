@@ -1,193 +1,147 @@
-import sqlite from 'sqlite3';
+import { Client } from 'pg';
+import { mapFromPSQL } from '../helpers';
 
-import { DATABASE } from '.';
+export const getOrderOfBattleByIdAsync = async (id: number) => {
+  const client = new Client();
+  await client.connect();
 
-const selectOrderOfBattle = (id: number) => `
-  SELECT 
-    OrderOfBattle.*, 
-    IFNULL(SUM(CrusadeCard.crusadePoints), 0) as crusadePoints,
-    IFNULL(SUM(CrusadeCard.powerRating), 0) as supplyUsed,
-    Crusade.name as crusade,
-    Faction.name as faction,
-    Player.name as player
-  FROM OrderOfBattle
-  INNER JOIN Crusade ON OrderOfBattle.crusadeId = Crusade.Id
-  INNER JOIN Faction ON OrderOfBattle.factionId = Faction.id
-  INNER JOIN Player ON OrderOfBattle.playerId = Player.id
-  LEFT OUTER JOIN CrusadeCard ON OrderOfBattle.id = CrusadeCard.orderOfBattleId
-  WHERE OrderOfBattle.id = ${id}
-  GROUP BY OrderOfBattle.id`;
+  const query = `
+    SELECT 
+      order_of_battle.*, 
+      COALESCE(SUM(crusade_card.crusade_points), 0) as crusade_points,
+      COALESCE(SUM(crusade_card.power_rating), 0) as supply_used,
+      crusade.name as crusade,
+      faction.name as faction,
+      player.name as player
+    FROM order_of_battle
+    INNER JOIN crusade ON order_of_battle.crusade_id = crusade.id
+    INNER JOIN faction ON order_of_battle.faction_id = faction.id
+    INNER JOIN player ON order_of_battle.player_id = player.id
+    LEFT OUTER JOIN crusade_card ON order_of_battle.id = crusade_card.order_of_battle_id
+    WHERE order_of_battle.id = $1
+    GROUP BY order_of_battle.id, crusade.name, faction.name, player.name
+  `;
+  const { rows } = await client.query<TableRow>(query, [id]);
+  await client.end();
 
-export const createOrderOfBattleAsync = (input: Crusader.OrderOfBattle) => {
-  return new Promise<Crusader.OrderOfBattle>((resolve, reject) => {
-    const db = new sqlite.Database(DATABASE);
-
-    db.run(
-      `INSERT INTO OrderOfBattle (battles, battlesWon, crusadeId, factionId, name, notes, playerId, requisition, supplyLimit)
-       VALUES ($battles, $battlesWon, $crusadeId, $factionId, $name, $notes, $playerId, $requisition, $supplyLimit)`,
-      {
-        $battles: input.battles,
-        $battlesWon: input.battlesWon,
-        $crusadeId: input.crusadeId,
-        $factionId: input.factionId,
-        $name: input.name,
-        $notes: input.notes,
-        $playerId: input.playerId,
-        $requisition: input.requisition,
-        $supplyLimit: input.supplyLimit
-      },
-      function (this, err) {
-        if (err) {
-          db.close();
-          return reject(err);
-        }
-
-        db.get(selectOrderOfBattle(this.lastID), function (this, err, row: Crusader.OrderOfBattle) {
-          if (err) {
-            return reject(err);
-          }
-
-          return resolve(row);
-        });
-      }
-    );
-  });
+  return mapFromPSQL<Crusader.OrderOfBattle>(rows)[0];
 };
 
-export const deleteOrderOfBattleAsync = (id: number) =>
-  new Promise<boolean>((resolve, reject) => {
-    const db = new sqlite.Database(DATABASE);
+export const createOrderOfBattleAsync = async (input: Crusader.OrderOfBattle) => {
+  const client = new Client();
+  await client.connect();
 
-    db.run(`DELETE FROM OrderOfBattle WHERE id = $id`, { $id: id }, function (this, err) {
-      if (err) {
-        return reject(err);
-      }
+  const query = `
+    INSERT INTO order_of_battle (battles, battles_won, crusade_id, faction_id, name, notes, player_id, requisition, supply_limit)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+    RETURNING *
+  `;
+  const { rows } = await client.query<TableRow>(query, [
+    input.battles,
+    input.battlesWon,
+    input.crusadeId,
+    input.factionId,
+    input.name,
+    input.notes,
+    input.playerId,
+    input.requisition,
+    input.supplyLimit
+  ]);
+  await client.end();
 
-      return resolve(true);
-    });
-
-    db.close();
-  });
-
-export const getOrderOfBattleByIdAsync = (id: number) => {
-  return new Promise<Crusader.OrderOfBattle>((resolve, reject) => {
-    const db = new sqlite.Database(DATABASE);
-
-    db.get(selectOrderOfBattle(id), function (this, err, row: Crusader.OrderOfBattle) {
-      if (err) {
-        return reject(err);
-      }
-
-      return resolve(row);
-    });
-  });
+  return getOrderOfBattleByIdAsync(rows[0].id as number);
 };
 
-export const getOrdersOfBattleByCrusadeIdAsync = (crusadeId: number) => {
-  return new Promise<Crusader.OrderOfBattle[]>((resolve, reject) => {
-    const db = new sqlite.Database(DATABASE);
+export const deleteOrderOfBattleAsync = async (id: number) => {
+  const client = new Client();
+  await client.connect();
 
-    db.all(
-      `
-      SELECT
-        OrderOfBattle.*, 
-        IFNULL(SUM(CrusadeCard.crusadePoints), 0) as crusadePoints,
-        IFNULL(SUM(CrusadeCard.powerRating), 0) as supplyUsed,
-        Crusade.name as crusade,
-        Faction.name as faction,
-        Player.name as player
-      FROM OrderOfBattle
-      INNER JOIN Crusade ON OrderOfBattle.crusadeId = Crusade.id
-      INNER JOIN Faction ON OrderOfBattle.factionId = Faction.id
-      INNER JOIN Player ON OrderOfBattle.playerId = Player.id
-      LEFT OUTER JOIN CrusadeCard ON OrderOfBattle.id = CrusadeCard.orderOfBattleId
-      WHERE OrderOfBattle.crusadeId = $crusadeId
-      GROUP BY OrderOfBattle.id`,
-      { $crusadeId: crusadeId },
-      function (this, err: Error, rows: Crusader.OrderOfBattle[]) {
-        if (err) {
-          return reject(err);
-        }
+  const { rowCount } = await client.query<TableRow>('DELETE FROM order_of_battle WHERE id = $1', [
+    id
+  ]);
+  await client.end();
 
-        return resolve(rows);
-      }
-    );
-
-    db.close();
-  });
+  return rowCount === 1;
 };
 
-export const getOrdersOfBattleByPlayerIdAsync = (playerId: number) => {
-  return new Promise<Crusader.OrderOfBattle[]>((resolve, reject) => {
-    const db = new sqlite.Database(DATABASE);
+export const getOrdersOfBattleByCrusadeIdAsync = async (crusadeId: number) => {
+  const client = new Client();
+  await client.connect();
 
-    db.all(
-      `SELECT
-        OrderOfBattle.*, 
-        IFNULL(SUM(CrusadeCard.crusadePoints), 0) as crusadePoints,
-        IFNULL(SUM(CrusadeCard.powerRating), 0) as supplyUsed,
-        Crusade.name as crusade,
-        Faction.name as faction,
-        Player.name as player
-      FROM OrderOfBattle
-      INNER JOIN Crusade ON OrderOfBattle.crusadeId = Crusade.Id
-      INNER JOIN Faction ON OrderOfBattle.factionId = Faction.id
-      INNER JOIN Player ON OrderOfBattle.playerId = Player.id
-      LEFT OUTER JOIN CrusadeCard ON OrderOfBattle.id = CrusadeCard.orderOfBattleId
-      WHERE OrderOfBattle.playerId = $playerId
-      GROUP BY OrderOfBattle.id`,
-      { $playerId: playerId },
-      function (this, err: Error, rows: Crusader.OrderOfBattle[]) {
-        if (err) {
-          return reject(err);
-        }
+  const query = `
+    SELECT 
+      order_of_battle.*, 
+      COALESCE(SUM(crusade_card.crusade_points), 0) as crusade_points,
+      COALESCE(SUM(crusade_card.power_rating), 0) as supply_used,
+      crusade.name as crusade,
+      faction.name as faction,
+      player.name as player
+    FROM order_of_battle
+    INNER JOIN crusade ON order_of_battle.crusade_id = crusade.id
+    INNER JOIN faction ON order_of_battle.faction_id = faction.id
+    INNER JOIN player ON order_of_battle.player_id = player.id
+    LEFT OUTER JOIN crusade_card ON order_of_battle.id = crusade_card.order_of_battle_id
+    WHERE order_of_battle.crusade_id = $1
+    GROUP BY order_of_battle.id, crusade.name, faction.name, player.name
+  `;
+  const { rows } = await client.query<TableRow>(query, [crusadeId]);
+  await client.end();
 
-        return resolve(rows);
-      }
-    );
-
-    db.close();
-  });
+  return mapFromPSQL<Crusader.OrderOfBattle>(rows);
 };
 
-export const updateOrderOfBattleAsync = (input: Crusader.OrderOfBattle) => {
-  return new Promise<Crusader.OrderOfBattle>((resolve, reject) => {
-    const db = new sqlite.Database(DATABASE);
+export const getOrdersOfBattleByPlayerIdAsync = async (playerId: number) => {
+  const client = new Client();
+  await client.connect();
 
-    db.run(
-      `UPDATE OrderOfBattle
-       SET battles = $battles,
-           battlesWon = $battlesWon,
-           factionId = $factionId,
-           name = $name,
-           notes = $notes,
-           requisition = $requisition,
-           supplyLimit = $supplyLimit
-       WHERE id = $id`,
-      {
-        $id: input.id,
-        $battles: input.battles,
-        $battlesWon: input.battlesWon,
-        $factionId: input.factionId,
-        $name: input.name,
-        $notes: input.notes,
-        $requisition: input.requisition,
-        $supplyLimit: input.supplyLimit
-      },
-      function (this, err) {
-        if (err) {
-          db.close();
-          return reject(err);
-        }
+  const query = `
+    SELECT 
+      order_of_battle.*, 
+      COALESCE(SUM(crusade_card.crusade_points), 0) as crusade_points,
+      COALESCE(SUM(crusade_card.power_rating), 0) as supply_used,
+      crusade.name as crusade,
+      faction.name as faction,
+      player.name as player
+    FROM order_of_battle
+    INNER JOIN crusade ON order_of_battle.crusade_id = crusade.id
+    INNER JOIN faction ON order_of_battle.faction_id = faction.id
+    INNER JOIN player ON order_of_battle.player_id = player.id
+    LEFT OUTER JOIN crusade_card ON order_of_battle.id = crusade_card.order_of_battle_id
+    WHERE order_of_battle.player_id = $1
+    GROUP BY order_of_battle.id, crusade.name, faction.name, player.name
+  `;
+  const { rows } = await client.query<TableRow>(query, [playerId]);
+  await client.end();
 
-        db.get(selectOrderOfBattle(input.id), function (this, err, row: Crusader.OrderOfBattle) {
-          if (err) {
-            return reject(err);
-          }
+  return mapFromPSQL<Crusader.OrderOfBattle>(rows);
+};
 
-          return resolve(row);
-        });
-      }
-    );
-  });
+export const updateOrderOfBattleAsync = async (input: Crusader.OrderOfBattle) => {
+  const client = new Client();
+  await client.connect();
+
+  const query = `
+    UPDATE order_of_battle
+    SET battles = $1,
+        battles_won = $2,
+        faction_id = $3,
+        name = $4,
+        notes = $5,
+        requisition = $6,
+        supply_limit = $7
+    WHERE id = $8
+  `;
+  await client.query<TableRow>(query, [
+    input.battles,
+    input.battlesWon,
+    input.factionId,
+    input.name,
+    input.notes,
+    input.requisition,
+    input.supplyLimit,
+    input.id
+  ]);
+  await client.end();
+
+  return getOrderOfBattleByIdAsync(input.id);
 };

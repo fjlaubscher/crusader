@@ -1,195 +1,169 @@
-import sqlite from 'sqlite3';
+import { Client } from 'pg';
+import { mapFromPSQL } from '../helpers';
 
-import { DATABASE } from '.';
+export const getCrusadeCardByIdAsync = async (id: number) => {
+  const client = new Client();
+  await client.connect();
 
-const selectCrusadeCard = (id: number) => `
-  SELECT
-    CrusadeCard.*, 
-    BattlefieldRole.name as battlefieldRole, 
-    OrderOfBattle.name as orderOfBattle, 
-    SUM(CrusadeCard.unitsDestroyedMelee + CrusadeCard.unitsDestroyedPsychic + CrusadeCard.unitsDestroyedRanged) as unitsDestroyed
-  FROM CrusadeCard
-  INNER JOIN BattlefieldRole on BattlefieldRole.id = CrusadeCard.battlefieldRoleId
-  INNER JOIN OrderOfBattle on OrderOfBattle.id = CrusadeCard.orderOfBattleId
-  WHERE CrusadeCard.id = ${id}
-  GROUP BY CrusadeCard.id
-`;
+  const query = `
+    SELECT
+      crusade_card.*, 
+      battlefield_role.name as battlefield_role, 
+      order_of_battle.name as order_of_battle, 
+      COALESCE(SUM(crusade_card.units_destroyed_melee + crusade_card.units_destroyed_psychic + crusade_card.units_destroyed_ranged), 0) as units_destroyed
+    FROM crusade_card
+    INNER JOIN battlefield_role on battlefield_role.id = crusade_card.battlefield_role_id
+    INNER JOIN order_of_battle on order_of_battle.id = crusade_card.order_of_battle_id
+    WHERE crusade_card.id = $1
+    GROUP BY crusade_card.id, battlefield_role.name, order_of_battle.name
+  `;
+  const { rows } = await client.query<TableRow>(query, [id]);
+  await client.end();
 
-export const createCrusadeCardAsync = (input: Crusader.CrusadeCard) => {
-  return new Promise<Crusader.CrusadeCard>((resolve, reject) => {
-    const db = new sqlite.Database(DATABASE);
-
-    db.run(
-      `INSERT INTO CrusadeCard (abilities, battlefieldRoleId, battleHonours, battleScars, battles, battlesSurvived, crusadePoints, experiencePoints, equipment, name, notes, orderOfBattleId, powerRating, psychicPowers, relics, unitType, unitsDestroyedMelee, unitsDestroyedPsychic, unitsDestroyedRanged, warlordTraits)
-       VALUES ($abilities, $battlefieldRoleId, $battleHonours, $battleScars, $battles, $battlesSurvived, $crusadePoints, $experiencePoints, $equipment, $name, $notes, $orderOfBattleId, $powerRating, $psychicPowers, $relics, $unitType, $unitsDestroyedMelee, $unitsDestroyedPsychic, $unitsDestroyedRanged, $warlordTraits)`,
-      {
-        $abilities: input.abilities,
-        $battlefieldRoleId: input.battlefieldRoleId,
-        $battleHonours: input.battleHonours,
-        $battleScars: input.battleScars,
-        $battles: input.battles,
-        $battlesSurvived: input.battlesSurvived,
-        $crusadePoints: input.crusadePoints,
-        $experiencePoints: input.experiencePoints,
-        $equipment: input.equipment,
-        $name: input.name,
-        $notes: input.notes,
-        $orderOfBattleId: input.orderOfBattleId,
-        $powerRating: input.powerRating,
-        $psychicPowers: input.psychicPowers,
-        $relics: input.relics,
-        $unitType: input.unitType,
-        $unitsDestroyedMelee: input.unitsDestroyedMelee,
-        $unitsDestroyedPsychic: input.unitsDestroyedPsychic,
-        $unitsDestroyedRanged: input.unitsDestroyedRanged,
-        $warlordTraits: input.warlordTraits
-      },
-      function (this, err) {
-        if (err) {
-          return reject(err);
-        }
-
-        db.get(selectCrusadeCard(this.lastID), function (this, err, row: Crusader.CrusadeCard) {
-          if (err) {
-            return reject(err);
-          }
-
-          return resolve(row);
-        });
-      }
-    );
-
-    db.close();
-  });
+  return mapFromPSQL<Crusader.CrusadeCard>(rows)[0];
 };
 
-export const deleteCrusadeCardAsync = (id: number) =>
-  new Promise<boolean>((resolve, reject) => {
-    const db = new sqlite.Database(DATABASE);
+export const createCrusadeCardAsync = async (input: Crusader.CrusadeCard) => {
+  const client = new Client();
+  await client.connect();
 
-    db.run(`DELETE FROM CrusadeCard WHERE id = $id`, { $id: id }, function (this, err) {
-      if (err) {
-        return reject(err);
-      }
+  const query = `
+    INSERT INTO crusade_card (
+      abilities, 
+      battlefield_role_id, 
+      battle_honours, 
+      battle_scars, 
+      battles, 
+      battles_survived, 
+      crusade_points, 
+      experience_points, 
+      equipment, 
+      name, 
+      notes, 
+      order_of_battle_id, 
+      power_rating, 
+      psychic_powers, 
+      relics, 
+      unit_type, 
+      units_destroyed_melee, 
+      units_destroyed_psychic, 
+      units_destroyed_ranged, 
+      warlord_traits
+    )
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20)
+    RETURNING *
+  `;
+  const { rows } = await client.query<TableRow>(query, [
+    input.abilities,
+    input.battlefieldRoleId,
+    input.battleHonours,
+    input.battleScars,
+    input.battles,
+    input.battlesSurvived,
+    input.crusadePoints,
+    input.experiencePoints,
+    input.equipment,
+    input.name,
+    input.notes,
+    input.orderOfBattleId,
+    input.powerRating,
+    input.psychicPowers,
+    input.relics,
+    input.unitType,
+    input.unitsDestroyedMelee,
+    input.unitsDestroyedPsychic,
+    input.unitsDestroyedRanged,
+    input.warlordTraits
+  ]);
+  await client.end();
 
-      return resolve(true);
-    });
-
-    db.close();
-  });
-
-export const getCrusadeCardByIdAsync = (id: number) => {
-  return new Promise<Crusader.CrusadeCard>((resolve, reject) => {
-    const db = new sqlite.Database(DATABASE);
-
-    db.get(selectCrusadeCard(id), function (this, err: Error, row: Crusader.CrusadeCard) {
-      if (err) {
-        return reject(err);
-      }
-
-      return resolve(row);
-    });
-
-    db.close();
-  });
+  return getCrusadeCardByIdAsync(rows[0].id as number);
 };
 
-export const getCrusadeCardsByOrderOfBattleIdAsync = (orderOfBattleId: number) => {
-  return new Promise<Crusader.CrusadeCard[]>((resolve, reject) => {
-    const db = new sqlite.Database(DATABASE);
+export const deleteCrusadeCardAsync = async (id: number) => {
+  const client = new Client();
+  await client.connect();
 
-    db.all(
-      `
-      SELECT
-        CrusadeCard.*, 
-        BattlefieldRole.name as battlefieldRole, 
-        OrderOfBattle.name as orderOfBattle, 
-        SUM(CrusadeCard.unitsDestroyedMelee + CrusadeCard.unitsDestroyedPsychic + CrusadeCard.unitsDestroyedRanged) as unitsDestroyed
-      FROM CrusadeCard
-      INNER JOIN BattlefieldRole on BattlefieldRole.id = CrusadeCard.battlefieldRoleId
-      INNER JOIN OrderOfBattle on OrderOfBattle.id = CrusadeCard.orderOfBattleId
-      WHERE CrusadeCard.orderOfBattleId = $orderOfBattleId
-      GROUP BY CrusadeCard.id
-    `,
-      { $orderOfBattleId: orderOfBattleId },
-      function (this, err: Error, rows: Crusader.CrusadeCard[]) {
-        if (err) {
-          return reject(err);
-        }
+  const { rowCount } = await client.query<TableRow>('DELETE FROM crusade_card WHERE id = $1', [id]);
+  await client.end();
 
-        return resolve(rows);
-      }
-    );
-
-    db.close();
-  });
+  return rowCount === 1;
 };
 
-export const updateCrusadeCardAsync = (input: Crusader.CrusadeCard) => {
-  return new Promise<Crusader.CrusadeCard>((resolve, reject) => {
-    const db = new sqlite.Database(DATABASE);
+export const getCrusadeCardsByOrderOfBattleIdAsync = async (orderOfBattleId: number) => {
+  const client = new Client();
+  await client.connect();
 
-    db.run(
-      `UPDATE CrusadeCard
-       SET abilities = $abilities,
-           battlefieldRoleId = $battlefieldRoleId,
-           battleHonours = $battleHonours,
-           battleScars = $battleScars,
-           battles = $battles,
-           battlesSurvived = $battlesSurvived,
-           crusadePoints = $crusadePoints,
-           equipment = $equipment,
-           experiencePoints = $experiencePoints,
-           name = $name,
-           notes = $notes,
-           orderOfBattleId = $orderOfBattleId,
-           powerRating = $powerRating,
-           psychicPowers = $psychicPowers,
-           relics = $relics,
-           unitType = $unitType,
-           unitsDestroyedMelee = $unitsDestroyedMelee,
-           unitsDestroyedPsychic = $unitsDestroyedPsychic,
-           unitsDestroyedRanged = $unitsDestroyedRanged,
-           warlordTraits = $warlordTraits
-       WHERE id = $id`,
-      {
-        $id: input.id,
-        $abilities: input.abilities,
-        $battlefieldRoleId: input.battlefieldRoleId,
-        $battleHonours: input.battleHonours,
-        $battleScars: input.battleScars,
-        $battles: input.battles,
-        $battlesSurvived: input.battlesSurvived,
-        $crusadePoints: input.crusadePoints,
-        $experiencePoints: input.experiencePoints,
-        $equipment: input.equipment,
-        $name: input.name,
-        $notes: input.notes,
-        $orderOfBattleId: input.orderOfBattleId,
-        $powerRating: input.powerRating,
-        $psychicPowers: input.psychicPowers,
-        $relics: input.relics,
-        $unitType: input.unitType,
-        $unitsDestroyedMelee: input.unitsDestroyedMelee,
-        $unitsDestroyedPsychic: input.unitsDestroyedPsychic,
-        $unitsDestroyedRanged: input.unitsDestroyedRanged,
-        $warlordTraits: input.warlordTraits
-      },
-      function (this, err) {
-        if (err) {
-          return reject(err);
-        }
+  const query = `
+    SELECT
+      crusade_card.*, 
+      battlefield_role.name as battlefield_role, 
+      order_of_battle.name as order_of_battle, 
+      COALESCE(SUM(crusade_card.units_destroyed_melee + crusade_card.units_destroyed_psychic + crusade_card.units_destroyed_ranged), 0) as units_destroyed
+    FROM crusade_card
+    INNER JOIN battlefield_role on battlefield_role.id = crusade_card.battlefield_role_id
+    INNER JOIN order_of_battle on order_of_battle.id = crusade_card.order_of_battle_id
+    WHERE crusade_card.order_of_battle_id = $1
+    GROUP BY crusade_card.id, battlefield_role.name, order_of_battle.name
+  `;
+  const { rows } = await client.query<TableRow>(query, [orderOfBattleId]);
+  await client.end();
 
-        db.get(selectCrusadeCard(input.id), function (this, err, row: Crusader.CrusadeCard) {
-          if (err) {
-            return reject(err);
-          }
+  return mapFromPSQL<Crusader.CrusadeCard>(rows);
+};
 
-          return resolve(row);
-        });
-      }
-    );
+export const updateCrusadeCardAsync = async (input: Crusader.CrusadeCard) => {
+  const client = new Client();
+  await client.connect();
 
-    db.close();
-  });
+  const query = `
+    UPDATE crusade_card
+    SET abilities = $1,
+        battlefield_role_id = $2,
+        battle_honours = $3,
+        battle_scars = $4,
+        battles = $5,
+        battles_survived = $6,
+        crusade_points = $7,
+        experience_points = $8,
+        equipment = $9,
+        name = $10,
+        notes = $11,
+        order_of_battle_id = $12,
+        power_rating = $13,
+        psychic_powers = $14,
+        relics = $15,
+        unit_type = $16,
+        units_destroyed_melee = $17,
+        units_destroyed_psychic = $18,
+        units_destroyed_ranged = $19,
+        warlord_traits = $20
+    WHERE id = $21
+  `;
+  await client.query<TableRow>(query, [
+    input.abilities,
+    input.battlefieldRoleId,
+    input.battleHonours,
+    input.battleScars,
+    input.battles,
+    input.battlesSurvived,
+    input.crusadePoints,
+    input.experiencePoints,
+    input.equipment,
+    input.name,
+    input.notes,
+    input.orderOfBattleId,
+    input.powerRating,
+    input.psychicPowers,
+    input.relics,
+    input.unitType,
+    input.unitsDestroyedMelee,
+    input.unitsDestroyedPsychic,
+    input.unitsDestroyedRanged,
+    input.warlordTraits,
+    input.id
+  ]);
+  await client.end();
+
+  return getCrusadeCardByIdAsync(input.id);
 };

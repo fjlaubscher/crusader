@@ -7,7 +7,8 @@ import {
   AlertIcon,
   Box,
   AlertTitle,
-  AlertDescription
+  AlertDescription,
+  useMediaQuery
 } from '@chakra-ui/react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';
@@ -33,6 +34,7 @@ const JoinCrusade = () => {
   const { id } = useParams<IdParams>();
   const history = useHistory();
   const toast = useToast();
+  const [isTabletOrLarger] = useMediaQuery('(min-width: 767px)');
 
   const [currentCrusade, setCurrentCrusade] = useRecoilState(CrusadeAtom);
   const player = useRecoilValue(PlayerAtom);
@@ -65,13 +67,12 @@ const JoinCrusade = () => {
         }
         isLoading={loading}
       >
-        <Alert mb={4} status="info">
+        <Alert height={!isTabletOrLarger ? '12rem' : undefined} mb={4} status="info">
           <AlertIcon alignSelf="flex-start" />
           <Box flex="1">
             <AlertTitle>😎 You&apos;re invited!</AlertTitle>
             <AlertDescription display="block">
               Enter some basic details of your Order of Battle.
-              <br />
               <br />
               You&apos;ll get to adding your Crusade Cards in a bit.
             </AlertDescription>
@@ -98,7 +99,7 @@ const JoinCrusade = () => {
                     title: SUCCESS_MESSAGE,
                     description: `Joined ${currentCrusade.name}`
                   });
-                  history.push(`/order-of-battle/${newOrderOfBattle.id}/edit`);
+                  history.push(`/order-of-battle/${newOrderOfBattle.id}`);
                 }
               }
             } catch (ex: any) {

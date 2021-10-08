@@ -1,97 +1,49 @@
-import sqlite from 'sqlite3';
+import { Client } from 'pg';
+import { mapFromPSQL } from '../helpers';
 
-import { DATABASE } from '.';
+export const createPlayerAsync = async (name: string) => {
+  const client = new Client();
+  await client.connect();
 
-export const createPlayerAsync = (name: string) => {
-  return new Promise<Crusader.ListItem>((resolve, reject) => {
-    const db = new sqlite.Database(DATABASE);
+  const { rows } = await client.query<TableRow>(
+    'INSERT INTO player (name) VALUES ($1) RETURNING *',
+    [name]
+  );
+  await client.end();
 
-    db.run(`INSERT INTO Player (name) VALUES ($name)`, { $name: name }, function (this, err) {
-      if (err) {
-        return reject(err);
-      }
-
-      db.get(
-        `SELECT * from Player WHERE id = ${this.lastID}`,
-        function (this, err, row: Crusader.ListItem) {
-          if (err) {
-            return reject(err);
-          }
-
-          return resolve(row);
-        }
-      );
-    });
-
-    db.close();
-  });
+  return mapFromPSQL<Crusader.ListItem>(rows)[0];
 };
 
-export const getPlayerByIdAsync = (id: number) => {
-  return new Promise<Crusader.ListItem>((resolve, reject) => {
-    const db = new sqlite.Database(DATABASE);
+export const getPlayerByIdAsync = async (id: number) => {
+  const client = new Client();
+  await client.connect();
 
-    db.get(
-      `SELECT * FROM Player WHERE id = $id`,
-      { $id: id },
-      function (this, err: Error, row: Crusader.ListItem) {
-        if (err) {
-          return reject(err);
-        }
+  const { rows } = await client.query<TableRow>('SELECT * FROM player WHERE id = $1', [id]);
+  await client.end();
 
-        return resolve(row);
-      }
-    );
-
-    db.close();
-  });
+  return mapFromPSQL<Crusader.ListItem>(rows)[0];
 };
 
-export const getPlayersAsync = (name?: string) => {
-  return new Promise<Crusader.ListItem[]>((resolve, reject) => {
-    const db = new sqlite.Database(DATABASE);
+export const getPlayersAsync = async (name?: string) => {
+  const client = new Client();
+  await client.connect();
 
-    db.all(
-      `SELECT * FROM Player WHERE name LIKE $query`,
-      { $query: name ? `%${name}%` : '%%' },
-      function (this, err: Error, rows: Crusader.ListItem[]) {
-        if (err) {
-          return reject(err);
-        }
+  const query = name ? `%${name}%` : '%%';
+  const { rows } = await client.query<TableRow>('SELECT * FROM player WHERE name LIKE $1', [query]);
+  await client.end();
 
-        return resolve(rows);
-      }
-    );
-
-    db.close();
-  });
+  return mapFromPSQL<Crusader.ListItem>(rows);
 };
 
-export const updatePlayerAsync = (input: Crusader.ListItem) => {
-  return new Promise<Crusader.ListItem>((resolve, reject) => {
-    const db = new sqlite.Database(DATABASE);
+export const updatePlayerAsync = async (input: Crusader.ListItem) => {
+  const client = new Client();
+  await client.connect();
 
-    db.run(
-      `UPDATE Player SET name = $name where id = $id`,
-      { $id: input.id, $name: input.name },
-      function (this, err) {
-        if (err) {
-          return reject(err);
-        }
+  const { rows } = await client.query<TableRow>(
+    'UPDATE player SET name = $1 WHERE id = $2 RETURNING *',
+    [input.name, input.id]
+  );
+  await client.end();
 
-        db.get(
-          `SELECT * from Player WHERE id = ${input.id}`,
-          function (this, err, row: Crusader.ListItem) {
-            if (err) {
-              return reject(err);
-            }
-
-            return resolve(row);
-          }
-        );
-      }
-    );
-
-    db.close();
-  });
+  return mapFromPSQL<Crusader.ListItem>(rows)[0];
 };

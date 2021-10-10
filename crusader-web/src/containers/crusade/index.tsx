@@ -85,11 +85,7 @@ const Crusade = () => {
         <>
           <PageHeading name={currentCrusade.name}>
             <Tag>{format(parseISO(currentCrusade.createdDate), 'yyyy-MM-dd')}</Tag>
-            <Tag
-              as={Link}
-              to={`/player/${currentCrusade.createdById}`}
-              colorScheme="blue"
-            >
+            <Tag as={Link} to={`/player/${currentCrusade.createdById}`} colorScheme="blue">
               @{currentCrusade.createdBy}
             </Tag>
           </PageHeading>

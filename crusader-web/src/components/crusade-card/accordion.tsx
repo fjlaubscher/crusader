@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Accordion,
-  SimpleGrid,
-  Stat,
-  StatLabel,
-  StatNumber
-} from '@chakra-ui/react';
+import { Accordion, SimpleGrid, Stat, StatLabel, StatNumber } from '@chakra-ui/react';
 import ReactMarkdown from 'react-markdown';
 
 // components

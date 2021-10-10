@@ -6,7 +6,7 @@
     "access": "public"
   },
   "scripts": {
-    "start": "snowpack dev --clean --reload",
+    "start": "snowpack dev --clean",
     "build": "snowpack build --clean && workbox generateSW workbox.config.js"
   },
   "keywords": [],

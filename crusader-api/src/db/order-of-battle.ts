@@ -8,8 +8,8 @@ export const getOrderOfBattleByIdAsync = async (id: number) => {
   const query = `
     SELECT 
       order_of_battle.*, 
-      COALESCE(SUM(crusade_card.crusade_points), 0) as crusade_points,
-      COALESCE(SUM(crusade_card.power_rating), 0) as supply_used,
+      COALESCE(SUM(crusade_card.crusade_points)::integer, 0) as crusade_points,
+      COALESCE(SUM(crusade_card.power_rating)::integer, 0) as supply_used,
       crusade.name as crusade,
       faction.name as faction,
       player.name as player
@@ -71,8 +71,8 @@ export const getOrdersOfBattleByCrusadeIdAsync = async (crusadeId: number) => {
   const query = `
     SELECT 
       order_of_battle.*, 
-      COALESCE(SUM(crusade_card.crusade_points), 0) as crusade_points,
-      COALESCE(SUM(crusade_card.power_rating), 0) as supply_used,
+      COALESCE(SUM(crusade_card.crusade_points)::integer, 0) as crusade_points,
+      COALESCE(SUM(crusade_card.power_rating)::integer, 0) as supply_used,
       crusade.name as crusade,
       faction.name as faction,
       player.name as player
@@ -97,8 +97,8 @@ export const getOrdersOfBattleByPlayerIdAsync = async (playerId: number) => {
   const query = `
     SELECT 
       order_of_battle.*, 
-      COALESCE(SUM(crusade_card.crusade_points), 0) as crusade_points,
-      COALESCE(SUM(crusade_card.power_rating), 0) as supply_used,
+      COALESCE(SUM(crusade_card.crusade_points)::integer, 0) as crusade_points,
+      COALESCE(SUM(crusade_card.power_rating)::integer, 0) as supply_used,
       crusade.name as crusade,
       faction.name as faction,
       player.name as player

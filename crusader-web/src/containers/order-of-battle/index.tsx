@@ -90,7 +90,13 @@ const OrderOfBattle = () => {
             {currentOrderOfBattle.crusade}
           </Button>
           <PageHeading name={currentOrderOfBattle.name}>
-            <Tag colorScheme="blue">@{currentOrderOfBattle.player}</Tag>
+            <Tag
+              as={ReactRouterLink}
+              to={`/player/${currentOrderOfBattle.playerId}`}
+              colorScheme="blue"
+            >
+              @{currentOrderOfBattle.player}
+            </Tag>
             <Tag>{currentOrderOfBattle.faction}</Tag>
             <Tag colorScheme="green">{currentOrderOfBattle.supplyUsed}PL</Tag>
           </PageHeading>

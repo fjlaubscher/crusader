@@ -8,36 +8,42 @@ import {
   Box,
   AlertTitle,
   AlertDescription,
-  useMediaQuery
+  Divider
 } from '@chakra-ui/react';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { useAsync } from 'react-use';
+import { useRecoilState } from 'recoil';
 import { FormProvider, useForm } from 'react-hook-form';
 import { MdSave } from 'react-icons/md';
+import { useAsync, useMount } from 'react-use';
+import ReactMarkdown from 'react-markdown';
+import slugify from 'slugify';
 
 // api
 import { getCrusadeAsync } from '../../api/crusade';
 import { createOrderOfBattleAsync } from '../../api/order-of-battle';
+import { getPlayersAsync, createPlayerAsync } from '../../api/player';
 
 // components
 import Layout from '../../components/layout';
-import OrderOfBattleForm from '../../components/order-of-battle/form';
+import JoinCrusadeForm from '../../components/crusade/join-form';
 
 // helpers
 import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '../../helpers/messages';
+import { PLAYER } from '../../helpers/storage';
 
 // state
 import { CrusadeAtom } from '../../state/crusade';
 import { PlayerAtom } from '../../state/player';
 
+// styles
+import styles from '../../styles/markdown.module.css';
+
 const JoinCrusade = () => {
   const { id } = useParams<IdParams>();
   const history = useHistory();
   const toast = useToast();
-  const [isTabletOrLarger] = useMediaQuery('(min-width: 767px)');
 
   const [currentCrusade, setCurrentCrusade] = useRecoilState(CrusadeAtom);
-  const player = useRecoilValue(PlayerAtom);
+  const [player, setPlayer] = useRecoilState(PlayerAtom);
 
   const { loading } = useAsync(async () => {
     const crusade = await getCrusadeAsync(id);
@@ -48,6 +54,14 @@ const JoinCrusade = () => {
 
   const form = useForm<Crusader.OrderOfBattle>({
     mode: 'onChange'
+  });
+
+  useMount(() => {
+    if (player) {
+      form.reset({
+        player: player.name
+      });
+    }
   });
 
   return (
@@ -62,44 +76,81 @@ const JoinCrusade = () => {
             colorScheme="blue"
             isLoading={form.formState.isSubmitting}
             type="submit"
-            form="order-of-battle-form"
+            form="join-crusade-form"
           />
         }
         isLoading={loading}
       >
-        <Alert height={!isTabletOrLarger ? '12rem' : undefined} mb={4} status="info">
+        <Alert status="info">
           <AlertIcon alignSelf="flex-start" />
           <Box flex="1">
             <AlertTitle>😎 You&apos;re invited!</AlertTitle>
             <AlertDescription display="block">
-              Enter some basic details of your Order of Battle.
-              <br />
+              Please read through the description of this Crusade and complete the form below.
+            </AlertDescription>
+          </Box>
+        </Alert>
+        {currentCrusade && currentCrusade.notes && (
+          <ReactMarkdown linkTarget="_blank" className={styles.markdown}>
+            {currentCrusade.notes}
+          </ReactMarkdown>
+        )}
+        <Divider />
+        <Alert status="info">
+          <AlertIcon alignSelf="flex-start" />
+          <Box flex="1">
+            <AlertTitle>📝 Create your Order of Battle!</AlertTitle>
+            <AlertDescription display="block">
               You&apos;ll get to adding your Crusade Cards in a bit.
             </AlertDescription>
           </Box>
         </Alert>
-        <OrderOfBattleForm
-          isCompact
+        <JoinCrusadeForm
           onSubmit={async (values) => {
             try {
-              if (currentCrusade && player) {
-                const newOrderOfBattle = await createOrderOfBattleAsync({
-                  ...values,
-                  playerId: player.id,
-                  crusadeId: currentCrusade.id,
-                  supplyLimit: 50,
-                  requisition: 5,
-                  battles: 0,
-                  battlesWon: 0
-                });
+              if (currentCrusade) {
+                let playerId = player ? player.id : 0;
 
-                if (newOrderOfBattle) {
-                  toast({
-                    status: 'success',
-                    title: SUCCESS_MESSAGE,
-                    description: `Joined ${currentCrusade.name}`
+                if (!playerId) {
+                  // user isn't signed in
+                  // look them up, if there's no such user, create an account
+                  const sluggedName = slugify(values.player);
+                  const players = await getPlayersAsync(sluggedName);
+
+                  if (players && players.length) {
+                    playerId = players[0].id;
+                    localStorage.setItem(PLAYER, JSON.stringify(players[0]));
+                    setPlayer(players[0]);
+                  } else {
+                    const createdPlayer = await createPlayerAsync(sluggedName);
+                    if (createdPlayer) {
+                      playerId = createdPlayer.id;
+                      localStorage.setItem(PLAYER, JSON.stringify(createdPlayer));
+                      setPlayer(createdPlayer);
+                    }
+                  }
+                }
+
+                if (playerId) {
+                  const newOrderOfBattle = await createOrderOfBattleAsync({
+                    ...values,
+                    playerId,
+                    crusadeId: currentCrusade.id,
+                    supplyLimit: 50,
+                    requisition: 5,
+                    battles: 0,
+                    battlesWon: 0,
+                    notes: ''
                   });
-                  history.push(`/order-of-battle/${newOrderOfBattle.id}`);
+
+                  if (newOrderOfBattle) {
+                    toast({
+                      status: 'success',
+                      title: SUCCESS_MESSAGE,
+                      description: `Joined ${currentCrusade.name}`
+                    });
+                    history.push(`/order-of-battle/${newOrderOfBattle.id}`);
+                  }
                 }
               }
             } catch (ex: any) {

@@ -31,10 +31,12 @@ const CrusadeForm = ({ onSubmit }: Props) => {
         {...register('name', { required: true })}
       />
       <TextAreaField
-        label="Notes"
+        label="Description"
         isFullHeight
         placeholder="Use Markdown to describe your crusade!"
-        {...register('notes', { required: false })}
+        isRequired
+        errorMessage={errors.notes ? 'Required' : undefined}
+        {...register('notes', { required: true })}
       />
     </form>
   );

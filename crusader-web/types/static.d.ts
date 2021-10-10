@@ -61,3 +61,13 @@ interface SelectOption {
 interface IdParams {
   id: string;
 }
+
+interface CrusadeFactions {
+  totalAeldari: number;
+  totalChaos: number;
+  totalImperium: number;
+  totalNecrons: number;
+  totalOrks: number;
+  totalTau: number;
+  totalTyranids: number;
+}

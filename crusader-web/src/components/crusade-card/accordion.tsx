@@ -1,18 +1,15 @@
 import React from 'react';
 import {
   Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Box,
-  Heading,
   SimpleGrid,
   Stat,
   StatLabel,
   StatNumber
 } from '@chakra-ui/react';
 import ReactMarkdown from 'react-markdown';
+
+// components
+import AccordionItem from '../accordion-item';
 
 // styles
 import styles from '../../styles/markdown.module.css';
@@ -22,28 +19,9 @@ interface Props {
   isTabletOrLarger?: boolean;
 }
 
-interface ItemProps {
-  title: string;
-  children: React.ReactNode;
-}
-
-const Item = ({ title, children }: ItemProps) => (
-  <AccordionItem>
-    <Heading as="h3">
-      <AccordionButton fontSize="lg" justifyContent="space-between" fontWeight="semibold" px={0}>
-        {title}
-        <AccordionIcon />
-      </AccordionButton>
-    </Heading>
-    <AccordionPanel px={0} pb={4}>
-      {children}
-    </AccordionPanel>
-  </AccordionItem>
-);
-
 const CrusadeCardAccordion = ({ crusadeCard, isTabletOrLarger }: Props) => (
   <Accordion width="100%" allowMultiple allowToggle>
-    <Item title="Units Destroyed">
+    <AccordionItem title="Units Destroyed">
       <SimpleGrid width="100%" columns={isTabletOrLarger ? 3 : 2} rowGap={4}>
         <Stat>
           <StatLabel>Melee</StatLabel>
@@ -58,41 +36,41 @@ const CrusadeCardAccordion = ({ crusadeCard, isTabletOrLarger }: Props) => (
           <StatNumber>{crusadeCard.unitsDestroyedRanged}</StatNumber>
         </Stat>
       </SimpleGrid>
-    </Item>
+    </AccordionItem>
     {crusadeCard.abilities && (
-      <Item title="Abilities">
+      <AccordionItem title="Abilities">
         <ReactMarkdown className={styles.markdown}>{crusadeCard.abilities}</ReactMarkdown>
-      </Item>
+      </AccordionItem>
     )}
     {crusadeCard.battleHonours && (
-      <Item title="Battle Honours">
+      <AccordionItem title="Battle Honours">
         <ReactMarkdown className={styles.markdown}>{crusadeCard.battleHonours}</ReactMarkdown>
-      </Item>
+      </AccordionItem>
     )}
     {crusadeCard.battleScars && (
-      <Item title="Battle Scars">
+      <AccordionItem title="Battle Scars">
         <ReactMarkdown className={styles.markdown}>{crusadeCard.battleScars}</ReactMarkdown>
-      </Item>
+      </AccordionItem>
     )}
     {crusadeCard.equipment && (
-      <Item title="Equipment">
+      <AccordionItem title="Equipment">
         <ReactMarkdown className={styles.markdown}>{crusadeCard.equipment}</ReactMarkdown>
-      </Item>
+      </AccordionItem>
     )}
     {crusadeCard.relics && (
-      <Item title="Relics">
+      <AccordionItem title="Relics">
         <ReactMarkdown className={styles.markdown}>{crusadeCard.relics}</ReactMarkdown>
-      </Item>
+      </AccordionItem>
     )}
     {crusadeCard.warlordTraits && (
-      <Item title="Warlord Traits">
+      <AccordionItem title="Warlord Traits">
         <ReactMarkdown className={styles.markdown}>{crusadeCard.warlordTraits}</ReactMarkdown>
-      </Item>
+      </AccordionItem>
     )}
     {crusadeCard.notes && (
-      <Item title="Notes">
+      <AccordionItem title="Notes">
         <ReactMarkdown className={styles.markdown}>{crusadeCard.notes}</ReactMarkdown>
-      </Item>
+      </AccordionItem>
     )}
   </Accordion>
 );

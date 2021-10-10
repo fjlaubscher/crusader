@@ -8,7 +8,8 @@ import {
   Tag,
   Text,
   useColorModeValue,
-  HStack
+  Wrap,
+  WrapItem
 } from '@chakra-ui/react';
 import { MdVisibility, MdDelete } from 'react-icons/md';
 
@@ -37,15 +38,28 @@ const CrusadeCard = ({ crusadeCard, onDeleteClick }: Props) => {
       )}
       <VStack alignItems="flex-start" width="100%">
         <Text>{crusadeCard.name}</Text>
-        <HStack width="100%">
-          <Tag size="sm" colorScheme="blue">
-            {crusadeCard.battlefieldRole}
-          </Tag>
-          <Tag size="sm">{crusadeCard.unitType}</Tag>
-          <Tag size="sm" colorScheme="green">
-            {crusadeCard.powerRating}PL
-          </Tag>
-        </HStack>
+        <Wrap width="100%">
+          <WrapItem>
+            <Tag size="sm" colorScheme="blue">
+              {crusadeCard.battlefieldRole}
+            </Tag>
+          </WrapItem>
+          <WrapItem>
+            <Tag size="sm">{crusadeCard.unitType}</Tag>
+          </WrapItem>
+          <WrapItem>
+            <Tag size="sm" colorScheme="green">
+              {crusadeCard.powerRating}PL
+            </Tag>
+          </WrapItem>
+          {crusadeCard.crusadePoints > 0 && (
+            <WrapItem>
+              <Tag size="sm" colorScheme="yellow">
+                {crusadeCard.crusadePoints}CP
+              </Tag>
+            </WrapItem>
+          )}
+        </Wrap>
         <Button
           type="button"
           as={Link}

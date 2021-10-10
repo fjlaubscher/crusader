@@ -3,7 +3,7 @@ import { VStack, Stat, StatLabel, StatNumber, HStack, Tag } from '@chakra-ui/rea
 
 interface Props {
   name: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 const PageHeading = ({ name, children }: Props) => (
@@ -12,7 +12,7 @@ const PageHeading = ({ name, children }: Props) => (
       <StatLabel>Name</StatLabel>
       <StatNumber>{name}</StatNumber>
     </Stat>
-    <HStack width="100%">{children}</HStack>
+    {children && <HStack width="100%">{children}</HStack>}
   </VStack>
 );
 

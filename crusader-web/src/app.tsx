@@ -21,21 +21,19 @@ const Router = () => {
   const setFactions = useSetRecoilState(FactionAtom);
 
   const { loading } = useAsync(async () => {
-    if (player) {
-      const [battlefieldRoles, factions] = await Promise.all([
-        getBattlefieldRolesAsync(),
-        getFactionsAsync()
-      ]);
+    const [battlefieldRoles, factions] = await Promise.all([
+      getBattlefieldRolesAsync(),
+      getFactionsAsync()
+    ]);
 
-      if (battlefieldRoles) {
-        setBattlefieldRoles(battlefieldRoles);
-      }
-
-      if (factions) {
-        setFactions(factions);
-      }
+    if (battlefieldRoles) {
+      setBattlefieldRoles(battlefieldRoles);
     }
-  }, [player]);
+
+    if (factions) {
+      setFactions(factions);
+    }
+  });
 
   useMount(() => {
     const storedPlayer = localStorage.getItem(PLAYER);

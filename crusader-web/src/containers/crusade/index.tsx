@@ -1,7 +1,18 @@
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Divider, IconButton, Tag, VStack } from '@chakra-ui/react';
-import { MdEdit } from 'react-icons/md';
+import {
+  Accordion,
+  Button,
+  IconButton,
+  SimpleGrid,
+  Stat,
+  StatLabel,
+  StatNumber,
+  Tag,
+  VStack,
+  useMediaQuery
+} from '@chakra-ui/react';
+import { MdEdit, MdPersonAddAlt1 } from 'react-icons/md';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';
 import { parseISO, format } from 'date-fns';
@@ -12,6 +23,7 @@ import { getCrusadeAsync } from '../../api/crusade';
 import { getCrusadeOrdersOfBattleAsync } from '../../api/order-of-battle';
 
 // components
+import AccordionItem from '../../components/accordion-item';
 import Layout from '../../components/layout';
 import OrderOfBattleCard from '../../components/order-of-battle/card';
 import PageHeading from '../../components/page-heading';
@@ -47,7 +59,11 @@ const Crusade = () => {
     }
   }, [id]);
 
+  const [isTabletOrLarger] = useMediaQuery('(min-width: 767px)');
   const playerId = player ? player.id : 0;
+  const hasJoined = playerId
+    ? ordersOfBattle.filter((o) => o.playerId === playerId).length > 0
+    : false;
 
   return (
     <Layout
@@ -66,34 +82,73 @@ const Crusade = () => {
       isLoading={loading}
     >
       {currentCrusade && (
-        <PageHeading name={currentCrusade.name}>
-          <Tag>{format(parseISO(currentCrusade.createdDate), 'yyyy-MM-dd')}</Tag>
-          <Tag colorScheme="blue">@{currentCrusade.createdBy}</Tag>
-        </PageHeading>
-      )}
-      {currentCrusade && currentCrusade.notes && (
         <>
-          <Divider mt="1rem !important" mb="0 !important" />
-          <ReactMarkdown linkTarget="_blank" className={styles.markdown}>
-            {currentCrusade.notes}
-          </ReactMarkdown>
-          <Divider mt="0 !important" mb="1rem !important" />
+          <PageHeading name={currentCrusade.name}>
+            <Tag>{format(parseISO(currentCrusade.createdDate), 'yyyy-MM-dd')}</Tag>
+            <Tag
+              as={Link}
+              to={`/player/${currentCrusade.createdById}`}
+              colorScheme="blue"
+            >
+              @{currentCrusade.createdBy}
+            </Tag>
+          </PageHeading>
+          <SimpleGrid width="100%" columns={isTabletOrLarger ? 4 : 2} rowGap={4}>
+            <Stat>
+              <StatLabel>Crusaders</StatLabel>
+              <StatNumber>{ordersOfBattle.length}</StatNumber>
+            </Stat>
+            <Stat>
+              <StatLabel>Crusade Points</StatLabel>
+              <StatNumber>CP</StatNumber>
+            </Stat>
+            <Stat>
+              <StatLabel>Requisition</StatLabel>
+              <StatNumber>RP</StatNumber>
+            </Stat>
+            <Stat>
+              <StatLabel>Battles Won</StatLabel>
+              <StatNumber></StatNumber>
+            </Stat>
+          </SimpleGrid>
+          {!hasJoined && (
+            <Button
+              leftIcon={<MdPersonAddAlt1 />}
+              as={Link}
+              to={`/crusade/${id}/join`}
+              colorScheme="blue"
+              size="lg"
+              isFullWidth
+              mb="0.5rem !important"
+            >
+              Join Crusade
+            </Button>
+          )}
+          <Accordion defaultIndex={hasJoined ? [1] : [0]} width="100%" allowMultiple allowToggle>
+            <AccordionItem title="About this Crusade">
+              <ReactMarkdown linkTarget="_blank" className={styles.markdown}>
+                {currentCrusade.notes}
+              </ReactMarkdown>
+            </AccordionItem>
+            <AccordionItem title="Crusaders">
+              <Search
+                value={searchTerm}
+                onChange={(term) => {
+                  setSearchTerm(term);
+                  setFilteredOrdersOfBattle(
+                    ordersOfBattle.filter((c) => c.name.toLowerCase().includes(term.toLowerCase()))
+                  );
+                }}
+              />
+              <VStack width="100%">
+                {filteredOrdersOfBattle.map((oob) => (
+                  <OrderOfBattleCard key={oob.id} orderOfBattle={oob} showPlayerName />
+                ))}
+              </VStack>
+            </AccordionItem>
+          </Accordion>
         </>
       )}
-      <Search
-        value={searchTerm}
-        onChange={(term) => {
-          setSearchTerm(term);
-          setFilteredOrdersOfBattle(
-            ordersOfBattle.filter((c) => c.name.toLowerCase().includes(term.toLowerCase()))
-          );
-        }}
-      />
-      <VStack width="100%">
-        {filteredOrdersOfBattle.map((oob) => (
-          <OrderOfBattleCard key={oob.id} orderOfBattle={oob} showPlayerName />
-        ))}
-      </VStack>
     </Layout>
   );
 };

@@ -34,7 +34,12 @@ const OrderOfBattleForm = ({ isCompact, onSubmit }: Props) => {
   return (
     <form
       id="order-of-battle-form"
-      style={{ height: '100%', width: '100%', display: 'flex', flexDirection: 'column' }}
+      style={{
+        height: !isCompact ? '100%' : undefined,
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column'
+      }}
       onSubmit={handleSubmit(onSubmit)}
     >
       <SelectField

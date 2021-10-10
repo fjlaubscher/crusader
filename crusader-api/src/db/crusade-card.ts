@@ -10,7 +10,7 @@ export const getCrusadeCardByIdAsync = async (id: number) => {
       crusade_card.*, 
       battlefield_role.name as battlefield_role, 
       order_of_battle.name as order_of_battle, 
-      COALESCE(SUM(crusade_card.units_destroyed_melee + crusade_card.units_destroyed_psychic + crusade_card.units_destroyed_ranged), 0) as units_destroyed
+      COALESCE(SUM(crusade_card.units_destroyed_melee + crusade_card.units_destroyed_psychic + crusade_card.units_destroyed_ranged)::integer, 0) as units_destroyed
     FROM crusade_card
     INNER JOIN battlefield_role on battlefield_role.id = crusade_card.battlefield_role_id
     INNER JOIN order_of_battle on order_of_battle.id = crusade_card.order_of_battle_id
@@ -99,7 +99,7 @@ export const getCrusadeCardsByOrderOfBattleIdAsync = async (orderOfBattleId: num
       crusade_card.*, 
       battlefield_role.name as battlefield_role, 
       order_of_battle.name as order_of_battle, 
-      COALESCE(SUM(crusade_card.units_destroyed_melee + crusade_card.units_destroyed_psychic + crusade_card.units_destroyed_ranged), 0) as units_destroyed
+      COALESCE(SUM(crusade_card.units_destroyed_melee + crusade_card.units_destroyed_psychic + crusade_card.units_destroyed_ranged)::integer, 0) as units_destroyed
     FROM crusade_card
     INNER JOIN battlefield_role on battlefield_role.id = crusade_card.battlefield_role_id
     INNER JOIN order_of_battle on order_of_battle.id = crusade_card.order_of_battle_id

@@ -4,10 +4,6 @@ import {
   Accordion,
   Button,
   IconButton,
-  SimpleGrid,
-  Stat,
-  StatLabel,
-  StatNumber,
   Tag,
   VStack,
   useMediaQuery
@@ -59,7 +55,6 @@ const Crusade = () => {
     }
   }, [id]);
 
-  const [isTabletOrLarger] = useMediaQuery('(min-width: 767px)');
   const playerId = player ? player.id : 0;
   const hasJoined = playerId
     ? ordersOfBattle.filter((o) => o.playerId === playerId).length > 0
@@ -89,24 +84,6 @@ const Crusade = () => {
               @{currentCrusade.createdBy}
             </Tag>
           </PageHeading>
-          <SimpleGrid width="100%" columns={isTabletOrLarger ? 4 : 2} rowGap={4}>
-            <Stat>
-              <StatLabel>Crusaders</StatLabel>
-              <StatNumber>{ordersOfBattle.length}</StatNumber>
-            </Stat>
-            <Stat>
-              <StatLabel>Crusade Points</StatLabel>
-              <StatNumber>CP</StatNumber>
-            </Stat>
-            <Stat>
-              <StatLabel>Requisition</StatLabel>
-              <StatNumber>RP</StatNumber>
-            </Stat>
-            <Stat>
-              <StatLabel>Battles Won</StatLabel>
-              <StatNumber></StatNumber>
-            </Stat>
-          </SimpleGrid>
           {!hasJoined && (
             <Button
               leftIcon={<MdPersonAddAlt1 />}

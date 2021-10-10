@@ -1,13 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import {
-  Accordion,
-  Button,
-  IconButton,
-  Tag,
-  VStack,
-  useMediaQuery
-} from '@chakra-ui/react';
+import { Accordion, Button, IconButton, Tag, VStack, useMediaQuery } from '@chakra-ui/react';
 import { MdEdit, MdPersonAddAlt1 } from 'react-icons/md';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';

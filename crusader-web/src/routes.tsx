@@ -27,7 +27,7 @@ const Routes = () => (
   <Switch>
     <ProtectedRoute path="/sign-out" exact component={SignOut} />
     <ProtectedRoute path="/settings" exact component={Settings} />
-    <ProtectedRoute path="/player/:id" exact component={Player} />
+    <Route path="/player/:id" exact component={Player} />
     <ProtectedRoute path="/order-of-battle/:id/crusade-card" exact component={CreateCrusadeCard} />
     <ProtectedRoute path="/order-of-battle/:id/edit" exact component={EditOrderOfBattle} />
     <Route path="/order-of-battle/:id" exact component={OrderOfBattleOverview} />

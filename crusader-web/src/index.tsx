@@ -37,6 +37,13 @@ if (import.meta.hot) {
 
 if (import.meta.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js');
+    navigator.serviceWorker.register('/sw.js').then(() =>
+      caches.keys().then((cacheNames) => {
+        // delete all caches
+        cacheNames.forEach((cacheName) => {
+          caches.delete(cacheName);
+        });
+      })
+    );
   });
 }

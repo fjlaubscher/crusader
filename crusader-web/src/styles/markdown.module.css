@@ -1,6 +1,5 @@
 .markdown {
   width: 100%;
-  white-space: pre-line;
 }
 .markdown h1,
 .markdown h2,
@@ -27,4 +26,8 @@
 .markdown ol {
   margin: revert;
   padding: revert;
+}
+
+.markdown.preLineWrap {
+  white-space: pre-line;
 }

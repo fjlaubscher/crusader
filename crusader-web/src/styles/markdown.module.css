@@ -1,5 +1,6 @@
 .markdown {
   width: 100%;
+  white-space: pre-line;
 }
 .markdown h1,
 .markdown h2,

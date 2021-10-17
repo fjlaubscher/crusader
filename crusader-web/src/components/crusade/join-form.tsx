@@ -50,7 +50,7 @@ const JoinCrusadeForm = ({ onSubmit }: Props) => {
         placeholder="Your username"
         isRequired
         errorMessage={errors.player ? 'Required' : undefined}
-        {...register('player', { required: true })}
+        {...register('player', { required: true, validate: (value) => value.length > 6 })}
       />
       <InputField
         label="Name"

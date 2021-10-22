@@ -33,37 +33,51 @@ const CrusadeCardAccordion = ({ crusadeCard, isTabletOrLarger }: Props) => (
     </AccordionItem>
     {crusadeCard.abilities && (
       <AccordionItem title="Abilities">
-        <ReactMarkdown className={`${styles.markdown} ${styles.preLineWrap}`}>{crusadeCard.abilities}</ReactMarkdown>
+        <ReactMarkdown className={`${styles.markdown} ${styles.preLineWrap}`}>
+          {crusadeCard.abilities}
+        </ReactMarkdown>
       </AccordionItem>
     )}
     {crusadeCard.battleHonours && (
       <AccordionItem title="Battle Honours">
-        <ReactMarkdown className={`${styles.markdown} ${styles.preLineWrap}`}>{crusadeCard.battleHonours}</ReactMarkdown>
+        <ReactMarkdown className={`${styles.markdown} ${styles.preLineWrap}`}>
+          {crusadeCard.battleHonours}
+        </ReactMarkdown>
       </AccordionItem>
     )}
     {crusadeCard.battleScars && (
       <AccordionItem title="Battle Scars">
-        <ReactMarkdown className={`${styles.markdown} ${styles.preLineWrap}`}>{crusadeCard.battleScars}</ReactMarkdown>
+        <ReactMarkdown className={`${styles.markdown} ${styles.preLineWrap}`}>
+          {crusadeCard.battleScars}
+        </ReactMarkdown>
       </AccordionItem>
     )}
     {crusadeCard.equipment && (
       <AccordionItem title="Equipment">
-        <ReactMarkdown className={`${styles.markdown} ${styles.preLineWrap}`}>{crusadeCard.equipment}</ReactMarkdown>
+        <ReactMarkdown className={`${styles.markdown} ${styles.preLineWrap}`}>
+          {crusadeCard.equipment}
+        </ReactMarkdown>
       </AccordionItem>
     )}
     {crusadeCard.relics && (
       <AccordionItem title="Relics">
-        <ReactMarkdown className={`${styles.markdown} ${styles.preLineWrap}`}>{crusadeCard.relics}</ReactMarkdown>
+        <ReactMarkdown className={`${styles.markdown} ${styles.preLineWrap}`}>
+          {crusadeCard.relics}
+        </ReactMarkdown>
       </AccordionItem>
     )}
     {crusadeCard.warlordTraits && (
       <AccordionItem title="Warlord Traits">
-        <ReactMarkdown className={`${styles.markdown} ${styles.preLineWrap}`}>{crusadeCard.warlordTraits}</ReactMarkdown>
+        <ReactMarkdown className={`${styles.markdown} ${styles.preLineWrap}`}>
+          {crusadeCard.warlordTraits}
+        </ReactMarkdown>
       </AccordionItem>
     )}
     {crusadeCard.notes && (
       <AccordionItem title="Notes">
-        <ReactMarkdown className={`${styles.markdown} ${styles.preLineWrap}`}>{crusadeCard.notes}</ReactMarkdown>
+        <ReactMarkdown className={`${styles.markdown} ${styles.preLineWrap}`}>
+          {crusadeCard.notes}
+        </ReactMarkdown>
       </AccordionItem>
     )}
   </Accordion>

@@ -71,3 +71,5 @@ interface CrusadeFactions {
   totalTau: number;
   totalTyranids: number;
 }
+
+declare module "react-helmet";

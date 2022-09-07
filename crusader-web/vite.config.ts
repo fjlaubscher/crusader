@@ -9,8 +9,8 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       manifest: {
-        name: 'depot',
-        short_name: 'depot',
+        name: 'Crusader',
+        short_name: 'Crusader',
         description:
           'Crusader is a free and open-source Warhammer 40,000 Crusade assistant.',
         theme_color: '#1A202C',

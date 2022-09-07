@@ -21,11 +21,11 @@ import OrderOfBattleCard from '../components/order-of-battle/card';
 import PageHeading from '../components/page-heading';
 
 const Player = () => {
-  const { id } = useParams<IdParams>();
+  const { id } = useParams();
 
-  const { loading: loadingPlayer, value: player } = useAsync(() => getPlayerByIdAsync(id), [id]);
+  const { loading: loadingPlayer, value: player } = useAsync(async () => id ? getPlayerByIdAsync(id) : undefined, [id]);
   const { loading: loadingOrdersOfBattle, value: ordersOfBattle } = useAsync(
-    () => getPlayerOrdersOfBattleAsync(id),
+    async () => (id ? getPlayerOrdersOfBattleAsync(id) : undefined),
     [id]
   );
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, Redirect, useHistory, useParams } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { Button, IconButton, useToast } from '@chakra-ui/react';
 import { MdArrowBack, MdSave } from 'react-icons/md';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -21,8 +21,8 @@ import { SUCCESS_MESSAGE, ERROR_MESSAGE } from '../../helpers/messages';
 import { PlayerAtom } from '../../state/player';
 
 const EditCrusadeCard = () => {
-  const { id } = useParams<IdParams>();
-  const history = useHistory();
+  const { id } = useParams();
+  const navigate = useNavigate();
   const toast = useToast();
 
   const player = useRecoilValue(PlayerAtom);
@@ -35,7 +35,7 @@ const EditCrusadeCard = () => {
   } = form;
 
   const { loading, value: crusadeCard } = useAsync(async () => {
-    const crusadeCard = await getCrusadeCardAsync(id);
+    const crusadeCard = id ? await getCrusadeCardAsync(id) : undefined;
 
     if (crusadeCard) {
       reset(crusadeCard);
@@ -50,7 +50,7 @@ const EditCrusadeCard = () => {
   const isOwner = playerId && createdPlayerId && playerId === createdPlayerId;
 
   if (!loading && !isOwner) {
-    return <Redirect to={`/crusade-care/${id}`} />;
+    return <Navigate to={`/crusade-care/${id}`} />;
   }
 
   return (
@@ -89,7 +89,7 @@ const EditCrusadeCard = () => {
                     description: 'Crusade Card updated.'
                   });
 
-                  history.push(`/crusade-card/${updatedCrusadeCard.id}`);
+                  navigate(`/crusade-card/${updatedCrusadeCard.id}`);
                 }
               }
             } catch (ex: any) {

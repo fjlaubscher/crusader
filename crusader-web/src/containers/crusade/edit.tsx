@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Redirect, useHistory, useParams } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { Button, IconButton, useToast } from '@chakra-ui/react';
 import { MdArrowBack, MdSave } from 'react-icons/md';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -21,8 +21,8 @@ import { CrusadeAtom } from '../../state/crusade';
 import { PlayerAtom } from '../../state/player';
 
 const EditCrusade = () => {
-  const { id } = useParams<IdParams>();
-  const history = useHistory();
+  const { id } = useParams();
+  const navigate = useNavigate();
   const toast = useToast();
 
   const [currentCrusade, setCurrentCrusade] = useRecoilState(CrusadeAtom);
@@ -35,15 +35,17 @@ const EditCrusade = () => {
   } = form;
 
   const { loading } = useAsync(async () => {
-    if (!currentCrusade || currentCrusade.id !== parseInt(id)) {
-      const crusade = await getCrusadeAsync(id);
+    if (id) {
+      if (!currentCrusade || currentCrusade.id !== parseInt(id)) {
+        const crusade = await getCrusadeAsync(id);
 
-      if (crusade) {
-        setCurrentCrusade(crusade);
-        reset(crusade);
+        if (crusade) {
+          setCurrentCrusade(crusade);
+          reset(crusade);
+        }
+      } else if (currentCrusade) {
+        reset(currentCrusade);
       }
-    } else if (currentCrusade) {
-      reset(currentCrusade);
     }
   }, [id, currentCrusade, reset]);
 
@@ -52,7 +54,7 @@ const EditCrusade = () => {
   const isOwner = playerId && createdById && playerId === createdById;
 
   if (!loading && !isOwner) {
-    return <Redirect to={`/crusade/${id}`} />;
+    return <Navigate to={`/crusade/${id}`} />;
   }
 
   return (
@@ -92,7 +94,7 @@ const EditCrusade = () => {
                   });
 
                   setCurrentCrusade(updatedCrusade);
-                  history.push(`/crusade/${updatedCrusade.id}`);
+                  navigate(`/crusade/${updatedCrusade.id}`);
                 }
               }
             } catch (ex: any) {

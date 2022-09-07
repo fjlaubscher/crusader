@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Redirect, useHistory, useParams } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { Button, IconButton, useToast } from '@chakra-ui/react';
 import { MdArrowBack, MdSave } from 'react-icons/md';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -21,8 +21,8 @@ import { OrderOfBattleAtom } from '../../state/order-of-battle';
 import { PlayerAtom } from '../../state/player';
 
 const EditOrderOfBattle = () => {
-  const { id } = useParams<IdParams>();
-  const history = useHistory();
+  const { id } = useParams();
+  const navigate = useNavigate();
   const toast = useToast();
 
   const [currentOrderOfBattle, setCurrentOrderOfBattle] = useRecoilState(OrderOfBattleAtom);
@@ -35,15 +35,17 @@ const EditOrderOfBattle = () => {
   } = form;
 
   const { loading } = useAsync(async () => {
-    if (!currentOrderOfBattle || currentOrderOfBattle.id !== parseInt(id)) {
-      const orderOfBattle = await getOrderOfBattleAsync(id);
+    if (id) {
+      if (!currentOrderOfBattle || currentOrderOfBattle.id !== parseInt(id)) {
+        const orderOfBattle = await getOrderOfBattleAsync(id);
 
-      if (orderOfBattle) {
-        setCurrentOrderOfBattle(orderOfBattle);
-        reset(orderOfBattle);
+        if (orderOfBattle) {
+          setCurrentOrderOfBattle(orderOfBattle);
+          reset(orderOfBattle);
+        }
+      } else if (currentOrderOfBattle) {
+        reset(currentOrderOfBattle);
       }
-    } else if (currentOrderOfBattle) {
-      reset(currentOrderOfBattle);
     }
   }, [id, currentOrderOfBattle, reset]);
 
@@ -52,7 +54,7 @@ const EditOrderOfBattle = () => {
   const isOwner = playerId && createdById && playerId === createdById;
 
   if (!loading && !isOwner) {
-    return <Redirect to={`/order-of-battle/${id}`} />;
+    return <Navigate to={`/order-of-battle/${id}`} />;
   }
 
   return (
@@ -92,7 +94,7 @@ const EditOrderOfBattle = () => {
                   });
 
                   setCurrentOrderOfBattle(updatedOrderOfBattle);
-                  history.push(`/order-of-battle/${updatedOrderOfBattle.id}`);
+                  navigate(`/order-of-battle/${updatedOrderOfBattle.id}`);
                 }
               }
             } catch (ex: any) {

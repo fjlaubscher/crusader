@@ -33,7 +33,7 @@ const Sidebar = ({ isOpen, onClose }: Props) => {
         <DrawerBody>
           <VStack width="100%">
             <Button
-              isFullWidth
+              width="100%"
               leftIcon={<MdHome />}
               justifyContent="flex-start"
               as={ReactRouterLink}
@@ -46,7 +46,7 @@ const Sidebar = ({ isOpen, onClose }: Props) => {
             </Button>
             {player && (
               <Button
-                isFullWidth
+                width="100%"
                 leftIcon={<MdListAlt />}
                 justifyContent="flex-start"
                 as={ReactRouterLink}
@@ -58,7 +58,7 @@ const Sidebar = ({ isOpen, onClose }: Props) => {
               </Button>
             )}
             <Button
-              isFullWidth
+              width="100%"
               leftIcon={<MdSettings />}
               justifyContent="flex-start"
               as={ReactRouterLink}
@@ -69,7 +69,7 @@ const Sidebar = ({ isOpen, onClose }: Props) => {
               Settings
             </Button>
             <Button
-              isFullWidth
+              width="100%"
               leftIcon={<MdLogout />}
               justifyContent="flex-start"
               as={ReactRouterLink}

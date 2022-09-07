@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { ChakraProvider, ColorModeScript, extendTheme } from '@chakra-ui/react';
@@ -15,7 +15,7 @@ const theme = extendTheme({
 
 import App from './app';
 
-ReactDOM.render(
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
       <ColorModeScript initialColorMode={theme.config.initialColorMode} />
@@ -25,25 +25,5 @@ ReactDOM.render(
         </RecoilRoot>
       </BrowserRouter>
     </ChakraProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );
-
-// Hot Module Replacement (HMR) - Remove this snippet to remove HMR.
-// Learn more: https://snowpack.dev/concepts/hot-module-replacement
-if (import.meta.hot) {
-  import.meta.hot.accept();
-}
-
-if (import.meta.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').then(() =>
-      caches.keys().then((cacheNames) => {
-        // delete all caches
-        cacheNames.forEach((cacheName) => {
-          caches.delete(cacheName);
-        });
-      })
-    );
-  });
-}

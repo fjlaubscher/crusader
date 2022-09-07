@@ -1,5 +1,5 @@
 import React, { lazy } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 // components
 import ProtectedRoute from './components/protected-route';
@@ -23,23 +23,85 @@ const NotFound = lazy(() => import('./containers/not-found'));
 const Settings = lazy(() => import('./containers/settings'));
 const SignOut = lazy(() => import('./containers/sign-out'));
 
-const Routes = () => (
-  <Switch>
-    <ProtectedRoute path="/sign-out" exact component={SignOut} />
-    <ProtectedRoute path="/settings" exact component={Settings} />
-    <Route path="/player/:id" exact component={Player} />
-    <ProtectedRoute path="/order-of-battle/:id/crusade-card" exact component={CreateCrusadeCard} />
-    <ProtectedRoute path="/order-of-battle/:id/edit" exact component={EditOrderOfBattle} />
-    <Route path="/order-of-battle/:id" exact component={OrderOfBattleOverview} />
-    <ProtectedRoute path="/crusade-card/:id/edit" exact component={EditCrusadeCard} />
-    <Route path="/crusade-card/:id" exact component={CrusadeCard} />
-    <Route path="/crusade/:id/join" exact component={JoinCrusade} />
-    <ProtectedRoute path="/crusade/:id/edit" exact component={EditCrusade} />
-    <Route path="/crusade/:id" exact component={CrusadeOverview} />
-    <ProtectedRoute path="/crusade" exact component={CreateCrusade} />
-    <ProtectedRoute path="/" exact component={Home} />
-    <Route path="*" component={NotFound} />
-  </Switch>
+const AppRoutes = () => (
+  <Routes>
+    <Route
+      path="/sign-out"
+      element={
+        <ProtectedRoute>
+          <SignOut />
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/settings"
+      element={
+        <ProtectedRoute>
+          <Settings />
+        </ProtectedRoute>
+      }
+    />
+    <Route path="/player/:id" element={<Player />} />
+
+    <Route
+      path="/order-of-battle/:id/crusade-card"
+      element={
+        <ProtectedRoute>
+          <CreateCrusadeCard />
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/order-of-battle/:id/edit"
+      element={
+        <ProtectedRoute>
+          <EditOrderOfBattle />
+        </ProtectedRoute>
+      }
+    />
+    <Route path="/order-of-battle/:id" element={<OrderOfBattleOverview />} />
+
+    <Route
+      path="/crusade-card/:id/edit"
+      element={
+        <ProtectedRoute>
+          <EditCrusadeCard />
+        </ProtectedRoute>
+      }
+    />
+    <Route path="/crusade-card/:id" element={<CrusadeCard />} />
+
+    <Route path="/crusade/:id/join" element={<JoinCrusade />} />
+    <Route
+      path="/crusade/:id/edit"
+      element={
+        <ProtectedRoute>
+          <EditCrusade />
+        </ProtectedRoute>
+      }
+    />
+    <Route path="/crusade/:id" element={<CrusadeOverview />} />
+
+    <Route
+      path="/crusade"
+      element={
+        <ProtectedRoute>
+          <CreateCrusade />
+        </ProtectedRoute>
+      }
+    />
+
+    <Route
+      path="/"
+      element={
+        <ProtectedRoute>
+          <Home />
+        </ProtectedRoute>
+      }
+    />
+
+    <Route path="*" element={<NotFound />} />
+  </Routes>
 );
 
-export default Routes;
+export default AppRoutes;

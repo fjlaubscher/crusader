@@ -57,7 +57,7 @@ const Home = () => {
         actionComponent={<IconButton aria-label="Settings" icon={<MdMenu />} onClick={onOpen} />}
         isLoading={loading}
       >
-        <Alert mb={4} height="auto" status="info">
+        <Alert mb={4} height="auto">
           <AlertIcon alignSelf="flex-start" />
           <Box flex="1">
             <AlertTitle>👋 Hey {player ? player.name : ''}!</AlertTitle>
@@ -82,7 +82,7 @@ const Home = () => {
           size="lg"
           as={ReactRouterLink}
           to="/crusade/"
-          isFullWidth
+          width="100%"
         >
           New Crusade
         </Button>
@@ -106,7 +106,7 @@ const Home = () => {
                   as={ReactRouterLink}
                   to={`/crusade/${c.id}`}
                   size="lg"
-                  isFullWidth
+                  width="100%"
                   justifyContent="space-between"
                 >
                   {c.name}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { VStack, Stat, StatLabel, StatNumber, HStack, Tag } from '@chakra-ui/react';
+import { VStack, Stat, StatLabel, StatNumber, HStack } from '@chakra-ui/react';
 
 interface Props {
   name: string;

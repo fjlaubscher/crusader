@@ -37,7 +37,7 @@ import { PlayerAtom } from '../../state/player';
 import styles from '../../styles/markdown.module.css';
 
 const OrderOfBattle = () => {
-  const { id } = useParams<IdParams>();
+  const { id } = useParams();
 
   const [currentOrderOfBattle, setCurrentOrderOfBattle] = useRecoilState(OrderOfBattleAtom);
   const player = useRecoilValue(PlayerAtom);
@@ -47,7 +47,7 @@ const OrderOfBattle = () => {
   const [filteredCrusadeCards, setFilteredCrusadeCards] = useState<Crusader.CrusadeCard[]>([]);
 
   const { loading } = useAsync(async () => {
-    const orderOfBattle = await getOrderOfBattleAsync(id);
+    const orderOfBattle = id ? await getOrderOfBattleAsync(id) : undefined;
     if (orderOfBattle) {
       setCurrentOrderOfBattle(orderOfBattle);
 
@@ -137,7 +137,7 @@ const OrderOfBattle = () => {
                 to={`/order-of-battle/${id}/crusade-card`}
                 colorScheme="blue"
                 size="lg"
-                isFullWidth
+                width="100%"
               >
                 New Crusade Card
               </Button>

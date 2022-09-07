@@ -1,23 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link as ReactRouterLink, useParams } from 'react-router-dom';
 import {
-  Alert,
-  AlertIcon,
   Button,
-  Divider,
-  Heading,
-  HStack,
   IconButton,
-  Link,
   SimpleGrid,
   Stat,
   StatLabel,
   StatNumber,
   Tag,
-  useMediaQuery,
-  VStack
+  useMediaQuery
 } from '@chakra-ui/react';
-import { MdArrowBack, MdEdit, MdListAlt } from 'react-icons/md';
+import { MdArrowBack, MdEdit } from 'react-icons/md';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';
 
@@ -35,13 +28,13 @@ import { OrderOfBattleAtom } from '../../state/order-of-battle';
 import { PlayerAtom } from '../../state/player';
 
 const CrusadeCard = () => {
-  const { id } = useParams<IdParams>();
+  const { id } = useParams();
 
   const [currentOrderOfBattle, setCurrentOrderOfBattle] = useRecoilState(OrderOfBattleAtom);
   const player = useRecoilValue(PlayerAtom);
 
   const { loading, value: crusadeCard } = useAsync(async () => {
-    const crusadeCard = await getCrusadeCardAsync(id);
+    const crusadeCard = id ? await getCrusadeCardAsync(id) : undefined;
     const currentOrderOfBattleId = currentOrderOfBattle ? currentOrderOfBattle.id : 0;
 
     if (crusadeCard && crusadeCard.orderOfBattleId !== currentOrderOfBattleId) {

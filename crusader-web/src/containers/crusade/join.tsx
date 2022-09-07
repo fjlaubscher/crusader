@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   useToast,
   IconButton,
@@ -38,15 +38,15 @@ import { PlayerAtom } from '../../state/player';
 import styles from '../../styles/markdown.module.css';
 
 const JoinCrusade = () => {
-  const { id } = useParams<IdParams>();
-  const history = useHistory();
+  const { id } = useParams();
+  const navigate = useNavigate();
   const toast = useToast();
 
   const [currentCrusade, setCurrentCrusade] = useRecoilState(CrusadeAtom);
   const [player, setPlayer] = useRecoilState(PlayerAtom);
 
   const { loading } = useAsync(async () => {
-    const crusade = await getCrusadeAsync(id);
+    const crusade = id ? await getCrusadeAsync(id) : undefined;
     if (crusade) {
       setCurrentCrusade(crusade);
     }
@@ -149,7 +149,7 @@ const JoinCrusade = () => {
                       title: SUCCESS_MESSAGE,
                       description: `Joined ${currentCrusade.name}`
                     });
-                    history.push(`/order-of-battle/${newOrderOfBattle.id}`);
+                    navigate(`/order-of-battle/${newOrderOfBattle.id}`);
                   }
                 }
               }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { HStack, VStack, Container, Heading, Text } from '@chakra-ui/react';
-import { GiBolterGun } from 'react-icons/gi';
+import { VStack, Container, Heading, Text } from '@chakra-ui/react';
+import { MdListAlt } from 'react-icons/md';
 
 interface Props {
   title: string;
@@ -15,17 +15,17 @@ const AuthLayout = ({ children, title }: Props) => (
       <Heading as="h1" size="3xl" fontWeight="semibold" textAlign="center">
         Crusader
       </Heading>
-      <GiBolterGun fontSize="5rem" />
+      <MdListAlt fontSize="5rem" />
     </VStack>
     <Container mt="0 !important" maxW="xl">
       {children}
     </Container>
     <VStack mt="0 !important">
       <Text mt="0" textAlign="center" fontSize="xs">
-        francois.codes
+        francoislaubscher.dev
       </Text>
       <Text mt="0" textAlign="center" fontSize="xs">
-        &copy; {new Date().getFullYear()}
+        &copy; 2022
       </Text>
     </VStack>
   </VStack>

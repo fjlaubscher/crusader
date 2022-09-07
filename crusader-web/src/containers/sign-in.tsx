@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { useForm } from 'react-hook-form';
 import { Button, Input, Progress, useToast } from '@chakra-ui/react';
@@ -22,7 +22,7 @@ import { PlayerAtom } from '../state/player';
 import { PLAYER } from '../helpers/storage';
 
 const SignIn = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const toast = useToast();
 
   const [player, setPlayer] = useRecoilState(PlayerAtom);
@@ -70,7 +70,7 @@ const SignIn = () => {
   }
 
   if (player) {
-    history.push('/');
+    navigate('/');
   }
 
   return (
@@ -93,7 +93,7 @@ const SignIn = () => {
             type="submit"
             leftIcon={<MdLogin />}
             colorScheme="blue"
-            isFullWidth
+            width="100%"
           >
             Sign In
           </Button>

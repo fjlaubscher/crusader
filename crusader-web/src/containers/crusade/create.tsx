@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button, IconButton, useToast } from '@chakra-ui/react';
 import { MdArrowBack, MdSave } from 'react-icons/md';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -19,7 +19,7 @@ import { SUCCESS_MESSAGE, ERROR_MESSAGE } from '../../helpers/messages';
 import { PlayerAtom } from '../../state/player';
 
 const CreateCrusade = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const toast = useToast();
   const player = useRecoilValue(PlayerAtom);
@@ -61,7 +61,7 @@ const CreateCrusade = () => {
                     title: SUCCESS_MESSAGE,
                     description: 'Crusade created'
                   });
-                  history.push(`/crusade/${newCrusade.id}`);
+                  navigate(`/crusade/${newCrusade.id}`);
                 }
               }
             } catch (ex: any) {

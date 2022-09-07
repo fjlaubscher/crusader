@@ -18,6 +18,26 @@ npm install -g yarn
 yarn
 ```
 
+
+## Database
+### Using Docker
+```
+docker-compose up -d
+docker exec -i crusader_db_1 /bin/bash -c "PGPASSWORD=postgres psql -U postgres crusader -a" < ./crusader-api/src/sql/init.sql
+```
+
+### Using local Postgres instance
+
+```
+psql -U postgres
+CREATE DATABASE crusader;
+\q
+```
+
+```
+psql -U postgres -d crusader -a -f ./crusader-api/src/sql/init.sql
+```
+
 ## Development
 
 ```

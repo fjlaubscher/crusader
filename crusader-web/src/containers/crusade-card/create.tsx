@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useParams, useHistory } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useToast, IconButton, Button } from '@chakra-ui/react';
 import { useRecoilState } from 'recoil';
 import { useAsync } from 'react-use';
@@ -21,17 +21,19 @@ import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '../../helpers/messages';
 import { OrderOfBattleAtom } from '../../state/order-of-battle';
 
 const CreateCrusadeCard = () => {
-  const { id } = useParams<IdParams>();
-  const history = useHistory();
+  const { id } = useParams();
+  const navigate = useNavigate();
   const toast = useToast();
 
   const [currentOrderOfBattle, setCurrentOrderOfBattle] = useRecoilState(OrderOfBattleAtom);
 
   const { loading } = useAsync(async () => {
-    if (!currentOrderOfBattle || currentOrderOfBattle.id !== parseInt(id)) {
-      const orderOfBattle = await getOrderOfBattleAsync(id);
-      if (orderOfBattle) {
-        setCurrentOrderOfBattle(orderOfBattle);
+    if (id) {
+      if (!currentOrderOfBattle || currentOrderOfBattle.id !== parseInt(id)) {
+        const orderOfBattle = await getOrderOfBattleAsync(id);
+        if (orderOfBattle) {
+          setCurrentOrderOfBattle(orderOfBattle);
+        }
       }
     }
   }, [id]);
@@ -91,7 +93,7 @@ const CreateCrusadeCard = () => {
                     title: SUCCESS_MESSAGE,
                     description: `Added to ${currentOrderOfBattle.name}`
                   });
-                  history.push(`/order-of-battle/${currentOrderOfBattle.id}`);
+                  navigate(`/order-of-battle/${currentOrderOfBattle.id}`);
                 }
               }
             } catch (ex: any) {

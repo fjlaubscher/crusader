@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Accordion, Button, IconButton, Tag, VStack, useMediaQuery } from '@chakra-ui/react';
+import { Accordion, Button, IconButton, Tag, VStack } from '@chakra-ui/react';
 import { MdEdit, MdPersonAddAlt1 } from 'react-icons/md';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';
@@ -26,7 +26,7 @@ import { PlayerAtom } from '../../state/player';
 import styles from '../../styles/markdown.module.css';
 
 const Crusade = () => {
-  const { id } = useParams<IdParams>();
+  const { id } = useParams();
   const [searchTerm, setSearchTerm] = useState('');
   const [currentCrusade, setCurrentCrusade] = useRecoilState(CrusadeAtom);
   const [ordersOfBattle, setOrdersOfBattle] = useState<Crusader.OrderOfBattle[]>([]);
@@ -36,7 +36,7 @@ const Crusade = () => {
   const player = useRecoilValue(PlayerAtom);
 
   const { loading } = useAsync(async () => {
-    const crusade = await getCrusadeAsync(id);
+    const crusade = id ? await getCrusadeAsync(id) : undefined;
     if (crusade) {
       setCurrentCrusade(crusade);
 
@@ -84,7 +84,7 @@ const Crusade = () => {
               to={`/crusade/${id}/join`}
               colorScheme="blue"
               size="lg"
-              isFullWidth
+              width="100%"
               mb="0.5rem !important"
             >
               Join Crusade

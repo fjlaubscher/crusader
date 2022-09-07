@@ -49,7 +49,7 @@ const CrusadeCard = ({ crusadeCard, onDeleteClick }: Props) => {
           </WrapItem>
           <WrapItem>
             <Tag size="sm" colorScheme="green">
-              {crusadeCard.powerRating}PL
+              {crusadeCard.powerRating}PR
             </Tag>
           </WrapItem>
           {crusadeCard.crusadePoints > 0 && (

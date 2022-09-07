@@ -80,7 +80,7 @@ const CrusadeCard = () => {
           <PageHeading name={crusadeCard.name}>
             <Tag colorScheme="blue">{crusadeCard.battlefieldRole}</Tag>
             <Tag>{crusadeCard.unitType}</Tag>
-            <Tag colorScheme="green">{crusadeCard.powerRating}PL</Tag>
+            <Tag colorScheme="green">{crusadeCard.powerRating}PR</Tag>
           </PageHeading>
           <SimpleGrid width="100%" columns={isTabletOrLarger ? 6 : 2} rowGap={4}>
             <Stat>

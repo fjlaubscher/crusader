@@ -45,7 +45,7 @@ const OrderOfBattleCard = ({ orderOfBattle, showCrusadeName, showPlayerName }: P
           </WrapItem>
           <WrapItem>
             <Tag size="sm" colorScheme="green">
-              {orderOfBattle.supplyUsed}PL
+              {orderOfBattle.supplyUsed}PR
             </Tag>
           </WrapItem>
           {orderOfBattle.crusadePoints > 0 && (

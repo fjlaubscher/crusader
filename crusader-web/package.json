@@ -4,13 +4,15 @@
   "description": "Crusader is a Warhammer 40K Crusade tracker",
   "scripts": {
     "start": "vite",
-    "build": "tsc && vite build"
+    "build": "tsc && vite build",
+    "format": "prettier --write \"**/src/**/*.{js,jsx,ts,tsx}\"",
+    "lint": "prettier --check \"**/src/**/*.{js,jsx,ts,tsx}\""
   },
   "keywords": [],
   "author": "Francois Laubscher",
   "license": "MIT",
   "dependencies": {
-    "@chakra-ui/react": "^2.3.1",
+    "@chakra-ui/react": "2.2.0",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "date-fns": "^2.29.2",

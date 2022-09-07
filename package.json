@@ -7,9 +7,9 @@
   ],
   "scripts": {
     "build": "yarn workspaces run build",
-    "start": "concurrently \"yarn workspace crusader-api run start\" \"yarn workspace crusader-web run start\"",
-    "format": "prettier --write \"**/src/**/*.{js,jsx,ts,tsx}\"",
-    "lint": "prettier --check \"**/src/**/*.{js,jsx,ts,tsx}\""
+    "start": "concurrently \"yarn workspace crusader-api start\" \"yarn workspace crusader-web start\"",
+    "format": "concurrently \"yarn workspace crusader-api format\" \"yarn workspace crusader-web format\"",
+    "lint": "concurrently \"yarn workspace crusader-api lint\" \"yarn workspace crusader-web lint\""
   },
   "devDependencies": {
     "concurrently": "^6.3.0",

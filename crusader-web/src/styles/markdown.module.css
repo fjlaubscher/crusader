@@ -1,5 +1,6 @@
 .markdown {
   width: 100%;
+  line-height: 1;
 }
 .markdown h1,
 .markdown h2,
@@ -24,8 +25,11 @@
 
 .markdown ul,
 .markdown ol {
-  margin: revert;
-  padding: revert;
+  margin-left: 2rem;
+}
+
+.markdown li {
+  line-height: 1;
 }
 
 .markdown.preLineWrap {

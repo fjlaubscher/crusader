@@ -98,12 +98,12 @@ const OrderOfBattle = () => {
               @{currentOrderOfBattle.player}
             </Tag>
             <Tag>{currentOrderOfBattle.faction}</Tag>
-            <Tag colorScheme="green">{currentOrderOfBattle.supplyUsed}PL</Tag>
+            <Tag colorScheme="green">{currentOrderOfBattle.supplyUsed}PR</Tag>
           </PageHeading>
           <SimpleGrid width="100%" columns={isTabletOrLarger ? 4 : 2} rowGap={4}>
             <Stat>
               <StatLabel>Supply Limit</StatLabel>
-              <StatNumber>{currentOrderOfBattle.supplyLimit}PL</StatNumber>
+              <StatNumber>{currentOrderOfBattle.supplyLimit}PR</StatNumber>
             </Stat>
             <Stat>
               <StatLabel>Crusade Points</StatLabel>

@@ -6,7 +6,9 @@
   "scripts": {
     "build": "tsc",
     "prestart": "tsc",
-    "start": "node ./build/index.js"
+    "start": "node ./build/index.js",
+    "format": "prettier --write \"**/src/**/*.{js,jsx,ts,tsx}\"",
+    "lint": "prettier --check \"**/src/**/*.{js,jsx,ts,tsx}\""
   },
   "keywords": [
     "warhammer 40000",

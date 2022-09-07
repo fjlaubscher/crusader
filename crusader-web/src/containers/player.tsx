@@ -23,7 +23,10 @@ import PageHeading from '../components/page-heading';
 const Player = () => {
   const { id } = useParams();
 
-  const { loading: loadingPlayer, value: player } = useAsync(async () => id ? getPlayerByIdAsync(id) : undefined, [id]);
+  const { loading: loadingPlayer, value: player } = useAsync(
+    async () => (id ? getPlayerByIdAsync(id) : undefined),
+    [id]
+  );
   const { loading: loadingOrdersOfBattle, value: ordersOfBattle } = useAsync(
     async () => (id ? getPlayerOrdersOfBattleAsync(id) : undefined),
     [id]
@@ -69,7 +72,7 @@ const Player = () => {
             </Stat>
             <Stat>
               <StatLabel>Largest Force</StatLabel>
-              <StatNumber>{highestSupply}PL</StatNumber>
+              <StatNumber>{highestSupply}PR</StatNumber>
             </Stat>
             <Stat>
               <StatLabel>Battles Won</StatLabel>

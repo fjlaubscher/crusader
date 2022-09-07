@@ -20,7 +20,7 @@ const AccordionItem = ({ title, children }: Props) => (
         <AccordionIcon />
       </AccordionButton>
     </Heading>
-    <AccordionPanel px={0} pb={4}>
+    <AccordionPanel px={0} pt={0} pb={4}>
       {children}
     </AccordionPanel>
   </ChakraAccordionItem>

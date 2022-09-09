@@ -11,8 +11,7 @@ import {
   StatLabel,
   StatNumber,
   Tag,
-  useMediaQuery,
-  VStack
+  useMediaQuery
 } from '@chakra-ui/react';
 import { MdAdd, MdArrowBack, MdEdit } from 'react-icons/md';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -98,12 +97,11 @@ const OrderOfBattle = () => {
               @{currentOrderOfBattle.player}
             </Tag>
             <Tag>{currentOrderOfBattle.faction}</Tag>
-            <Tag colorScheme="green">{currentOrderOfBattle.supplyUsed}PR</Tag>
           </PageHeading>
           <SimpleGrid width="100%" columns={isTabletOrLarger ? 4 : 2} rowGap={4}>
             <Stat>
-              <StatLabel>Supply Limit</StatLabel>
-              <StatNumber>{currentOrderOfBattle.supplyLimit}PR</StatNumber>
+              <StatLabel>Power Rating</StatLabel>
+              <StatNumber>{currentOrderOfBattle.supplyUsed}/{currentOrderOfBattle.supplyLimit}PR</StatNumber>
             </Stat>
             <Stat>
               <StatLabel>Crusade Points</StatLabel>
@@ -155,11 +153,11 @@ const OrderOfBattle = () => {
                   );
                 }}
               />
-              <VStack mt="0 !important" width="100%">
+              <SimpleGrid columns={isTabletOrLarger ? 3 : 1} width="100%" mt="0 !important" gap={4}>
                 {filteredCrusadeCards.map((c) => (
                   <CrusadeCard key={c.id} crusadeCard={c} />
                 ))}
-              </VStack>
+              </SimpleGrid>
             </>
           ) : (
             <Alert mb={4} status="info" variant="left-accent">

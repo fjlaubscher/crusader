@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link as ReactRouterLink, useParams } from 'react-router-dom';
+import { Link as ReactRouterLink, useNavigate, useParams } from 'react-router-dom';
 import {
   Button,
   IconButton,
@@ -8,20 +8,25 @@ import {
   StatLabel,
   StatNumber,
   Tag,
-  useMediaQuery
+  useMediaQuery,
+  useToast
 } from '@chakra-ui/react';
 import { MdArrowBack, MdEdit } from 'react-icons/md';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';
 
 // api
-import { getCrusadeCardAsync } from '../../api/crusade-card';
+import { getCrusadeCardAsync, deleteCrusadeCardAsync } from '../../api/crusade-card';
 import { getOrderOfBattleAsync } from '../../api/order-of-battle';
 
 // components
 import Accordion from '../../components/crusade-card/accordion';
+import DeleteModal from '../../components/delete-modal';
 import Layout from '../../components/layout';
 import PageHeading from '../../components/page-heading';
+
+// helpers
+import { SUCCESS_MESSAGE, ERROR_MESSAGE } from '../../helpers/messages';
 
 // state
 import { OrderOfBattleAtom } from '../../state/order-of-battle';
@@ -29,6 +34,8 @@ import { PlayerAtom } from '../../state/player';
 
 const CrusadeCard = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const toast = useToast();
 
   const [currentOrderOfBattle, setCurrentOrderOfBattle] = useRecoilState(OrderOfBattleAtom);
   const player = useRecoilValue(PlayerAtom);
@@ -103,6 +110,28 @@ const CrusadeCard = () => {
             </Stat>
           </SimpleGrid>
           <Accordion isTabletOrLarger={isTabletOrLarger} crusadeCard={crusadeCard} />
+          {isOwner && (
+            <DeleteModal
+              title={`Delete ${crusadeCard.name}`}
+              onDelete={() => deleteCrusadeCardAsync(crusadeCard.id)}
+              onDeleteSuccess={() => {
+                toast({
+                  status: 'success',
+                  title: SUCCESS_MESSAGE,
+                  description: `${crusadeCard.name} deleted.`
+                });
+
+                navigate(`/order-of-battle/${crusadeCard.orderOfBattleId}`);
+              }}
+              onDeleteError={(errorMessage) => {
+                toast({
+                  status: 'error',
+                  title: ERROR_MESSAGE,
+                  description: errorMessage || `Unable to delete ${crusadeCard.name}.`
+                });
+              }}
+            />
+          )}
         </>
       )}
     </Layout>

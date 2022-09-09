@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Accordion, Button, IconButton, Tag, VStack } from '@chakra-ui/react';
+import { Accordion, Button, IconButton, SimpleGrid, Tag, useMediaQuery } from '@chakra-ui/react';
 import { MdEdit, MdPersonAddAlt1 } from 'react-icons/md';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';
@@ -52,6 +52,8 @@ const Crusade = () => {
   const hasJoined = playerId
     ? ordersOfBattle.filter((o) => o.playerId === playerId).length > 0
     : false;
+
+  const [isTabletOrLarger] = useMediaQuery('(min-width: 767px)');
 
   return (
     <Layout
@@ -106,11 +108,11 @@ const Crusade = () => {
                   );
                 }}
               />
-              <VStack width="100%">
+              <SimpleGrid columns={isTabletOrLarger ? 3 : 1} width="100%" mt="0 !important" gap={4}>
                 {filteredOrdersOfBattle.map((oob) => (
                   <OrderOfBattleCard key={oob.id} orderOfBattle={oob} showPlayerName />
                 ))}
-              </VStack>
+              </SimpleGrid>
             </AccordionItem>
           </Accordion>
         </>

@@ -32,6 +32,10 @@
   line-height: 1;
 }
 
+.markdown img {
+  margin: 0 auto;
+}
+
 .markdown.preLineWrap {
   white-space: pre-line;
 }

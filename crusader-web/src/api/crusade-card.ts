@@ -13,3 +13,6 @@ export const getOrderOfBattleCrusadeCardsAsync = (orderOfBattleId: string | numb
 
 export const updateCrusadeCardAsync = (body: Crusader.CrusadeCard) =>
   Fetch<Crusader.CrusadeCard>('/api/crusade-card', { method: 'PUT', body });
+
+export const deleteCrusadeCardAsync = (id: string | number) =>
+  Fetch<boolean>(`/api/crusade-card/${id}`, { method: 'DELETE' });

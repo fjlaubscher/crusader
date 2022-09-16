@@ -10,6 +10,11 @@ import {
   Stat,
   StatLabel,
   StatNumber,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
   Tag,
   useMediaQuery
 } from '@chakra-ui/react';
@@ -20,9 +25,10 @@ import ReactMarkdown from 'react-markdown';
 
 // api
 import { getOrderOfBattleCrusadeCardsAsync } from '../../api/crusade-card';
-import { getOrderOfBattleAsync } from '../../api/order-of-battle';
+import { getOrderOfBattleAsync, getOrderOfBattleBattlesAsync } from '../../api/order-of-battle';
 
 // components
+import BattleCard from '../../components/battle/card';
 import CrusadeCard from '../../components/crusade-card/card';
 import Layout from '../../components/layout';
 import PageHeading from '../../components/page-heading';
@@ -42,6 +48,7 @@ const OrderOfBattle = () => {
   const player = useRecoilValue(PlayerAtom);
 
   const [searchTerm, setSearchTerm] = useState('');
+  const [battles, setBattles] = useState<Crusader.Battle[]>([]);
   const [crusadeCards, setCrusadeCards] = useState<Crusader.CrusadeCard[]>([]);
   const [filteredCrusadeCards, setFilteredCrusadeCards] = useState<Crusader.CrusadeCard[]>([]);
 
@@ -50,7 +57,15 @@ const OrderOfBattle = () => {
     if (orderOfBattle) {
       setCurrentOrderOfBattle(orderOfBattle);
 
-      const cards = await getOrderOfBattleCrusadeCardsAsync(orderOfBattle.id);
+      const [battles, cards] = await Promise.all([
+        getOrderOfBattleBattlesAsync(orderOfBattle.id),
+        getOrderOfBattleCrusadeCardsAsync(orderOfBattle.id)
+      ]);
+
+      if (battles) {
+        setBattles(battles);
+      }
+
       if (cards) {
         setCrusadeCards(cards);
         setFilteredCrusadeCards(cards);
@@ -101,7 +116,9 @@ const OrderOfBattle = () => {
           <SimpleGrid width="100%" columns={isTabletOrLarger ? 4 : 2} rowGap={4}>
             <Stat>
               <StatLabel>Power Rating</StatLabel>
-              <StatNumber>{currentOrderOfBattle.supplyUsed}/{currentOrderOfBattle.supplyLimit}PR</StatNumber>
+              <StatNumber>
+                {currentOrderOfBattle.supplyUsed}/{currentOrderOfBattle.supplyLimit}PR
+              </StatNumber>
             </Stat>
             <Stat>
               <StatLabel>Crusade Points</StatLabel>
@@ -119,52 +136,78 @@ const OrderOfBattle = () => {
             </Stat>
           </SimpleGrid>
           {currentOrderOfBattle && currentOrderOfBattle.notes && (
-            <>
-              <ReactMarkdown linkTarget="_blank" className={styles.markdown}>
-                {currentOrderOfBattle.notes}
-              </ReactMarkdown>
-            </>
+            <ReactMarkdown linkTarget="_blank" className={styles.markdown}>
+              {currentOrderOfBattle.notes}
+            </ReactMarkdown>
           )}
-          {isOwner && (
-            <>
-              <Divider my="1rem !important" />
-              <Button
-                my="0 !important"
-                leftIcon={<MdAdd />}
-                as={ReactRouterLink}
-                to={`/order-of-battle/${id}/crusade-card`}
-                colorScheme="blue"
-                size="lg"
-                width="100%"
-              >
-                New Crusade Card
-              </Button>
-            </>
-          )}
-          {crusadeCards && crusadeCards.length ? (
-            <>
-              <Divider my="1rem !important" />
-              <Search
-                value={searchTerm}
-                onChange={(term) => {
-                  setSearchTerm(term);
-                  setFilteredCrusadeCards(
-                    crusadeCards.filter((c) => c.name.toLowerCase().includes(term.toLowerCase()))
-                  );
-                }}
-              />
-              <SimpleGrid columns={isTabletOrLarger ? 3 : 1} width="100%" mt="0 !important" gap={4}>
-                {filteredCrusadeCards.map((c) => (
-                  <CrusadeCard key={c.id} crusadeCard={c} />
-                ))}
-              </SimpleGrid>
-            </>
-          ) : (
-            <Alert mb={4} status="info" variant="left-accent">
-              <AlertIcon />
-              This Order of Battle doesn&apos;t have any Crusade Cards yet.
-            </Alert>
-          )}
+          <Tabs width="100%">
+            <TabList>
+              <Tab>Battles</Tab>
+              <Tab>Cards</Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel width="100%" px={0}>
+                <SimpleGrid
+                  columns={isTabletOrLarger ? 3 : 1}
+                  width="100%"
+                  mt="0 !important"
+                  gap={4}
+                >
+                  {battles.map((b) => (
+                    <BattleCard key={b.id} battle={b} />
+                  ))}
+                </SimpleGrid>
+              </TabPanel>
+              <TabPanel width="100%" px={0}>
+                {isOwner && (
+                  <>
+                    <Button
+                      my="0 !important"
+                      leftIcon={<MdAdd />}
+                      as={ReactRouterLink}
+                      to={`/order-of-battle/${id}/crusade-card`}
+                      colorScheme="blue"
+                      size="lg"
+                      width="100%"
+                    >
+                      New Crusade Card
+                    </Button>
+                    <Divider my="1rem !important" />
+                  </>
+                )}
+                {crusadeCards && crusadeCards.length ? (
+                  <>
+                    <Search
+                      value={searchTerm}
+                      onChange={(term) => {
+                        setSearchTerm(term);
+                        setFilteredCrusadeCards(
+                          crusadeCards.filter((c) =>
+                            c.name.toLowerCase().includes(term.toLowerCase())
+                          )
+                        );
+                      }}
+                    />
+                    <SimpleGrid
+                      columns={isTabletOrLarger ? 3 : 1}
+                      width="100%"
+                      mt="0 !important"
+                      gap={4}
+                    >
+                      {filteredCrusadeCards.map((c) => (
+                        <CrusadeCard key={c.id} crusadeCard={c} />
+                      ))}
+                    </SimpleGrid>
+                  </>
+                ) : (
+                  <Alert mb={4} status="info" variant="left-accent">
+                    <AlertIcon />
+                    This Order of Battle doesn&apos;t have any Crusade Cards yet.
+                  </Alert>
+                )}
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
         </>
       )}
     </Layout>

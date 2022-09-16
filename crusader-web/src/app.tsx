@@ -4,10 +4,12 @@ import { Progress } from '@chakra-ui/react';
 import { useAsync, useMount } from 'react-use';
 
 // api
-import { getBattlefieldRolesAsync, getFactionsAsync } from './api/config';
+import { getBattlefieldRolesAsync, getBattleStatusesAsync, getFactionsAsync } from './api/config';
+import { getPlayerOrdersOfBattleAsync } from './api/order-of-battle';
 
 // state
-import { BattlefieldRoleAtom, FactionAtom } from './state/config';
+import { BattlefieldRoleAtom, FactionAtom, BattleStatusAtom } from './state/config';
+import { PlayerOrdersOfBattleAtom } from './state/order-of-battle';
 import { PlayerAtom } from './state/player';
 
 // storage
@@ -18,11 +20,14 @@ import Routes from './routes';
 const Router = () => {
   const [player, setPlayer] = useRecoilState(PlayerAtom);
   const setBattlefieldRoles = useSetRecoilState(BattlefieldRoleAtom);
+  const setBattleStatuses = useSetRecoilState(BattleStatusAtom);
   const setFactions = useSetRecoilState(FactionAtom);
+  const setPlayerOrdersOfBattle = useSetRecoilState(PlayerOrdersOfBattleAtom);
 
-  const { loading } = useAsync(async () => {
-    const [battlefieldRoles, factions] = await Promise.all([
+  const { loading: loadingConfig } = useAsync(async () => {
+    const [battleStatuses, battlefieldRoles, factions] = await Promise.all([
       getBattlefieldRolesAsync(),
+      getBattleStatusesAsync(),
       getFactionsAsync()
     ]);
 
@@ -30,10 +35,23 @@ const Router = () => {
       setBattlefieldRoles(battlefieldRoles);
     }
 
+    if (battleStatuses) {
+      setBattleStatuses(battleStatuses);
+    }
+
     if (factions) {
       setFactions(factions);
     }
   });
+
+  const { loading: loadingOrdersOfBattle } = useAsync(async () => {
+    if (player) {
+      const ordersOfBattle = await getPlayerOrdersOfBattleAsync(player.id);
+      if (ordersOfBattle) {
+        setPlayerOrdersOfBattle(ordersOfBattle);
+      }
+    }
+  }, [player]);
 
   useMount(() => {
     const storedPlayer = localStorage.getItem(PLAYER);
@@ -42,6 +60,8 @@ const Router = () => {
       setPlayer(parsedPlayer);
     }
   });
+
+  const loading = loadingConfig || loadingOrdersOfBattle;
 
   return loading ? (
     <Progress isIndeterminate />

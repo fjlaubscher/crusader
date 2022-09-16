@@ -1,7 +1,33 @@
 declare namespace Crusader {
   interface APIResponse {
-    status: "ok" | "error";
+    status: 'ok' | 'error';
     data: any;
+  }
+
+  interface Battle {
+    id: number;
+    crusadeId: number;
+    crusade: string;
+    attackerOrderOfBattle: string;
+    attackerOrderOfBattleId: number;
+    attackerScore: number;
+    defenderOrderOfBattle: string;
+    defenderOrderOfBattleId: number;
+    defenderScore: number;
+    mission: string;
+    size: number;
+    name: string;
+    notes: string;
+    statusId: number;
+    status: string;
+    createdDate: string;
+  }
+
+  interface BattleCard {
+    id: number;
+    battleId: number;
+    orderOfBattleId: number;
+    crusadeCardId: number;
   }
 
   interface Crusade {

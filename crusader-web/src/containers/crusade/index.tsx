@@ -1,18 +1,30 @@
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Accordion, Button, IconButton, SimpleGrid, Tag, useMediaQuery } from '@chakra-ui/react';
-import { MdEdit, MdPersonAddAlt1 } from 'react-icons/md';
+import {
+  Accordion,
+  Button,
+  Divider,
+  IconButton,
+  SimpleGrid,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Tag,
+  useMediaQuery
+} from '@chakra-ui/react';
+import { MdAdd, MdEdit, MdPersonAddAlt1 } from 'react-icons/md';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';
 import { parseISO, format } from 'date-fns';
 import ReactMarkdown from 'react-markdown';
 
 // api
-import { getCrusadeAsync } from '../../api/crusade';
+import { getCrusadeAsync, getCrusadeBattlesAsync } from '../../api/crusade';
 import { getCrusadeOrdersOfBattleAsync } from '../../api/order-of-battle';
 
 // components
-import AccordionItem from '../../components/accordion-item';
 import Layout from '../../components/layout';
 import OrderOfBattleCard from '../../components/order-of-battle/card';
 import PageHeading from '../../components/page-heading';
@@ -24,11 +36,14 @@ import { PlayerAtom } from '../../state/player';
 
 // styles
 import styles from '../../styles/markdown.module.css';
+import BattleCard from '../../components/battle/card';
 
 const Crusade = () => {
   const { id } = useParams();
   const [searchTerm, setSearchTerm] = useState('');
   const [currentCrusade, setCurrentCrusade] = useRecoilState(CrusadeAtom);
+
+  const [battles, setBattles] = useState<Crusader.Battle[]>([]);
   const [ordersOfBattle, setOrdersOfBattle] = useState<Crusader.OrderOfBattle[]>([]);
   const [filteredOrdersOfBattle, setFilteredOrdersOfBattle] = useState<Crusader.OrderOfBattle[]>(
     []
@@ -40,7 +55,15 @@ const Crusade = () => {
     if (crusade) {
       setCurrentCrusade(crusade);
 
-      const orders = await getCrusadeOrdersOfBattleAsync(crusade.id);
+      const [battles, orders] = await Promise.all([
+        getCrusadeBattlesAsync(crusade.id),
+        getCrusadeOrdersOfBattleAsync(crusade.id)
+      ]);
+
+      if (battles) {
+        setBattles(battles);
+      }
+
       if (orders) {
         setOrdersOfBattle(orders);
         setFilteredOrdersOfBattle(orders);
@@ -92,29 +115,71 @@ const Crusade = () => {
               Join Crusade
             </Button>
           )}
-          <Accordion defaultIndex={hasJoined ? [1] : [0]} width="100%" allowMultiple allowToggle>
-            <AccordionItem title="About this Crusade">
-              <ReactMarkdown linkTarget="_blank" className={styles.markdown}>
-                {currentCrusade.notes}
-              </ReactMarkdown>
-            </AccordionItem>
-            <AccordionItem title="Crusaders">
-              <Search
-                value={searchTerm}
-                onChange={(term) => {
-                  setSearchTerm(term);
-                  setFilteredOrdersOfBattle(
-                    ordersOfBattle.filter((c) => c.name.toLowerCase().includes(term.toLowerCase()))
-                  );
-                }}
-              />
-              <SimpleGrid columns={isTabletOrLarger ? 3 : 1} width="100%" mt="0 !important" gap={4}>
-                {filteredOrdersOfBattle.map((oob) => (
-                  <OrderOfBattleCard key={oob.id} orderOfBattle={oob} showPlayerName />
-                ))}
-              </SimpleGrid>
-            </AccordionItem>
-          </Accordion>
+          <Tabs width="100%">
+            <TabList>
+              <Tab>About</Tab>
+              <Tab>Battles</Tab>
+              <Tab>Crusaders</Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel width="100%" px={0}>
+                <ReactMarkdown linkTarget="_blank" className={styles.markdown}>
+                  {currentCrusade.notes}
+                </ReactMarkdown>
+              </TabPanel>
+              <TabPanel width="100%" px={0}>
+                {hasJoined && (
+                  <>
+                    <Button
+                      my="0 !important"
+                      leftIcon={<MdAdd />}
+                      as={Link}
+                      to={`/crusade/${id}/battle`}
+                      colorScheme="blue"
+                      size="lg"
+                      width="100%"
+                    >
+                      New Battle
+                    </Button>
+                    <Divider my="1rem !important" />
+                  </>
+                )}
+                <SimpleGrid
+                  columns={isTabletOrLarger ? 3 : 1}
+                  width="100%"
+                  mt="0 !important"
+                  gap={4}
+                >
+                  {battles.map((b) => (
+                    <BattleCard key={b.id} battle={b} />
+                  ))}
+                </SimpleGrid>
+              </TabPanel>
+              <TabPanel width="100%" px={0}>
+                <Search
+                  value={searchTerm}
+                  onChange={(term) => {
+                    setSearchTerm(term);
+                    setFilteredOrdersOfBattle(
+                      ordersOfBattle.filter((c) =>
+                        c.name.toLowerCase().includes(term.toLowerCase())
+                      )
+                    );
+                  }}
+                />
+                <SimpleGrid
+                  columns={isTabletOrLarger ? 3 : 1}
+                  width="100%"
+                  mt="0 !important"
+                  gap={4}
+                >
+                  {filteredOrdersOfBattle.map((oob) => (
+                    <OrderOfBattleCard key={oob.id} orderOfBattle={oob} showPlayerName />
+                  ))}
+                </SimpleGrid>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
         </>
       )}
     </Layout>

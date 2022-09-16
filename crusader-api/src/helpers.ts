@@ -1,4 +1,5 @@
-const toCamelCase = (input: string) => input.replace(/([-_]\w)/g, (g) => g[1].toUpperCase());
+const toCamelCase = (input: string) =>
+  input.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase());
 
 export const mapFromPSQL = <T>(rows: TableRow[]) => {
   return rows.map((r) => {

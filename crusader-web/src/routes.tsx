@@ -7,9 +7,11 @@ import ProtectedRoute from './components/protected-route';
 // containers
 const CrusadeOverview = lazy(() => import('./containers/crusade'));
 const CreateCrusade = lazy(() => import('./containers/crusade/create'));
+const CreateBattle = lazy(() => import('./containers/crusade/battle'));
 const EditCrusade = lazy(() => import('./containers/crusade/edit'));
 const JoinCrusade = lazy(() => import('./containers/crusade/join'));
 
+const BattleOverview = lazy(() => import('./containers/battle'));
 const Player = lazy(() => import('./containers/player'));
 const OrderOfBattleOverview = lazy(() => import('./containers/order-of-battle'));
 const EditOrderOfBattle = lazy(() => import('./containers/order-of-battle/edit'));
@@ -80,7 +82,10 @@ const AppRoutes = () => (
         </ProtectedRoute>
       }
     />
+    <Route path="/crusade/:id/battle" element={<CreateBattle />} />
     <Route path="/crusade/:id" element={<CrusadeOverview />} />
+
+    <Route path="/battle/:id" element={<BattleOverview />} />
 
     <Route
       path="/crusade"

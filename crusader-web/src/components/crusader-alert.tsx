@@ -2,7 +2,7 @@ import React from 'react';
 import { Alert, AlertIcon, AlertTitle, AlertDescription, Box, Link } from '@chakra-ui/react';
 
 interface Props {
-  playerName: string
+  playerName: string;
 }
 
 const CrusaderAlert: React.FC<Props> = ({ playerName }) => (

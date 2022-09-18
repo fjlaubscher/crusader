@@ -1,6 +1,6 @@
 import Fetch from '../helpers/fetch';
 
-export const getBattleStatusesAsync = () => 
+export const getBattleStatusesAsync = () =>
   Fetch<Crusader.ListItem[]>('/api/battle-status', { method: 'GET' });
 
 export const getBattlefieldRolesAsync = () =>

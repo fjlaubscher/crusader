@@ -76,7 +76,7 @@ const EditBattle = () => {
                 if (battle) {
                   const updatedBattle = await updateBattleAsync({
                     ...battle,
-                    ...values,
+                    ...values
                   });
 
                   if (updatedBattle) {

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 // db
-import { getBattlesByCrusadeIdAsync } from '../db/battle'
+import { getBattlesByCrusadeIdAsync } from '../db/battle';
 import {
   createCrusadeAsync,
   deleteCrusadeAsync,

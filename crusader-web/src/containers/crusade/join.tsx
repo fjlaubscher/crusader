@@ -33,6 +33,7 @@ import { PLAYER } from '../../helpers/storage';
 // state
 import { CrusadeAtom } from '../../state/crusade';
 import { PlayerAtom } from '../../state/player';
+import { PlayerOrdersOfBattleAtom } from '../../state/order-of-battle';
 
 // styles
 import styles from '../../styles/markdown.module.css';
@@ -43,6 +44,7 @@ const JoinCrusade = () => {
   const toast = useToast();
 
   const [currentCrusade, setCurrentCrusade] = useRecoilState(CrusadeAtom);
+  const [ordersOfBattle, setOrdersOfBattle] = useRecoilState(PlayerOrdersOfBattleAtom);
   const [player, setPlayer] = useRecoilState(PlayerAtom);
 
   const { loading } = useAsync(async () => {
@@ -149,6 +151,9 @@ const JoinCrusade = () => {
                       title: SUCCESS_MESSAGE,
                       description: `Joined ${currentCrusade.name}`
                     });
+                    setOrdersOfBattle(
+                      ordersOfBattle ? [...ordersOfBattle, newOrderOfBattle] : [newOrderOfBattle]
+                    );
                     navigate(`/order-of-battle/${newOrderOfBattle.id}`);
                   }
                 }

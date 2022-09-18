@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 // db
+import { getBattlesByOrderOfBattleIdAsync } from '../db/battle';
 import { getCrusadeCardsByOrderOfBattleIdAsync } from '../db/crusade-card';
 import {
   createOrderOfBattleAsync,
@@ -34,6 +35,16 @@ router.delete('/:id', async (req, res) => {
     const orderofBattleId = parseInt(req.params.id);
     const success = await deleteOrderOfBattleAsync(orderofBattleId);
     return res.status(200).json({ status: 'ok', data: success });
+  } catch (ex: any) {
+    return res.status(500).json({ status: 'error', data: ex.message });
+  }
+});
+
+router.get('/:id/battles', async (req, res) => {
+  try {
+    const orderOfBattleId = parseInt(req.params.id);
+    const battles = await getBattlesByOrderOfBattleIdAsync(orderOfBattleId);
+    return res.status(200).json({ status: 'ok', data: battles });
   } catch (ex: any) {
     return res.status(500).json({ status: 'error', data: ex.message });
   }

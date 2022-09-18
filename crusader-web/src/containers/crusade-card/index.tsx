@@ -1,41 +1,35 @@
 import React from 'react';
-import { Link as ReactRouterLink, useNavigate, useParams } from 'react-router-dom';
+import { Link as ReactRouterLink, useParams } from 'react-router-dom';
 import {
   Button,
+  Divider,
   IconButton,
   SimpleGrid,
   Stat,
   StatLabel,
   StatNumber,
   Tag,
-  useMediaQuery,
-  useToast
+  useMediaQuery
 } from '@chakra-ui/react';
 import { MdArrowBack, MdEdit } from 'react-icons/md';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';
 
 // api
-import { getCrusadeCardAsync, deleteCrusadeCardAsync } from '../../api/crusade-card';
+import { getCrusadeCardAsync } from '../../api/crusade-card';
 import { getOrderOfBattleAsync } from '../../api/order-of-battle';
 
 // components
-import Accordion from '../../components/crusade-card/accordion';
-import DeleteModal from '../../components/delete-modal';
 import Layout from '../../components/layout';
 import PageHeading from '../../components/page-heading';
-
-// helpers
-import { SUCCESS_MESSAGE, ERROR_MESSAGE } from '../../helpers/messages';
 
 // state
 import { OrderOfBattleAtom } from '../../state/order-of-battle';
 import { PlayerAtom } from '../../state/player';
+import CrusadeCardTabs from '../../components/crusade-card/tabs';
 
 const CrusadeCard = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const toast = useToast();
 
   const [currentOrderOfBattle, setCurrentOrderOfBattle] = useRecoilState(OrderOfBattleAtom);
   const player = useRecoilValue(PlayerAtom);
@@ -55,7 +49,7 @@ const CrusadeCard = () => {
   }, [id]);
 
   const playerId = player ? player.id : 0;
-  const isOwner = currentOrderOfBattle && currentOrderOfBattle.playerId === playerId;
+  const isOwner = currentOrderOfBattle ? currentOrderOfBattle.playerId === playerId : false;
 
   const [isTabletOrLarger] = useMediaQuery('(min-width: 767px)');
 
@@ -84,9 +78,8 @@ const CrusadeCard = () => {
           >
             {crusadeCard.orderOfBattle}
           </Button>
-          <PageHeading name={crusadeCard.name}>
+          <PageHeading name={crusadeCard.name} description={crusadeCard.unitType}>
             <Tag colorScheme="blue">{crusadeCard.battlefieldRole}</Tag>
-            <Tag>{crusadeCard.unitType}</Tag>
             <Tag colorScheme="green">{crusadeCard.powerRating}PR</Tag>
           </PageHeading>
           <SimpleGrid width="100%" columns={isTabletOrLarger ? 6 : 2} rowGap={4}>
@@ -109,29 +102,8 @@ const CrusadeCard = () => {
               <StatNumber>{crusadeCard.unitsDestroyed}</StatNumber>
             </Stat>
           </SimpleGrid>
-          <Accordion isTabletOrLarger={isTabletOrLarger} crusadeCard={crusadeCard} />
-          {isOwner && (
-            <DeleteModal
-              title={`Delete ${crusadeCard.name}`}
-              onDelete={() => deleteCrusadeCardAsync(crusadeCard.id)}
-              onDeleteSuccess={() => {
-                toast({
-                  status: 'success',
-                  title: SUCCESS_MESSAGE,
-                  description: `${crusadeCard.name} deleted.`
-                });
-
-                navigate(`/order-of-battle/${crusadeCard.orderOfBattleId}`);
-              }}
-              onDeleteError={(errorMessage) => {
-                toast({
-                  status: 'error',
-                  title: ERROR_MESSAGE,
-                  description: errorMessage || `Unable to delete ${crusadeCard.name}.`
-                });
-              }}
-            />
-          )}
+          <Divider mt="1rem !important" mb="0 !important" />
+          <CrusadeCardTabs crusadeCard={crusadeCard} isOwner={isOwner} />
         </>
       )}
     </Layout>

@@ -1,10 +1,11 @@
 import chalk from 'chalk';
 import express from 'express';
-import { existsSync } from 'fs';
 import dotenv from 'dotenv';
 dotenv.config();
 
 // api
+import BattleRouter from './api/battle';
+import BattleStatusRouter from './api/battle-status';
 import BattlefieldRoleRouter from './api/battlefield-role';
 import CrusadeRouter from './api/crusade';
 import CrusadeCardRouter from './api/crusade-card';
@@ -17,6 +18,8 @@ const initAPI = async () => {
     const app = express();
     app.use(express.json());
 
+    app.use('/api/battle', BattleRouter);
+    app.use('/api/battle-status', BattleStatusRouter);
     app.use('/api/battlefield-role', BattlefieldRoleRouter);
     app.use('/api/crusade', CrusadeRouter);
     app.use('/api/crusade-card', CrusadeCardRouter);

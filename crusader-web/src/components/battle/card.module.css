@@ -1,0 +1,7 @@
+.card {
+  text-decoration: none !important;
+}
+
+.card:hover p:first-child {
+  text-decoration: underline;
+}

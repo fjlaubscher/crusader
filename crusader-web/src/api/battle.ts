@@ -9,5 +9,5 @@ export const getBattleAsync = (id: string | number) =>
 export const updateBattleAsync = (body: Crusader.Battle) =>
   Fetch<Crusader.Battle>('/api/battle', { method: 'PUT', body });
 
-export const deleteBattleCardAsync = (id: string | number) =>
+export const deleteBattleAsync = (id: string | number) =>
   Fetch<boolean>(`/api/battle/${id}`, { method: 'DELETE' });

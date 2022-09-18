@@ -25,7 +25,7 @@ const Router = () => {
   const setPlayerOrdersOfBattle = useSetRecoilState(PlayerOrdersOfBattleAtom);
 
   const { loading: loadingConfig } = useAsync(async () => {
-    const [battleStatuses, battlefieldRoles, factions] = await Promise.all([
+    const [battlefieldRoles, battleStatuses, factions] = await Promise.all([
       getBattlefieldRolesAsync(),
       getBattleStatusesAsync(),
       getFactionsAsync()

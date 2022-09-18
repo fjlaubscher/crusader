@@ -14,3 +14,6 @@ export const getCrusadeBattlesAsync = (crusadeId: number | string) =>
 
 export const updateCrusadeAsync = (body: Crusader.Crusade) =>
   Fetch<Crusader.Crusade>('/api/crusade', { method: 'PUT', body });
+
+export const deleteCrusadeAsync = (id: string | number) =>
+  Fetch<boolean>(`/api/crusade/${id}`, { method: 'DELETE' });

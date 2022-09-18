@@ -57,13 +57,13 @@ const BattleForm = ({ ordersOfBattle, onSubmit }: Props) => {
         />
         <SelectField
           options={ordersOfBattle}
-          label="Player A"
+          label="Attacker"
           value={attackerField.value}
           onChange={attackerField.onChange}
         />
         <SelectField
           options={ordersOfBattle}
-          label="Player B"
+          label="Defender"
           value={defenderField.value}
           onChange={defenderField.onChange}
         />

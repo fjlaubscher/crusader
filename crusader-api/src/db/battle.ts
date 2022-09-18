@@ -102,14 +102,12 @@ export const updateBattleAsync = async (input: Crusader.Battle) => {
 
   const query = `
     UPDATE battle
-    SET 
-      attacker_score = $1,
-      defender_score = $2,
-      mission = $3,
-      name = $4,
-      notes = $5,
-      status_id = $6,
-    )
+    SET attacker_score = $1,
+        defender_score = $2,
+        mission = $3,
+        name = $4,
+        notes = $5,
+        status_id = $6
     WHERE id = $7
   `;
   await client.query<TableRow>(query, [
@@ -118,7 +116,8 @@ export const updateBattleAsync = async (input: Crusader.Battle) => {
     input.mission,
     input.name,
     input.notes,
-    input.statusId
+    input.statusId,
+    input.id
   ]);
   await client.end();
 

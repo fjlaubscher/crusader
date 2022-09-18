@@ -40,13 +40,7 @@ const DeleteModal: React.FC<Props> = ({ title, onDelete, onDeleteSuccess, onDele
 
   return (
     <>
-      <Button
-        mt="1rem !important"
-        leftIcon={<MdDelete />}
-        width="100%"
-        colorScheme="red"
-        onClick={onOpen}
-      >
+      <Button leftIcon={<MdDelete />} width="100%" colorScheme="red" onClick={onOpen}>
         {title}
       </Button>
 

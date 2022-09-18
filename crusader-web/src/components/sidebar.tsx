@@ -10,7 +10,7 @@ import {
   DrawerOverlay,
   VStack
 } from '@chakra-ui/react';
-import { MdHome, MdListAlt, MdLogout, MdSettings } from 'react-icons/md';
+import { MdAdd, MdHome, MdListAlt, MdLogout, MdSettings } from 'react-icons/md';
 import { useRecoilValue } from 'recoil';
 
 // state
@@ -42,7 +42,19 @@ const Sidebar = ({ isOpen, onClose }: Props) => {
               iconSpacing={4}
               onClick={onClose}
             >
-              Your Crusades
+              Home
+            </Button>
+            <Button
+              width="100%"
+              leftIcon={<MdAdd />}
+              justifyContent="flex-start"
+              as={ReactRouterLink}
+              to="/crusade"
+              size="lg"
+              iconSpacing={4}
+              onClick={onClose}
+            >
+              New Crusade
             </Button>
             {player && (
               <Button

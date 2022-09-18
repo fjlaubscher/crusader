@@ -1,13 +1,12 @@
 import React from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { Button, IconButton, useToast } from '@chakra-ui/react';
-import { MdArrowBack, MdSave } from 'react-icons/md';
+import { useNavigate, useParams } from 'react-router-dom';
+import { IconButton, useToast } from '@chakra-ui/react';
+import { MdSave } from 'react-icons/md';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';
 
 // api
-import { createBattleAsync } from '../../api/battle';
+import { getBattleAsync, updateBattleAsync } from '../../api/battle';
 import { getCrusadeOrdersOfBattleAsync } from '../../api/order-of-battle';
 
 // components
@@ -17,68 +16,76 @@ import Layout from '../../components/layout';
 // helpers
 import { SUCCESS_MESSAGE, ERROR_MESSAGE } from '../../helpers/messages';
 
-// state
-import { PlayerAtom } from '../../state/player';
-
-const CreateBattle = () => {
+const EditBattle = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const toast = useToast();
-  const player = useRecoilValue(PlayerAtom);
 
   const form = useForm<Crusader.Battle>({ mode: 'onChange' });
+  const {
+    reset,
+    formState: { isSubmitting, isValid }
+  } = form;
 
-  const { loading, value: ordersOfBattle } = useAsync(async () => {
+  const { loading: loadingBattle, value: battle } = useAsync(async () => {
     if (id) {
-      const ordersOfBattle = await getCrusadeOrdersOfBattleAsync(id);
+      const battle = await getBattleAsync(id);
+      if (battle) {
+        reset(battle);
+        return battle;
+      }
+    }
+
+    return undefined;
+  }, [id, reset]);
+
+  const { loading: loadingOrdersOfBattle, value: ordersOfBattle } = useAsync(async () => {
+    if (battle) {
+      const ordersOfBattle = await getCrusadeOrdersOfBattleAsync(battle.crusadeId);
       if (ordersOfBattle) {
         return ordersOfBattle.map((oob) => ({ id: oob.id, name: oob.name } as Crusader.ListItem));
       }
     }
 
     return undefined;
-  }, [id]);
+  }, [battle]);
 
   return (
     <FormProvider {...form}>
       <Layout
-        title="New Battle"
+        title="Edit Battle"
         actionComponent={
           <IconButton
             aria-label="Save"
             icon={<MdSave />}
-            disabled={!form.formState.isValid || form.formState.isSubmitting}
+            disabled={!isValid || isSubmitting}
             colorScheme="blue"
-            isLoading={form.formState.isSubmitting}
+            isLoading={isSubmitting}
             type="submit"
             form="battle-form"
           />
         }
-        isLoading={loading}
+        isLoading={loadingBattle || loadingOrdersOfBattle}
       >
-        <Button leftIcon={<MdArrowBack />} as={Link} to={`/crusade/${id}`}>
-          Back
-        </Button>
         {ordersOfBattle && (
           <BattleForm
             ordersOfBattle={ordersOfBattle}
             onSubmit={async (values) => {
               try {
-                if (player) {
-                  const newBattle = await createBattleAsync({
+                if (battle) {
+                  const updatedBattle = await updateBattleAsync({
+                    ...battle,
                     ...values,
-                    crusadeId: id ? parseInt(id) : 0,
-                    createdDate: new Date().toISOString()
                   });
 
-                  if (newBattle) {
+                  if (updatedBattle) {
                     toast({
                       status: 'success',
                       title: SUCCESS_MESSAGE,
-                      description: 'Battle created'
+                      description: 'Battle updated'
                     });
-                    navigate(`/battle/${newBattle.id}`);
+                    navigate(`/battle/${updatedBattle.id}`);
                   }
                 }
               } catch (ex: any) {
@@ -96,4 +103,4 @@ const CreateBattle = () => {
   );
 };
 
-export default CreateBattle;
+export default EditBattle;

@@ -1,11 +1,12 @@
 import React, { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import {
-  Accordion,
   Button,
+  Divider,
   IconButton,
   SimpleGrid,
   Stat,
+  StatHelpText,
   StatLabel,
   StatNumber,
   Tab,
@@ -18,7 +19,7 @@ import {
   Wrap,
   WrapItem
 } from '@chakra-ui/react';
-import { MdArrowBack, MdEdit } from 'react-icons/md';
+import { MdArrowBack, MdEdit, MdSportsScore } from 'react-icons/md';
 import { useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';
 import { parseISO, format } from 'date-fns';
@@ -29,17 +30,18 @@ import { getBattleAsync } from '../../api/battle';
 import { getOrderOfBattleAsync } from '../../api/order-of-battle';
 
 // components
-import AccordionItem from '../../components/accordion-item';
 import Layout from '../../components/layout';
 import OrderOfBattleCard from '../../components/order-of-battle/card';
 import PageHeading from '../../components/page-heading';
+
+// helpers
+import { getBattleStatusColor } from '../../helpers/status';
 
 // state
 import { PlayerOrdersOfBattleAtom } from '../../state/order-of-battle';
 
 // styles
 import styles from '../../styles/markdown.module.css';
-import crusadeCard from '../crusade-card';
 
 const Battle = () => {
   const { id } = useParams();
@@ -80,13 +82,12 @@ const Battle = () => {
       );
     }
   }, [battle, playerOrdersOfBattle]);
-  const hasEnded = battle ? battle.statusId === 3 : false;
 
   return (
     <Layout
       title="Battle"
       actionComponent={
-        isPlayerBattle && !hasEnded ? (
+        isPlayerBattle ? (
           <IconButton
             as={Link}
             to={`/battle/${id}/edit`}
@@ -103,32 +104,47 @@ const Battle = () => {
           <Button leftIcon={<MdArrowBack />} as={Link} to={`/crusade/${battle.crusadeId}`}>
             {battle.crusade}
           </Button>
-          <PageHeading name={battle.name}>
+          <PageHeading name={battle.name} description={battle.mission}>
             <Wrap width="100%">
               <WrapItem>
                 <Tag>{format(parseISO(battle.createdDate), 'yyyy-MM-dd')}</Tag>
               </WrapItem>
               <WrapItem>
-                <Tag colorScheme="green">{battle.mission}</Tag>
-              </WrapItem>
-              <WrapItem>
                 <Tag colorScheme="blue">{battle.size}PR</Tag>
               </WrapItem>
               <WrapItem>
-                <Tag colorScheme="yellow">{battle.status}</Tag>
+                <Tag colorScheme={getBattleStatusColor(battle.statusId)}>{battle.status}</Tag>
               </WrapItem>
             </Wrap>
           </PageHeading>
-          <SimpleGrid columns={2} gap={4}>
+          <SimpleGrid columns={2} width="100%">
             <Stat>
-              <StatLabel>{battle.attackerOrderOfBattle}</StatLabel>
+              <StatLabel>Attacker</StatLabel>
               <StatNumber>{battle.attackerScore}</StatNumber>
+              <StatHelpText>{battle.attackerOrderOfBattle}</StatHelpText>
             </Stat>
-            <Stat>
-              <StatLabel>{battle.defenderOrderOfBattle}</StatLabel>
+            <Stat textAlign="right">
+              <StatLabel>Defender</StatLabel>
               <StatNumber>{battle.defenderScore}</StatNumber>
+              <StatHelpText>{battle.defenderOrderOfBattle}</StatHelpText>
             </Stat>
           </SimpleGrid>
+          {isPlayerBattle && (
+            <>
+              <Divider my="1rem !important" />
+              <Button
+                my="0 !important"
+                leftIcon={<MdSportsScore />}
+                as={Link}
+                to={`/battle/${id}/score`}
+                colorScheme="blue"
+                size="lg"
+                width="100%"
+              >
+                Update Score
+              </Button>
+            </>
+          )}
           <Tabs width="100%">
             <TabList>
               <Tab>About</Tab>

@@ -21,17 +21,17 @@ const arrangeTest = () => {
 const arrangeTestAndOpenModal = () => {
   arrangeTest();
   fireEvent.click(screen.getByTestId('delete-button'));
-}
+};
 
 const arrangeTestAndDelete = async () => {
-  arrangeTestAndOpenModal()
+  arrangeTestAndOpenModal();
 
   await waitFor(() => {
     expect(screen.getByTestId('delete-modal')).toBeInTheDocument();
-  })
+  });
 
   fireEvent.click(screen.getByTestId('confirm-delete-button'));
-}
+};
 
 describe('DeleteModal', () => {
   it('displays a delete button with the title', () => {
@@ -50,13 +50,13 @@ describe('DeleteModal', () => {
   });
 
   it('closes the modal when the Cancel button is clicked', async () => {
-    arrangeTestAndOpenModal()
+    arrangeTestAndOpenModal();
 
     await waitFor(() => {
       expect(screen.getByTestId('delete-modal')).toBeInTheDocument();
     });
 
-    fireEvent.click(screen.getByRole('button', { name: 'Cancel' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
 
     await waitFor(() => {
       expect(screen.queryByTestId('delete-modal')).toBe(null);
@@ -64,7 +64,7 @@ describe('DeleteModal', () => {
   });
 
   it('calls onDelete when the Delete button is clicked', async () => {
-    await arrangeTestAndDelete()
+    await arrangeTestAndDelete();
 
     await waitFor(() => {
       expect(screen.getByTestId('confirm-delete-button')).toBeDisabled();
@@ -73,8 +73,8 @@ describe('DeleteModal', () => {
   });
 
   it('closes the modal and calls onDeleteSuccess when onDelete is resolved', async () => {
-    onDeleteMock.mockResolvedValue(true)
-    await arrangeTestAndDelete()
+    onDeleteMock.mockResolvedValue(true);
+    await arrangeTestAndDelete();
 
     await waitFor(() => {
       expect(screen.queryByTestId('delete-modal')).toBe(null);
@@ -83,21 +83,21 @@ describe('DeleteModal', () => {
   });
 
   it('closes the modal and calls onDeleteError when onDelete has failed', async () => {
-    onDeleteMock.mockResolvedValue(false)
-    await arrangeTestAndDelete()
+    onDeleteMock.mockResolvedValue(false);
+    await arrangeTestAndDelete();
 
     await waitFor(() => {
       expect(screen.queryByTestId('delete-modal')).toBe(null);
       expect(onDeleteSuccessMock).toBeCalled();
-    })
+    });
   });
 
   it('calls onDeleteError with an error message if onDelete has raised an exception', async () => {
-    onDeleteMock.mockRejectedValue({ message: 'Error' })
-    await arrangeTestAndDelete()
+    onDeleteMock.mockRejectedValue({ message: 'Error' });
+    await arrangeTestAndDelete();
 
     await waitFor(() => {
       expect(onDeleteErrorMock).toBeCalledWith('Error');
-    })
+    });
   });
 });

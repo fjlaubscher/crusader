@@ -50,11 +50,7 @@ const DeleteModal: React.FC<Props> = ({ title, onDelete, onDeleteSuccess, onDele
         {title}
       </Button>
 
-      <AlertDialog
-        isOpen={isOpen}
-        leastDestructiveRef={cancelRef}
-        onClose={onClose}
-      >
+      <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
         <AlertDialogOverlay>
           <AlertDialogContent data-testid="delete-modal">
             <AlertDialogHeader fontSize="lg" fontWeight="bold" data-testid="delete-modal-title">

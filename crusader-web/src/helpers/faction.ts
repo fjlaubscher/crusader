@@ -1,4 +1,4 @@
-const FactionTypes = Object.freeze({
+export const FactionTypes = Object.freeze({
   Aeldari: 1,
   Chaos: 2,
   Imperium: 3,

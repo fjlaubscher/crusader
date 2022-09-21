@@ -6,7 +6,8 @@
     "start": "vite",
     "build": "tsc && vite build",
     "format": "prettier --write \"**/src/**/*.{js,jsx,ts,tsx}\"",
-    "lint": "prettier --check \"**/src/**/*.{js,jsx,ts,tsx}\""
+    "lint": "prettier --check \"**/src/**/*.{js,jsx,ts,tsx}\"",
+    "test": "jest"
   },
   "keywords": [],
   "author": "Francois Laubscher",
@@ -29,9 +30,16 @@
     "slugify": "^1.6.5"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.4.3",
+    "@types/jest": "^29.0.3",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@vitejs/plugin-react": "^2.0.1",
+    "jest": "^29.0.3",
+    "jest-environment-jsdom": "^29.0.3",
+    "ts-jest": "^29.0.1",
     "typescript": "^4.6.4",
     "vite": "^3.0.6",
     "vite-plugin-pwa": "^0.12.3"

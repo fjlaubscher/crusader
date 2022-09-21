@@ -9,6 +9,7 @@ on:
       - feature/*
       - fix/*
       - release/*
+      - test/*
 
 jobs:
   build:
@@ -22,4 +23,5 @@ jobs:
     - run: yarn
     - run: yarn run lint
     - run: yarn workspace crusader-api run build
+    - run: yarn workspace crusader-web run test
     - run: yarn workspace crusader-web run build

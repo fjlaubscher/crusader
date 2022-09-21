@@ -14,7 +14,7 @@ import {
 import { Helmet } from 'react-helmet';
 import { MdHome } from 'react-icons/md';
 
-interface Props {
+export interface Props {
   title: string;
   children: React.ReactNode;
   actionComponent?: React.ReactNode;
@@ -33,7 +33,7 @@ const Layout = ({ children, title, actionComponent, isLoading }: Props) => {
             <IconButton as={Link} to="/" aria-label="Home" icon={<MdHome />} />
           </GridItem>
           <GridItem alignContent="center">
-            <Heading textAlign="center" size="sm">
+            <Heading textAlign="center" size="sm" data-testid="title">
               {title}
             </Heading>
           </GridItem>
@@ -42,7 +42,7 @@ const Layout = ({ children, title, actionComponent, isLoading }: Props) => {
       </Container>
       <Box mt="0 !important" width="100%" background={background} display="flex" flex={1}>
         {isLoading ? (
-          <Progress width="100%" isIndeterminate />
+          <Progress width="100%" isIndeterminate data-testid="loader" />
         ) : (
           <Container display="flex" flex={1} width="100%" p={4} maxW="container.xl">
             <VStack alignItems="flex-start" width="100%">

@@ -29,10 +29,10 @@ const DeleteModal: React.FC<Props> = ({ title, onDelete, onDeleteSuccess, onDele
       const result = await onDelete();
       if (result) {
         onDeleteSuccess();
+        onClose();
       } else {
         onDeleteError();
       }
-      onClose();
     } catch (ex: any) {
       onDeleteError(ex.message);
     }

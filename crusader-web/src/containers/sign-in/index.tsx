@@ -7,19 +7,19 @@ import { MdLogin } from 'react-icons/md';
 import slugify from 'slugify';
 
 // api
-import { createPlayerAsync, getPlayersAsync } from '../api/player';
+import { createPlayerAsync, getPlayersAsync } from '../../api/player';
 
 // components
-import AuthLayout from '../components/layout/auth';
+import AuthLayout from '../../components/layout/auth';
 
 // helpers
-import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '../helpers/messages';
+import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '../../helpers/messages';
 
 // state
-import { PlayerAtom } from '../state/player';
+import { PlayerAtom } from '../../state/player';
 
 // storage
-import { PLAYER } from '../helpers/storage';
+import { PLAYER } from '../../helpers/storage';
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -76,9 +76,13 @@ const SignIn = () => {
   return (
     <AuthLayout title="Sign In">
       {loading ? (
-        <Progress isIndeterminate />
+        <Progress isIndeterminate data-testid="loader" />
       ) : (
-        <form style={{ width: '100%' }} onSubmit={handleSubmit(onSubmit)}>
+        <form
+          style={{ width: '100%' }}
+          onSubmit={handleSubmit(onSubmit)}
+          data-testid="sign-in-form"
+        >
           <Input
             mb={4}
             type="text"

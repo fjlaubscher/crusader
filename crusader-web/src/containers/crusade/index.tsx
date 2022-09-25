@@ -125,8 +125,7 @@ const Crusade = () => {
                   } else {
                     await navigator.share({
                       title: currentCrusade.name,
-                      text: shareLink,
-                      url: 'https://crusader.francoislaubscher.dev'
+                      url: shareLink
                     });
                     toast({
                       title: SUCCESS_MESSAGE,

@@ -138,7 +138,6 @@ const Battle = () => {
                 as={Link}
                 to={`/battle/${id}/score`}
                 colorScheme="blue"
-                size="lg"
                 width="100%"
               >
                 Update Score

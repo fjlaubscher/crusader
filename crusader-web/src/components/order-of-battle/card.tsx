@@ -19,6 +19,7 @@ const OrderOfBattleCard = ({ orderOfBattle, showCrusadeName, showPlayerName }: P
       as={ReactRouterLink}
       to={`/order-of-battle/${orderOfBattle.id}`}
       width="100%"
+      data-testid="order-of-battle-card"
     >
       <Box background={background} borderRadius={4} width="100%" p={4}>
         <VStack alignItems="flex-start" width="100%">

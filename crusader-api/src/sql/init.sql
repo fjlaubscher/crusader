@@ -147,3 +147,4 @@ INSERT INTO faction (name) VALUES ('Necrons');
 INSERT INTO faction (name) VALUES ('Orks');
 INSERT INTO faction (name) VALUES ('Tau Empire');
 INSERT INTO faction (name) VALUES ('Tyranids');
+INSERT INTO faction (name) VALUES ('Votann');

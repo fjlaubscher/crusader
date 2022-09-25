@@ -5,7 +5,8 @@ export const FactionTypes = Object.freeze({
   Necrons: 4,
   Orks: 5,
   Tau: 6,
-  Tyranids: 7
+  Tyranids: 7,
+  Votann: 8
 });
 
 export const getCrusadeFactions = (ordersOfBattle: Crusader.OrderOfBattle[]) => {
@@ -16,7 +17,8 @@ export const getCrusadeFactions = (ordersOfBattle: Crusader.OrderOfBattle[]) => 
     totalNecrons: 0,
     totalOrks: 0,
     totalTau: 0,
-    totalTyranids: 0
+    totalTyranids: 0,
+    totalVotann: 0
   };
 
   for (let i = 0; i < ordersOfBattle.length; i++) {
@@ -42,6 +44,8 @@ export const getCrusadeFactions = (ordersOfBattle: Crusader.OrderOfBattle[]) => 
       case FactionTypes.Tyranids:
         stats.totalTyranids++;
         break;
+      case FactionTypes.Votann:
+        stats.totalVotann++;
     }
   }
 

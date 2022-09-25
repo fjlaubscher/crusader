@@ -14,9 +14,9 @@ import {
   useMediaQuery,
   useToast
 } from '@chakra-ui/react';
-import { MdAdd, MdEdit, MdPersonAddAlt1 } from 'react-icons/md';
+import { MdAdd, MdEdit, MdPersonAddAlt1, MdShare } from 'react-icons/md';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { useAsync } from 'react-use';
+import { useAsync, useSessionStorage } from 'react-use';
 import { parseISO, format } from 'date-fns';
 import ReactMarkdown from 'react-markdown';
 
@@ -33,6 +33,7 @@ import PageHeading from '../../components/page-heading';
 
 // helpers
 import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '../../helpers/messages';
+import { CRUSADE_TAB } from '../../helpers/storage';
 
 // state
 import { CrusadeAtom } from '../../state/crusade';
@@ -45,6 +46,7 @@ const Crusade = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const toast = useToast();
+  const [tabIndex, setTabIndex] = useSessionStorage<number | undefined>(CRUSADE_TAB);
 
   const player = useRecoilValue(PlayerAtom);
   const [currentCrusade, setCurrentCrusade] = useRecoilState(CrusadeAtom);
@@ -104,20 +106,59 @@ const Crusade = () => {
               @{currentCrusade.createdBy}
             </Tag>
           </PageHeading>
+          {isOwner && (
+            <Button
+              leftIcon={<MdShare />}
+              colorScheme="blue"
+              width="100%"
+              onClick={async () => {
+                try {
+                  const shareLink = `https://crusader.francoislaubscher.dev/crusade/${id}`;
+                  if (isTabletOrLarger) {
+                    await navigator.clipboard.writeText(shareLink);
+                    toast({
+                      title: SUCCESS_MESSAGE,
+                      description: 'Link copied to your clipboard.',
+                      status: 'success',
+                      isClosable: true
+                    });
+                  } else {
+                    await navigator.share({
+                      title: currentCrusade.name,
+                      text: shareLink,
+                      url: 'https://crusader.francoislaubscher.dev'
+                    });
+                    toast({
+                      title: SUCCESS_MESSAGE,
+                      description: 'List shared.',
+                      status: 'success',
+                      isClosable: true
+                    });
+                  }
+                } catch (ex: any) {
+                  toast({
+                    status: 'error',
+                    title: ERROR_MESSAGE,
+                    description: ex.message || 'Unable to share.'
+                  });
+                }
+              }}
+            >
+              Share
+            </Button>
+          )}
           {!hasJoined && (
             <Button
               leftIcon={<MdPersonAddAlt1 />}
               as={Link}
               to={`/crusade/${id}/join`}
               colorScheme="blue"
-              size="lg"
-              width="100%"
               mb="0.5rem !important"
             >
               Join Crusade
             </Button>
           )}
-          <Tabs width="100%">
+          <Tabs index={tabIndex || 0} onChange={setTabIndex} width="100%">
             <TabList>
               <Tab>About</Tab>
               <Tab>Battles</Tab>
@@ -139,7 +180,6 @@ const Crusade = () => {
                       as={Link}
                       to={`/crusade/${id}/battle`}
                       colorScheme="blue"
-                      size="lg"
                       width="100%"
                     >
                       New Battle

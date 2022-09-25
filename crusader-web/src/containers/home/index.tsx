@@ -20,17 +20,17 @@ import { MdMenu, MdChevronRight, MdAdd } from 'react-icons/md';
 import { useAsync } from 'react-use';
 
 // api
-import { getPlayerCrusadesAsync } from '../api/crusade';
+import { getPlayerCrusadesAsync } from '../../api/crusade';
 
 // components
-import CrusaderAlert from '../components/crusader-alert';
-import Layout from '../components/layout';
-import OrderOfBattleCard from '../components/order-of-battle/card';
-import Sidebar from '../components/sidebar';
+import CrusaderAlert from '../../components/crusader-alert';
+import Layout from '../../components/layout';
+import OrderOfBattleCard from '../../components/order-of-battle/card';
+import Sidebar from '../../components/sidebar';
 
 // state
-import { PlayerAtom } from '../state/player';
-import { PlayerOrdersOfBattleAtom } from '../state/order-of-battle';
+import { PlayerAtom } from '../../state/player';
+import { PlayerOrdersOfBattleAtom } from '../../state/order-of-battle';
 
 const Home = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -70,7 +70,7 @@ const Home = () => {
                   ))}
                 </SimpleGrid>
               ) : (
-                <Alert status="info" variant="left-accent">
+                <Alert status="info" variant="left-accent" data-testid="orders-of-battle-alert">
                   <AlertIcon />
                   You don't have any Orders of Battle yet.
                   <br />
@@ -79,6 +79,16 @@ const Home = () => {
               )}
             </TabPanel>
             <TabPanel width="100%" px={0}>
+              <Button
+                leftIcon={<MdAdd />}
+                as={ReactRouterLink}
+                to={`/crusade`}
+                colorScheme="blue"
+                width="100%"
+                mb={4}
+              >
+                New Crusade
+              </Button>
               {crusades && crusades.length > 0 ? (
                 <SimpleGrid columns={isTabletOrLarger ? 3 : 1} width="100%" gap={4}>
                   {crusades.map((c) => (
@@ -87,9 +97,9 @@ const Home = () => {
                       key={c.id}
                       as={ReactRouterLink}
                       to={`/crusade/${c.id}`}
-                      size="lg"
                       width="100%"
                       justifyContent="space-between"
+                      data-testid="crusade-link"
                     >
                       {c.name}
                     </Button>
@@ -97,23 +107,12 @@ const Home = () => {
                 </SimpleGrid>
               ) : (
                 <VStack width="100%">
-                  <Alert status="info" variant="left-accent">
+                  <Alert status="info" variant="left-accent" data-testid="crusades-alert">
                     <AlertIcon />
                     You haven't joined any Crusades yet.
                     <br />
                     Create one to get started!
                   </Alert>
-                  <Button
-                    leftIcon={<MdAdd />}
-                    as={ReactRouterLink}
-                    to={`/crusade`}
-                    colorScheme="blue"
-                    size="lg"
-                    width="100%"
-                    mb="0.5rem !important"
-                  >
-                    New Crusade
-                  </Button>
                 </VStack>
               )}
             </TabPanel>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link as ReactRouterLink, useNavigate, useParams } from 'react-router-dom';
 import {
   Alert,
@@ -21,7 +21,7 @@ import {
 } from '@chakra-ui/react';
 import { MdAdd, MdArrowBack, MdEdit } from 'react-icons/md';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { useAsync } from 'react-use';
+import { useAsync, useSessionStorage } from 'react-use';
 import ReactMarkdown from 'react-markdown';
 
 // api
@@ -41,6 +41,7 @@ import PageHeading from '../../components/page-heading';
 
 // helpers
 import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '../../helpers/messages';
+import { ORDER_OF_BATTLE_TAB } from '../../helpers/storage';
 
 // state
 import { OrderOfBattleAtom } from '../../state/order-of-battle';
@@ -53,6 +54,7 @@ const OrderOfBattle = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const toast = useToast();
+  const [tabIndex, setTabIndex] = useSessionStorage<number | undefined>(ORDER_OF_BATTLE_TAB);
 
   const [orderOfBattle, setOrderOfBattle] = useRecoilState(OrderOfBattleAtom);
   const player = useRecoilValue(PlayerAtom);
@@ -84,6 +86,8 @@ const OrderOfBattle = () => {
   const isOwner = orderOfBattle && orderOfBattle.playerId === playerId;
 
   const [isTabletOrLarger] = useMediaQuery('(min-width: 767px)');
+
+  useEffect(() => {}, []);
 
   return (
     <Layout
@@ -137,7 +141,7 @@ const OrderOfBattle = () => {
               </StatNumber>
             </Stat>
           </SimpleGrid>
-          <Tabs width="100%">
+          <Tabs index={tabIndex || 0} onChange={setTabIndex} width="100%">
             <TabList>
               <Tab>About</Tab>
               <Tab>Battles</Tab>
@@ -161,7 +165,6 @@ const OrderOfBattle = () => {
                       as={ReactRouterLink}
                       to={`/crusade/${orderOfBattle.crusadeId}/battle`}
                       colorScheme="blue"
-                      size="lg"
                       width="100%"
                     >
                       New Battle
@@ -189,7 +192,6 @@ const OrderOfBattle = () => {
                       as={ReactRouterLink}
                       to={`/order-of-battle/${id}/crusade-card`}
                       colorScheme="blue"
-                      size="lg"
                       width="100%"
                     >
                       New Crusade Card

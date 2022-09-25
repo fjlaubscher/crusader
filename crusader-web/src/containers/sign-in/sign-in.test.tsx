@@ -1,5 +1,4 @@
 import React from 'react';
-import { act } from 'react-dom/test-utils';
 import { screen, render, waitFor, fireEvent } from '@testing-library/react';
 import { useToast } from '@chakra-ui/react';
 import { MemoryRouter, useNavigate } from 'react-router-dom';

@@ -10,6 +10,7 @@ interface CrusadeFactions {
   totalOrks: number;
   totalTau: number;
   totalTyranids: number;
+  totalVotann: number;
 }
 
 declare module "react-helmet";

@@ -1,15 +1,17 @@
 import React from 'react';
-import { SimpleGrid } from '@chakra-ui/react';
 import { useFormContext, useController } from 'react-hook-form';
 import { useRecoilValue } from 'recoil';
 
 // components
 import InputField from '../field/input';
+import Grid from '../grid';
 import SelectField from '../field/select';
 import TextAreaField from '../field/textarea';
 
 // state
 import { FactionAtom } from '../../state/config';
+
+import styles from './order-of-battle.module.scss';
 
 interface Props {
   isCompact?: boolean;
@@ -43,6 +45,7 @@ const OrderOfBattleForm = ({ isCompact, onSubmit }: Props) => {
       onSubmit={handleSubmit(onSubmit)}
     >
       <SelectField
+        name="faction"
         options={factions}
         label="Faction"
         value={factionField.value}
@@ -52,41 +55,41 @@ const OrderOfBattleForm = ({ isCompact, onSubmit }: Props) => {
         label="Name"
         type="text"
         placeholder="Eg. Crusaders"
-        isRequired
         errorMessage={errors.name ? 'Required' : undefined}
+        required
         {...register('name', { required: true })}
       />
       {!isCompact && (
-        <SimpleGrid columns={2} columnGap={4}>
+        <Grid className={styles.grid}>
           <InputField
             label="Supply Limit"
             type="tel"
-            isRequired
             errorMessage={errors.supplyLimit ? 'Required' : undefined}
+            required
             {...register('supplyLimit', { required: true, valueAsNumber: true })}
           />
           <InputField
             label="Requisition"
             type="tel"
-            isRequired
             errorMessage={errors.requisition ? 'Required' : undefined}
+            required
             {...register('requisition', { required: true, valueAsNumber: true })}
           />
           <InputField
             label="Battle Tally"
             type="tel"
-            isRequired
             errorMessage={errors.battles ? 'Required' : undefined}
+            required
             {...register('battles', { required: true, valueAsNumber: true })}
           />
           <InputField
             label="Battles Won"
             type="tel"
-            isRequired
             errorMessage={errors.battlesWon ? 'Required' : undefined}
+            required
             {...register('battlesWon', { required: true, valueAsNumber: true })}
           />
-        </SimpleGrid>
+        </Grid>
       )}
       <TextAreaField
         label="Notes"

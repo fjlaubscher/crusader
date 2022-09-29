@@ -1,0 +1,90 @@
+import React, { useState } from 'react';
+import { FaShareAlt, FaTrash } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+
+// api
+import { deleteOrderOfBattleAsync } from '../../../api/order-of-battle';
+
+// components
+import Button from '../../../components/button';
+import DeleteModal from '../../../components/delete-modal';
+
+// hooks
+import useToast from '../../../hooks/use-toast';
+
+// state
+import { PlayerAtom } from '../../../state/player';
+
+import styles from './overview.module.scss';
+
+interface Props {
+  orderOfBattle: Crusader.OrderOfBattle;
+}
+
+const SettingsTab: React.FC<Props> = ({ orderOfBattle }) => {
+  const navigate = useNavigate();
+  const toast = useToast();
+  const player = useRecoilValue(PlayerAtom);
+  const [showModal, setShowModal] = useState(false);
+  
+  const isOwner = orderOfBattle.playerId === player?.id;
+
+  return (
+    <div className={styles.settings}>
+      <Button
+        leftIcon={<FaShareAlt />}
+        variant="info"
+        onClick={async () => {
+          try {
+            const shareLink = `${window.location.origin}/order-of-battle/${orderOfBattle.id}`;
+            if (!navigator.canShare()) {
+              await navigator.clipboard.writeText(shareLink);
+              toast({
+                variant: 'success',
+                text: 'Link copied to your clipboard.'
+              });
+            } else {
+              await navigator.share({
+                title: orderOfBattle.name,
+                url: shareLink
+              });
+              toast({
+                variant: 'success',
+                text: 'Order of Battle shared.'
+              });
+            }
+          } catch (ex: any) {
+            toast({
+              variant: 'error',
+              text: ex.message || 'Unable to share.'
+            });
+          }
+        }}
+      >
+        Share
+      </Button>
+      {isOwner && (
+        <Button variant="error" onClick={() => setShowModal(true)} leftIcon={<FaTrash />}>
+          Delete
+        </Button>
+      )}
+      <DeleteModal
+        onCloseClick={() => setShowModal(false)}
+        onDeleteClick={() => deleteOrderOfBattleAsync(orderOfBattle.id)}
+        onDeleteSuccess={() => {
+          toast({ variant: 'success', text: `Deleted ${orderOfBattle.name}` });
+          setShowModal(false);
+          navigate('/');
+        }}
+        show={showModal}
+      >
+        Are you sure you want to delete this Order of Battle?
+        <br />
+        This action is not reversable.
+      </DeleteModal>
+    </div>
+  );
+};
+
+export default SettingsTab;

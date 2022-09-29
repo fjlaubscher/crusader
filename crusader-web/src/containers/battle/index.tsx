@@ -41,7 +41,7 @@ import { getBattleStatusColor } from '../../helpers/status';
 import { PlayerOrdersOfBattleAtom } from '../../state/order-of-battle';
 
 // styles
-import styles from '../../styles/markdown.module.css';
+import styles from '../../styles/markdown.module.scss';
 
 const Battle = () => {
   const { id } = useParams();

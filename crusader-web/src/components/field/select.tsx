@@ -1,34 +1,34 @@
 import React from 'react';
-import { FormControl, FormLabel, Select, useColorModeValue } from '@chakra-ui/react';
+
+// components
+import Field from '.';
 
 interface Props {
   label: string;
   options: Crusader.ListItem[];
   onChange: (value: number) => void;
+  name: string;
   value: number;
 }
 
-const SelectField = ({ label, value, options, onChange }: Props) => {
-  const background = useColorModeValue('white', 'gray.900');
-  return (
-    <FormControl isRequired mb="2">
-      <FormLabel>{label}</FormLabel>
-      <Select
-        background={background}
-        placeholder="Select an option"
-        value={value}
-        onChange={(e) => {
-          onChange(parseInt(e.currentTarget.value));
-        }}
-      >
-        {options.map((o, i) => (
-          <option key={`option-${i}`} value={`${o.id}`}>
-            {o.name}
-          </option>
-        ))}
-      </Select>
-    </FormControl>
-  );
-};
+const SelectField = ({ label, name, value, options, onChange }: Props) => (
+  <Field>
+    <label htmlFor={name}>{label}</label>
+    <select
+      id={name}
+      placeholder="Select an option"
+      value={value}
+      onChange={(e) => {
+        onChange(parseInt(e.currentTarget.value));
+      }}
+    >
+      {options.map((o, i) => (
+        <option key={`option-${i}`} value={`${o.id}`}>
+          {o.name}
+        </option>
+      ))}
+    </select>
+  </Field>
+);
 
 export default SelectField;

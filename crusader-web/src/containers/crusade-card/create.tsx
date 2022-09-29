@@ -1,10 +1,9 @@
 import React from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
-import { useToast, IconButton, Button } from '@chakra-ui/react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { useAsync } from 'react-use';
 import { FormProvider, useForm } from 'react-hook-form';
-import { MdArrowBack, MdSave } from 'react-icons/md';
+import { FaArrowLeft, FaSave } from 'react-icons/fa';
 
 // api
 import { createCrusadeCardAsync } from '../../api/crusade-card';
@@ -12,13 +11,17 @@ import { getOrderOfBattleAsync } from '../../api/order-of-battle';
 
 // components
 import CrusadeCardForm from '../../components/crusade-card/form';
+import IconButton from '../../components/button/icon';
 import Layout from '../../components/layout';
 
-// helpers
-import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '../../helpers/messages';
+// hooks
+import useToast from '../../hooks/use-toast';
 
 // state
 import { OrderOfBattleAtom } from '../../state/order-of-battle';
+
+import styles from './crusade-card.module.scss';
+import LinkButton from '../../components/button/link';
 
 const CreateCrusadeCard = () => {
   const { id } = useParams();
@@ -51,32 +54,33 @@ const CreateCrusadeCard = () => {
       unitsDestroyedRanged: 0
     }
   });
+  const { isSubmitting, isValid } = form.formState;
 
   return (
     <FormProvider {...form}>
       <Layout
         title="New Crusade Card"
-        actionComponent={
+        action={
           <IconButton
-            aria-label="Save"
-            icon={<MdSave />}
-            disabled={!form.formState.isValid || form.formState.isSubmitting}
-            colorScheme="blue"
-            isLoading={form.formState.isSubmitting}
+            disabled={!isValid || isSubmitting}
+            loading={isSubmitting}
             type="submit"
             form="crusade-card-form"
-          />
+            variant="accent"
+          >
+            <FaSave />
+          </IconButton>
         }
         isLoading={loading}
       >
         {currentOrderOfBattle && (
-          <Button
-            leftIcon={<MdArrowBack />}
-            as={Link}
-            to={`/order-of-battle/${currentOrderOfBattle.id}`}
+          <LinkButton
+            className={styles.back}
+            leftIcon={<FaArrowLeft />}
+            to={`/order-of-battle/${id}`}
           >
-            {currentOrderOfBattle.name}
-          </Button>
+            Back
+          </LinkButton>
         )}
         <CrusadeCardForm
           onSubmit={async (values) => {
@@ -89,18 +93,16 @@ const CreateCrusadeCard = () => {
 
                 if (newCrusadeCard) {
                   toast({
-                    status: 'success',
-                    title: SUCCESS_MESSAGE,
-                    description: `Added to ${currentOrderOfBattle.name}`
+                    variant: 'success',
+                    text: `Added to ${currentOrderOfBattle.name}`
                   });
                   navigate(`/order-of-battle/${currentOrderOfBattle.id}`);
                 }
               }
             } catch (ex: any) {
               toast({
-                status: 'error',
-                title: ERROR_MESSAGE,
-                description: ex.message
+                variant: 'error',
+                text: ex.message || 'Unable to add Crusade Card'
               });
             }
           }}

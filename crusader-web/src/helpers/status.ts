@@ -1,9 +1,9 @@
 export const getBattleStatusColor = (statusId: number) => {
   switch (statusId) {
     case 2:
-      return 'blue';
+      return 'info';
     case 3:
-      return 'green';
+      return 'success';
     default:
       return undefined;
   }

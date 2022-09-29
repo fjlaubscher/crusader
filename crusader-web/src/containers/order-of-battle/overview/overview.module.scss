@@ -1,0 +1,50 @@
+@use "../../../styles/breakpoints";
+@use "../../../styles/colors";
+
+.crusadeButton {
+  background-color: darken(colors.$light-surface, 15%);
+  color: colors.$light-text;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: lighten(colors.$dark-surface, 15%);
+    color: colors.$dark-text;
+  }
+}
+
+.about {
+  width: 100%;
+}
+
+.battles {
+  .newBattle {
+    margin-bottom: 1rem;
+  }
+}
+
+.stats {
+  margin-top: 1rem;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  > div:nth-child(even) {
+    text-align: right;
+  }
+
+  @media (min-width: breakpoints.$desktop) {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+
+    > div:nth-child(even) {
+      text-align: left;
+    }
+  }
+}
+
+.settings {
+  button {
+    margin-bottom: 1rem;
+  }
+}

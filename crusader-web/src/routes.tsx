@@ -5,7 +5,7 @@ import { Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './components/protected-route';
 
 // containers
-const CrusadeOverview = lazy(() => import('./containers/crusade'));
+const CrusadeOverview = lazy(() => import('./containers/crusade/overview'));
 const CreateCrusade = lazy(() => import('./containers/crusade/create'));
 const CreateBattle = lazy(() => import('./containers/crusade/battle'));
 const EditCrusade = lazy(() => import('./containers/crusade/edit'));
@@ -16,7 +16,7 @@ const EditBattle = lazy(() => import('./containers/battle/edit'));
 const EditBattleScore = lazy(() => import('./containers/battle/score'));
 
 const Player = lazy(() => import('./containers/player'));
-const OrderOfBattleOverview = lazy(() => import('./containers/order-of-battle'));
+const OrderOfBattleOverview = lazy(() => import('./containers/order-of-battle/overview'));
 const EditOrderOfBattle = lazy(() => import('./containers/order-of-battle/edit'));
 
 const CreateCrusadeCard = lazy(() => import('./containers/crusade-card/create'));

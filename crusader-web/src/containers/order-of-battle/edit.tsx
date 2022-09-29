@@ -1,24 +1,27 @@
 import React from 'react';
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
-import { Button, IconButton, useToast } from '@chakra-ui/react';
-import { MdArrowBack, MdSave } from 'react-icons/md';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';
+import { FaSave, FaArrowLeft } from 'react-icons/fa';
 
 // api
 import { getOrderOfBattleAsync, updateOrderOfBattleAsync } from '../../api/order-of-battle';
 
 // components
+import IconButton from '../../components/button/icon';
 import Layout from '../../components/layout';
+import LinkButton from '../../components/button/link';
 import OrderOfBattleForm from '../../components/order-of-battle/form';
 
-// helpers
-import { SUCCESS_MESSAGE, ERROR_MESSAGE } from '../../helpers/messages';
+// hooks
+import useToast from '../../hooks/use-toast';
 
 // state
 import { OrderOfBattleAtom } from '../../state/order-of-battle';
 import { PlayerAtom } from '../../state/player';
+
+import styles from './order-of-battle.module.scss';
 
 const EditOrderOfBattle = () => {
   const { id } = useParams();
@@ -61,22 +64,22 @@ const EditOrderOfBattle = () => {
     <FormProvider {...form}>
       <Layout
         title="Edit Order of Battle"
-        actionComponent={
+        action={
           <IconButton
-            aria-label="Save"
-            icon={<MdSave />}
             disabled={!isValid || isSubmitting}
-            colorScheme="blue"
-            isLoading={isSubmitting}
+            loading={isSubmitting}
             type="submit"
             form="order-of-battle-form"
-          />
+            variant="accent"
+          >
+            <FaSave />
+          </IconButton>
         }
         isLoading={loading}
       >
-        <Button leftIcon={<MdArrowBack />} as={Link} to={`/order-of-battle/${id}`}>
+        <LinkButton className={styles.back} leftIcon={<FaArrowLeft />} to={`/order-of-battle/${id}`}>
           Back
-        </Button>
+        </LinkButton>
         <OrderOfBattleForm
           onSubmit={async (values) => {
             try {
@@ -88,9 +91,8 @@ const EditOrderOfBattle = () => {
 
                 if (updatedOrderOfBattle) {
                   toast({
-                    status: 'success',
-                    title: SUCCESS_MESSAGE,
-                    description: 'Order of Battle updated.'
+                    variant: 'success',
+                    text: 'Order of Battle updated'
                   });
 
                   setCurrentOrderOfBattle(updatedOrderOfBattle);
@@ -99,9 +101,8 @@ const EditOrderOfBattle = () => {
               }
             } catch (ex: any) {
               toast({
-                status: 'error',
-                title: ERROR_MESSAGE,
-                description: ex.message
+                variant: 'error',
+                text: ex.message || 'Unable to edit Order of Battle'
               });
             }
           }}

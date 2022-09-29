@@ -13,7 +13,7 @@ import DeleteModal from '../delete-modal';
 import { SUCCESS_MESSAGE, ERROR_MESSAGE } from '../../helpers/messages';
 
 // styles
-import styles from '../../styles/markdown.module.css';
+import styles from '../../styles/markdown.module.scss';
 
 interface Props {
   crusadeCard: Crusader.CrusadeCard;

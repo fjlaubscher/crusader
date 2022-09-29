@@ -13,4 +13,6 @@ interface CrusadeFactions {
   totalVotann: number;
 }
 
-declare module "react-helmet";
+type Variant = 'info' | 'success' | 'error' | 'warning' | 'accent';
+
+declare module 'react-helmet';

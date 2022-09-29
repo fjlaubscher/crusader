@@ -2,24 +2,26 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { useForm } from 'react-hook-form';
-import { Button, Input, Progress, useToast } from '@chakra-ui/react';
-import { MdLogin } from 'react-icons/md';
+import { FaKey } from 'react-icons/fa';
 import slugify from 'slugify';
 
 // api
 import { createPlayerAsync, getPlayersAsync } from '../../api/player';
 
 // components
-import AuthLayout from '../../components/layout/auth';
+import Button from '../../components/button';
+import Form from '../../components/form';
+import InputField from '../../components/field/input';
+import Layout from '../../components/layout';
 
 // helpers
-import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '../../helpers/messages';
+import { PLAYER } from '../../helpers/storage';
+
+// hooks
+import useToast from '../../hooks/use-toast';
 
 // state
 import { PlayerAtom } from '../../state/player';
-
-// storage
-import { PLAYER } from '../../helpers/storage';
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -53,17 +55,9 @@ const SignIn = () => {
         setPlayer(crusaderPlayer);
       }
 
-      toast({
-        status: 'success',
-        title: SUCCESS_MESSAGE,
-        description: 'Signed in'
-      });
+      toast({ text: 'Signed in', variant: 'success' });
     } catch (ex: any) {
-      toast({
-        status: 'error',
-        title: ERROR_MESSAGE,
-        description: ex.message
-      });
+      toast({ text: ex.message || 'Error signing in', variant: 'error' });
     }
 
     setLoading(false);
@@ -74,36 +68,22 @@ const SignIn = () => {
   }
 
   return (
-    <AuthLayout title="Sign In">
-      {loading ? (
-        <Progress isIndeterminate data-testid="loader" />
-      ) : (
-        <form
-          style={{ width: '100%' }}
-          onSubmit={handleSubmit(onSubmit)}
-          data-testid="sign-in-form"
-        >
-          <Input
-            mb={4}
-            type="text"
-            placeholder="Enter your username"
-            {...register('name', {
-              required: true,
-              validate: (value) => value.length > 6
-            })}
-          />
-          <Button
-            disabled={!formState.isValid}
-            type="submit"
-            leftIcon={<MdLogin />}
-            colorScheme="blue"
-            width="100%"
-          >
-            Sign In
-          </Button>
-        </form>
-      )}
-    </AuthLayout>
+    <Layout title="Sign In" isLoading={loading}>
+      <Form onSubmit={handleSubmit(onSubmit)} testId="sign-in-form">
+        <InputField
+          label="Enter your username"
+          type="text"
+          placeholder="eg. Player69"
+          {...register('name', {
+            required: true,
+            validate: (value) => value.length > 3
+          })}
+        />
+        <Button disabled={!formState.isValid} type="submit" variant="success" leftIcon={<FaKey />}>
+          Sign In
+        </Button>
+      </Form>
+    </Layout>
   );
 };
 

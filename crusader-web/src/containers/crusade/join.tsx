@@ -1,20 +1,9 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import {
-  useToast,
-  IconButton,
-  Alert,
-  AlertIcon,
-  Box,
-  AlertTitle,
-  AlertDescription,
-  Divider
-} from '@chakra-ui/react';
 import { useRecoilState } from 'recoil';
 import { FormProvider, useForm } from 'react-hook-form';
-import { MdSave } from 'react-icons/md';
 import { useAsync, useMount } from 'react-use';
-import ReactMarkdown from 'react-markdown';
+import { FaSave } from 'react-icons/fa';
 import slugify from 'slugify';
 
 // api
@@ -23,20 +12,21 @@ import { createOrderOfBattleAsync } from '../../api/order-of-battle';
 import { getPlayersAsync, createPlayerAsync } from '../../api/player';
 
 // components
+import Alert from '../../components/alert';
 import Layout from '../../components/layout';
+import IconButton from '../../components/button/icon';
 import JoinCrusadeForm from '../../components/crusade/join-form';
 
 // helpers
-import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '../../helpers/messages';
 import { PLAYER } from '../../helpers/storage';
+
+// hooks
+import useToast from '../../hooks/use-toast';
 
 // state
 import { CrusadeAtom } from '../../state/crusade';
 import { PlayerAtom } from '../../state/player';
 import { PlayerOrdersOfBattleAtom } from '../../state/order-of-battle';
-
-// styles
-import styles from '../../styles/markdown.module.css';
 
 const JoinCrusade = () => {
   const { id } = useParams();
@@ -57,6 +47,7 @@ const JoinCrusade = () => {
   const form = useForm<Crusader.OrderOfBattle>({
     mode: 'onChange'
   });
+  const { isValid, isSubmitting } = form.formState;
 
   useMount(() => {
     if (player) {
@@ -70,42 +61,21 @@ const JoinCrusade = () => {
     <FormProvider {...form}>
       <Layout
         title="Join Crusade"
-        actionComponent={
+        action={
           <IconButton
-            aria-label="Save"
-            icon={<MdSave />}
-            disabled={!form.formState.isValid || form.formState.isSubmitting}
-            colorScheme="blue"
-            isLoading={form.formState.isSubmitting}
+            disabled={!isValid || isSubmitting}
+            loading={isSubmitting}
             type="submit"
             form="join-crusade-form"
-          />
+            variant="accent"
+          >
+            <FaSave />
+          </IconButton>
         }
         isLoading={loading}
       >
-        <Alert status="info">
-          <AlertIcon alignSelf="flex-start" />
-          <Box flex="1">
-            <AlertTitle>😎 You&apos;re invited!</AlertTitle>
-            <AlertDescription display="block">
-              Please read through the description of this Crusade and complete the form below.
-            </AlertDescription>
-          </Box>
-        </Alert>
-        {currentCrusade && currentCrusade.notes && (
-          <ReactMarkdown linkTarget="_blank" className={styles.markdown}>
-            {currentCrusade.notes}
-          </ReactMarkdown>
-        )}
-        <Divider />
-        <Alert status="info">
-          <AlertIcon alignSelf="flex-start" />
-          <Box flex="1">
-            <AlertTitle>📝 Create your Order of Battle!</AlertTitle>
-            <AlertDescription display="block">
-              You&apos;ll get to adding your Crusade Cards in a bit.
-            </AlertDescription>
-          </Box>
+        <Alert variant="info" title="😎 You're invited!">
+          Complete the form below to join {currentCrusade ? currentCrusade.name : 'the Crusade'}
         </Alert>
         <JoinCrusadeForm
           onSubmit={async (values) => {
@@ -147,9 +117,8 @@ const JoinCrusade = () => {
 
                   if (newOrderOfBattle) {
                     toast({
-                      status: 'success',
-                      title: SUCCESS_MESSAGE,
-                      description: `Joined ${currentCrusade.name}`
+                      variant: 'success',
+                      text: `Joined ${currentCrusade.name}`
                     });
                     setOrdersOfBattle(
                       ordersOfBattle ? [...ordersOfBattle, newOrderOfBattle] : [newOrderOfBattle]
@@ -160,9 +129,8 @@ const JoinCrusade = () => {
               }
             } catch (ex: any) {
               toast({
-                status: 'error',
-                title: ERROR_MESSAGE,
-                description: ex.message
+                variant: 'error',
+                text: ex.message || 'Unable to join Crusade'
               });
             }
           }}

@@ -1,0 +1,45 @@
+@use './colors';
+
+.markdown {
+  width: 100%;
+  line-height: 1;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    font-size: revert;
+    font-weight: revert;
+    margin: revert;
+  }
+
+  a {
+    color: colors.$accent;
+    text-decoration: underline;
+  }
+
+  code {
+    color: colors.$accent;
+  }
+
+  ul,
+  ol {
+    margin-left: 2rem;
+  }
+
+  li {
+    line-height: 1;
+  }
+
+  img {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .preLineWrap {
+    white-space: pre-line;
+  }
+}

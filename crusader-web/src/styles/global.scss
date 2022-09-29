@@ -1,0 +1,44 @@
+@use './_colors';
+
+* {
+  box-sizing: border-box;
+  text-rendering: optimizelegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Roboto', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: colors.$light-background;
+  color: colors.$light-text;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: colors.$dark-background;
+    color: colors.$dark-text;
+  }
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+svg {
+  display: block;
+}
+
+a {
+  color: inherit;
+}
+
+form {
+  width: 100%;
+  margin: 0;
+}

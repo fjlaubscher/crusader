@@ -2,6 +2,7 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
 // components
+import Form from '../form';
 import InputField from '../field/input';
 import TextAreaField from '../field/textarea';
 
@@ -17,11 +18,7 @@ const CrusadeForm = ({ onSubmit }: Props) => {
   } = useFormContext<Crusader.Crusade>();
 
   return (
-    <form
-      id="crusade-form"
-      style={{ height: '100%', width: '100%', display: 'flex', flexDirection: 'column' }}
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <Form id="crusade-form" onSubmit={handleSubmit(onSubmit)}>
       <InputField
         label="Name"
         type="text"
@@ -38,7 +35,7 @@ const CrusadeForm = ({ onSubmit }: Props) => {
         errorMessage={errors.notes ? 'Required' : undefined}
         {...register('notes', { required: true })}
       />
-    </form>
+    </Form>
   );
 };
 

@@ -1,7 +1,6 @@
 import React from 'react';
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
-import { Button, IconButton, useToast } from '@chakra-ui/react';
-import { MdArrowBack, MdSave } from 'react-icons/md';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { FaArrowLeft, FaSave } from 'react-icons/fa';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';
@@ -12,13 +11,17 @@ import { getCrusadeAsync, updateCrusadeAsync } from '../../api/crusade';
 // components
 import CrusadeForm from '../../components/crusade/form';
 import Layout from '../../components/layout';
+import IconButton from '../../components/button/icon';
+import LinkButton from '../../components/button/link';
 
-// helpers
-import { SUCCESS_MESSAGE, ERROR_MESSAGE } from '../../helpers/messages';
+// hooks
+import useToast from '../../hooks/use-toast';
 
 // state
 import { CrusadeAtom } from '../../state/crusade';
 import { PlayerAtom } from '../../state/player';
+
+import styles from './crusade.module.scss';
 
 const EditCrusade = () => {
   const { id } = useParams();
@@ -61,22 +64,22 @@ const EditCrusade = () => {
     <FormProvider {...form}>
       <Layout
         title="Edit Crusade"
-        actionComponent={
+        action={
           <IconButton
-            aria-label="Save"
-            icon={<MdSave />}
             disabled={!isValid || isSubmitting}
-            colorScheme="blue"
-            isLoading={isSubmitting}
+            loading={isSubmitting}
             type="submit"
             form="crusade-form"
-          />
+            variant="accent"
+          >
+            <FaSave />
+          </IconButton>
         }
         isLoading={loading}
       >
-        <Button leftIcon={<MdArrowBack />} as={Link} to={`/crusade/${id}`}>
+        <LinkButton className={styles.back} leftIcon={<FaArrowLeft />} to={`/crusade/${id}`}>
           Back
-        </Button>
+        </LinkButton>
         <CrusadeForm
           onSubmit={async (values) => {
             try {
@@ -88,9 +91,8 @@ const EditCrusade = () => {
 
                 if (updatedCrusade) {
                   toast({
-                    status: 'success',
-                    title: SUCCESS_MESSAGE,
-                    description: 'Crusade updated'
+                    variant: 'success',
+                    text: 'Crusade updated'
                   });
 
                   setCurrentCrusade(updatedCrusade);
@@ -99,9 +101,8 @@ const EditCrusade = () => {
               }
             } catch (ex: any) {
               toast({
-                status: 'error',
-                title: ERROR_MESSAGE,
-                description: ex.message
+                variant: 'error',
+                text: ex.message || 'Unable to update crusade'
               });
             }
           }}

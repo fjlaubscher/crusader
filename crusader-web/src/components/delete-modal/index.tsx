@@ -1,83 +1,60 @@
-import React, { useCallback, useRef, useState } from 'react';
-import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
-  Button,
-  useDisclosure
-} from '@chakra-ui/react';
-import { MdDelete } from 'react-icons/md';
+import React, { useCallback, useState } from 'react';
+import classnames from 'classnames';
+import { FaTrash, FaUndo } from 'react-icons/fa';
 
-export interface Props {
-  title: string;
-  onDelete: () => Promise<boolean | undefined>;
+// components
+import Button from '../button';
+
+// hooks
+import useToast from '../../hooks/use-toast';
+
+import styles from './delete-modal.module.scss';
+
+interface Props {
+  show: boolean;
+  children: React.ReactNode;
+  onDeleteClick: () => Promise<boolean | undefined>;
   onDeleteSuccess: () => void;
-  onDeleteError: (errorMessage?: string) => void;
+  onCloseClick: () => void;
 }
 
-const DeleteModal: React.FC<Props> = ({ title, onDelete, onDeleteSuccess, onDeleteError }) => {
-  const [busy, setBusy] = useState(false);
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = useRef(null);
+const DeleteModal: React.FC<Props> = ({
+  show,
+  children,
+  onDeleteClick,
+  onDeleteSuccess,
+  onCloseClick
+}) => {
+  const toast = useToast();
+  const [isBusy, setIsBusy] = useState(false);
 
   const handleDelete = useCallback(async () => {
     try {
-      setBusy(true);
-      const result = await onDelete();
+      const result = await onDeleteClick();
       if (result) {
         onDeleteSuccess();
-        onClose();
       } else {
-        onDeleteError();
+        toast({ variant: 'error', text: 'Unable to delete.' });
       }
     } catch (ex: any) {
-      onDeleteError(ex.message);
+      toast({ variant: 'error', text: ex.message || 'Unable to delete.' });
     }
-  }, [setBusy, onDelete, onDeleteSuccess, onDeleteError, onClose]);
+  }, [setIsBusy, onDeleteClick, onDeleteSuccess]);
 
   return (
-    <>
-      <Button
-        leftIcon={<MdDelete />}
-        width="100%"
-        colorScheme="red"
-        onClick={onOpen}
-        data-testid="delete-button"
-      >
-        {title}
-      </Button>
-
-      <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
-        <AlertDialogOverlay>
-          <AlertDialogContent data-testid="delete-modal">
-            <AlertDialogHeader fontSize="lg" fontWeight="bold" data-testid="delete-modal-title">
-              {title}
-            </AlertDialogHeader>
-
-            <AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>
-
-            <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onClose}>
-                Cancel
-              </Button>
-              <Button
-                colorScheme="red"
-                onClick={handleDelete}
-                isLoading={busy}
-                disabled={busy}
-                ml={3}
-                data-testid="confirm-delete-button"
-              >
-                Delete
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
-    </>
+    <div className={classnames(styles.modal, show && styles.show)}>
+      <div className={styles.content}>
+        {children}
+        <div className={styles.buttons}>
+          <Button className={styles.cancel} type="button" onClick={onCloseClick} leftIcon={<FaUndo />}>
+            Cancel
+          </Button>
+          <Button variant="error" loading={isBusy} onClick={handleDelete} leftIcon={<FaTrash />}>
+            Delete
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { Box, VStack, Tag, Text, Link, useColorModeValue, Wrap, WrapItem } from '@chakra-ui/react';
 
-import styles from './card.module.css';
+import styles from './crusade-card.module.scss';
 
 interface Props {
   crusadeCard: Crusader.CrusadeCard;

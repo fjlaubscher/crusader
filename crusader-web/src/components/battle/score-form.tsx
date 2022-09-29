@@ -1,9 +1,10 @@
 import React from 'react';
-import { SimpleGrid, useMediaQuery } from '@chakra-ui/react';
 import { useController, useFormContext } from 'react-hook-form';
 import { useRecoilValue } from 'recoil';
 
 // components
+import Form from '../form';
+import Grid from '../grid';
 import InputField from '../field/input';
 import SelectField from '../field/select';
 
@@ -15,7 +16,6 @@ interface Props {
 }
 
 const BattleScoreForm: React.FC<Props> = ({ onSubmit }) => {
-  const [isTabletOrLarger] = useMediaQuery('(min-width: 767px)');
   const battleStatuses = useRecoilValue(BattleStatusAtom);
 
   const {
@@ -31,18 +31,18 @@ const BattleScoreForm: React.FC<Props> = ({ onSubmit }) => {
   });
 
   return (
-    <form
+    <Form
       id="battle-score-form"
-      style={{ height: '100%', width: '100%', display: 'flex', flexDirection: 'column' }}
       onSubmit={handleSubmit(onSubmit)}
     >
       <SelectField
+        name="status"
         options={battleStatuses}
         label="Status"
         value={statusField.value}
         onChange={statusField.onChange}
       />
-      <SimpleGrid columns={isTabletOrLarger ? 2 : 1} columnGap={4}>
+      <Grid simple>
         <InputField
           label="Attacker"
           type="number"
@@ -59,8 +59,8 @@ const BattleScoreForm: React.FC<Props> = ({ onSubmit }) => {
           errorMessage={errors.defenderScore ? 'Required' : undefined}
           {...register('defenderScore', { required: true, valueAsNumber: true })}
         />
-      </SimpleGrid>
-    </form>
+      </Grid>
+    </Form>
   );
 };
 

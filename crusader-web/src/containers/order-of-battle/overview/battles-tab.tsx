@@ -29,7 +29,11 @@ const BattlesTab: React.FC<Props> = ({ battles, orderOfBattle }) => {
         <Alert variant="warning">This Order of Battle hasn&apos;t fought any battles yet.</Alert>
       )}
       {isOwner && (
-        <LinkButton className={styles.newBattle} leftIcon={<FaPlus />} to={`/crusade/${orderOfBattle.crusadeId}/battle`}>
+        <LinkButton
+          className={styles.newBattle}
+          leftIcon={<FaPlus />}
+          to={`/crusade/${orderOfBattle.crusadeId}/battle`}
+        >
           New Battle
         </LinkButton>
       )}

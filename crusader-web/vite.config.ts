@@ -11,15 +11,19 @@ export default defineConfig({
       manifest: {
         name: 'Crusader',
         short_name: 'Crusader',
-        description:
-          'Crusader is a free and open-source Warhammer 40,000 Crusade assistant.',
-        theme_color: '#1A202C',
+        description: 'Crusader is a free and open-source Warhammer 40,000 Crusade assistant.',
+        theme_color: '#EA7317',
+        background_color: '#EA7317',
         icons: [
           {
             src: '/android-icon-192x192.png',
             sizes: '192x192',
-            type: 'image/png',
-            density: '4.0'
+            type: 'image/png'
+          },
+          {
+            src: '/android-icon.png',
+            sizes: '1024x1024',
+            type: 'image/png'
           }
         ]
       }

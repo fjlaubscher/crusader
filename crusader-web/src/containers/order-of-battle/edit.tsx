@@ -77,7 +77,11 @@ const EditOrderOfBattle = () => {
         }
         isLoading={loading}
       >
-        <LinkButton className={styles.back} leftIcon={<FaArrowLeft />} to={`/order-of-battle/${id}`}>
+        <LinkButton
+          className={styles.back}
+          leftIcon={<FaArrowLeft />}
+          to={`/order-of-battle/${id}`}
+        >
           Back
         </LinkButton>
         <OrderOfBattleForm

@@ -46,7 +46,12 @@ const DeleteModal: React.FC<Props> = ({
       <div className={styles.content}>
         {children}
         <div className={styles.buttons}>
-          <Button className={styles.cancel} type="button" onClick={onCloseClick} leftIcon={<FaUndo />}>
+          <Button
+            className={styles.cancel}
+            type="button"
+            onClick={onCloseClick}
+            leftIcon={<FaUndo />}
+          >
             Cancel
           </Button>
           <Button variant="error" loading={isBusy} onClick={handleDelete} leftIcon={<FaTrash />}>

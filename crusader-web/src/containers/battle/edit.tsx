@@ -24,7 +24,6 @@ const EditBattle = () => {
   const navigate = useNavigate();
   const toast = useToast();
 
-
   const form = useForm<Crusader.Battle>({ mode: 'onChange' });
   const {
     reset,

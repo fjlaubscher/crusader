@@ -16,7 +16,7 @@ const NotFound = () => {
     toast({
       variant: 'error',
       text: `The page you're looking for doesn't exist!`
-    })
+    });
   }, []);
 
   return (

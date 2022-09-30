@@ -12,7 +12,12 @@ interface Props {
 }
 
 const Form: React.FC<Props> = ({ children, className, id, onSubmit, testId }) => (
-  <form id={id} className={classnames(styles.form, className)} onSubmit={onSubmit} data-testid={testId}>
+  <form
+    id={id}
+    className={classnames(styles.form, className)}
+    onSubmit={onSubmit}
+    data-testid={testId}
+  >
     {children}
   </form>
 );

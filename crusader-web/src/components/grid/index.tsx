@@ -10,7 +10,9 @@ interface Props {
 }
 
 const Grid: React.FC<Props> = ({ className, children, simple }) => (
-  <div className={classNames(styles.grid, simple ? styles.simple : undefined, className)}>{children}</div>
+  <div className={classNames(styles.grid, simple ? styles.simple : undefined, className)}>
+    {children}
+  </div>
 );
 
 export default Grid;

@@ -16,16 +16,13 @@ interface Props {
 }
 
 const TextAreaField = forwardRef<HTMLTextAreaElement, Props>(
-  ({ label, name, placeholder, isFullHeight, required, errorMessage, onChange }, ref: React.ForwardedRef<HTMLTextAreaElement>) => (
+  (
+    { label, name, placeholder, isFullHeight, required, errorMessage, onChange },
+    ref: React.ForwardedRef<HTMLTextAreaElement>
+  ) => (
     <Field className={isFullHeight ? styles.fullHeight : undefined} error={errorMessage}>
       <label htmlFor={name}>{`${label} ${!required ? '(optional)' : ''}`}</label>
-      <textarea
-        id={name}
-        onChange={onChange}
-        name={name}
-        ref={ref}
-        placeholder={placeholder}
-      />
+      <textarea id={name} onChange={onChange} name={name} ref={ref} placeholder={placeholder} />
     </Field>
   )
 );

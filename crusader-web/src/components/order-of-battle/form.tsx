@@ -1,8 +1,10 @@
 import React from 'react';
+import classnames from 'classnames';
 import { useFormContext, useController } from 'react-hook-form';
 import { useRecoilValue } from 'recoil';
 
 // components
+import Form from '../form';
 import InputField from '../field/input';
 import Grid from '../grid';
 import NumberField from '../field/number';
@@ -51,14 +53,9 @@ const OrderOfBattleForm = ({ isCompact, onSubmit }: Props) => {
   });
 
   return (
-    <form
+    <Form
       id="order-of-battle-form"
-      style={{
-        height: !isCompact ? '100%' : undefined,
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column'
-      }}
+      className={classnames(styles.form, isCompact && styles.compact)}
       onSubmit={handleSubmit(onSubmit)}
     >
       <SelectField
@@ -118,11 +115,11 @@ const OrderOfBattleForm = ({ isCompact, onSubmit }: Props) => {
       )}
       <TextAreaField
         label="Notes"
-        isFullHeight
+        isFullHeight={isCompact}
         placeholder="Use Markdown to add some fluff to your Order of Battle!"
         {...register('notes', { required: false })}
       />
-    </form>
+    </Form>
   );
 };
 

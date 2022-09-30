@@ -16,6 +16,23 @@
   width: 100%;
   overflow-y: hidden;
   overflow-x: scroll;
+
+  &::-webkit-scrollbar {
+    height: 0.125rem;
+    background-color: colors.$light-background;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: colors.$dark-background;
+    }
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: colors.$light-surface;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: colors.$dark-surface;
+    }
+  }
 }
 
 .tab {

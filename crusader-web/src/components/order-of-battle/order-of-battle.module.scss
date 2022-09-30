@@ -2,9 +2,25 @@
   text-decoration: none;
 }
 
+.form {
+  height: auto;
+
+  textarea {
+    height: 25rem;
+  }
+
+  &.compact {
+    height: 100%;
+
+    textarea {
+      height: auto;
+    }
+  }
+}
+
 .grid {
   margin-bottom: 1rem;
-  
+
   > div {
     margin-bottom: 0;
   }

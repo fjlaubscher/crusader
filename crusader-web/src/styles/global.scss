@@ -18,6 +18,23 @@ body {
   background-color: colors.$light-background;
   color: colors.$light-text;
 
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+    background-color: colors.$light-background;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: colors.$dark-background;
+    }
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: colors.$light-surface;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: colors.$dark-surface;
+    }
+  }
+
   @media (prefers-color-scheme: dark) {
     background-color: colors.$dark-background;
     color: colors.$dark-text;

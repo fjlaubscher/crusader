@@ -103,7 +103,7 @@ const Battle = () => {
             <Tag variant="info">{battle.size}PR</Tag>
             <Tag variant={getBattleStatusColor(battle.statusId)}>{battle.status}</Tag>
           </TagGroup>
-          <Grid simple>
+          <div className={styles.stats}>
             <Stat
               title="Attacker"
               value={battle.attackerScore}
@@ -114,7 +114,7 @@ const Battle = () => {
               value={battle.defenderScore}
               description={battle.defenderOrderOfBattle}
             />
-          </Grid>
+          </div>
           {isPlayerBattle && (
             <LinkButton
               className={styles.scoreButton}
@@ -125,12 +125,7 @@ const Battle = () => {
               Update Score
             </LinkButton>
           )}
-          <Tabs
-            className={styles.tabs}
-            active={tabIndex}
-            onChange={setTabIndex}
-            tabs={['About', 'Crusaders', 'Settings']}
-          >
+          <Tabs active={tabIndex} onChange={setTabIndex} tabs={['About', 'Crusaders', 'Settings']}>
             <AboutTab battle={battle} />
             <OrdersOfBattleTab ordersOfBattle={[attacker, defender]} />
             <SettingsTab battle={battle} isOwner={isPlayerBattle || false} />

@@ -21,17 +21,20 @@ const ShareButton: React.FC<Props> = ({ link, title }) => {
       onClick={async () => {
         try {
           const shareLink = `${window.location.origin}${link}`;
-          if (!navigator.canShare()) {
+          const shareData: ShareData = {
+            title: 'Crusader',
+            text: title,
+            url: shareLink
+          };
+
+          if (!navigator.canShare || !navigator.canShare(shareData)) {
             await navigator.clipboard.writeText(shareLink);
             toast({
               variant: 'success',
               text: 'Link copied to your clipboard'
             });
           } else {
-            await navigator.share({
-              title,
-              url: shareLink
-            });
+            await navigator.share(shareData);
             toast({
               variant: 'success',
               text: 'Shared'

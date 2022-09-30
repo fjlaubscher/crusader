@@ -13,12 +13,20 @@
   }
 }
 
-.scoreButton {
-  margin-top: 1rem;
+.stats {
+  margin: 1rem 0;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  > div:nth-child(even) {
+    text-align: right;
+  }
 }
 
-.tabs {
-  margin-top: 1rem;
+.scoreButton {
+  margin-bottom: 1rem;
 }
 
 .tags {

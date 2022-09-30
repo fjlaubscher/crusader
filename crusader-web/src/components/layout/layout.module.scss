@@ -1,0 +1,54 @@
+@use '../../styles/breakpoints';
+@use '../../styles/colors';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.navbar {
+  background-color: colors.$primary;
+  color: white;
+
+  nav {
+    padding: 1rem;
+    width: 100%;
+    max-width: breakpoints.$large-desktop;
+    margin: 0 auto;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 15% auto 15%;
+
+    .home {
+      font-size: 1.5rem;
+      height: 1.5rem;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 1.25rem;
+      text-align: center;
+      align-self: center;
+    }
+
+    .action {
+      justify-self: flex-end;
+    }
+
+    @media screen and (min-width: calc(breakpoints.$large-desktop + 1px)) {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+}
+
+.content {
+  flex: 1;
+  padding: 1rem;
+
+  @media screen and (min-width: calc(breakpoints.$large-desktop + 1px)) {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}

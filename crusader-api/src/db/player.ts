@@ -11,7 +11,7 @@ export const createPlayerAsync = async (name: string) => {
   );
   await client.end();
 
-  return mapFromPSQL<Crusader.ListItem>(rows)[0];
+  return mapFromPSQL<Crusader.Player>(rows)[0];
 };
 
 export const getPlayerByIdAsync = async (id: number) => {
@@ -21,7 +21,7 @@ export const getPlayerByIdAsync = async (id: number) => {
   const { rows } = await client.query<TableRow>('SELECT * FROM player WHERE id = $1', [id]);
   await client.end();
 
-  return mapFromPSQL<Crusader.ListItem>(rows)[0];
+  return mapFromPSQL<Crusader.Player>(rows)[0];
 };
 
 export const getPlayersAsync = async (name?: string) => {
@@ -32,10 +32,10 @@ export const getPlayersAsync = async (name?: string) => {
   const { rows } = await client.query<TableRow>('SELECT * FROM player WHERE name LIKE $1', [query]);
   await client.end();
 
-  return mapFromPSQL<Crusader.ListItem>(rows);
+  return mapFromPSQL<Crusader.Player>(rows);
 };
 
-export const updatePlayerAsync = async (input: Crusader.ListItem) => {
+export const updatePlayerAsync = async (input: Crusader.Player) => {
   const client = new Client();
   await client.connect();
 
@@ -45,5 +45,5 @@ export const updatePlayerAsync = async (input: Crusader.ListItem) => {
   );
   await client.end();
 
-  return mapFromPSQL<Crusader.ListItem>(rows)[0];
+  return mapFromPSQL<Crusader.Player>(rows)[0];
 };

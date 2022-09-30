@@ -1,11 +1,13 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { Progress } from '@chakra-ui/react';
-import { useAsync, useMount } from 'react-use';
+import { useAsync } from 'react-use';
 
 // api
 import { getBattlefieldRolesAsync, getBattleStatusesAsync, getFactionsAsync } from './api/config';
 import { getPlayerOrdersOfBattleAsync } from './api/order-of-battle';
+
+// components
+import Progress from './components/progress';
 
 // state
 import { BattlefieldRoleAtom, FactionAtom, BattleStatusAtom } from './state/config';
@@ -53,20 +55,20 @@ const Router = () => {
     }
   }, [player]);
 
-  useMount(() => {
+  useEffect(() => {
     const storedPlayer = localStorage.getItem(PLAYER);
     if (storedPlayer && !player) {
-      const parsedPlayer = JSON.parse(storedPlayer) as Crusader.ListItem;
+      const parsedPlayer = JSON.parse(storedPlayer) as Crusader.Player;
       setPlayer(parsedPlayer);
     }
-  });
+  }, []);
 
   const loading = loadingConfig || loadingOrdersOfBattle;
 
   return loading ? (
-    <Progress isIndeterminate />
+    <Progress />
   ) : (
-    <Suspense fallback={<Progress isIndeterminate />}>
+    <Suspense fallback={<Progress />}>
       <Routes />
     </Suspense>
   );

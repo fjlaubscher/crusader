@@ -1,0 +1,33 @@
+@use "../../../styles/breakpoints";
+
+.stats {
+  margin: 1rem 0;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  > div:nth-child(even) {
+    text-align: right;
+  }
+
+  @media (min-width: breakpoints.$tablet) {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+
+    > div:nth-child(even) {
+      text-align: left;
+    }
+  }
+}
+
+.settings {
+  button {
+    margin-bottom: 1rem;
+  }
+
+  @media (min-width: breakpoints.$tablet) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}

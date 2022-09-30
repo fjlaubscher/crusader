@@ -1,76 +1,48 @@
 import React from 'react';
-import { Link as ReactRouterLink } from 'react-router-dom';
-import {
-  Box,
-  VStack,
-  Tag,
-  Text,
-  Link,
-  useColorModeValue,
-  Wrap,
-  WrapItem,
-  SimpleGrid,
-  Stat,
-  StatLabel,
-  StatNumber,
-  StatHelpText,
-  HStack
-} from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
+
+// components
+import Card from '../card';
+import Stat from '../stat';
+import Tag from '../tag';
+import TagGroup from '../tag/group';
 
 // helpers
 import { getBattleStatusColor } from '../../helpers/status';
 
-import styles from './card.module.css';
+import styles from './battle.module.scss';
 
 interface Props {
   battle: Crusader.Battle;
 }
 
-const BattleCard = ({ battle }: Props) => {
-  const background = useColorModeValue('white', 'gray.800');
-
-  return (
-    <Link className={styles.card} as={ReactRouterLink} to={`/battle/${battle.id}`} width="100%">
-      <Box background={background} borderRadius={4} width="100%" p={4}>
-        <VStack alignItems="flex-start" width="100%">
-          <HStack width="100%" justifyContent="space-between">
-            <Text fontWeight="bold">{battle.name}</Text>
-            <Tag size="sm" colorScheme={getBattleStatusColor(battle.statusId)}>
-              {battle.status}
-            </Tag>
-          </HStack>
-          <SimpleGrid columns={2} width="100%">
-            <Stat>
-              <StatLabel>Attacker</StatLabel>
-              <StatNumber>{battle.attackerScore}</StatNumber>
-              <StatHelpText>{battle.attackerOrderOfBattle}</StatHelpText>
-            </Stat>
-            <Stat textAlign="right">
-              <StatLabel>Defender</StatLabel>
-              <StatNumber>{battle.defenderScore}</StatNumber>
-              <StatHelpText>{battle.defenderOrderOfBattle}</StatHelpText>
-            </Stat>
-          </SimpleGrid>
-          <Wrap width="100%">
-            <WrapItem>
-              <Tag size="sm">{format(parseISO(battle.createdDate), 'yyyy-MM-dd')}</Tag>
-            </WrapItem>
-            <WrapItem>
-              <Tag size="sm" colorScheme="green">
-                {battle.mission}
-              </Tag>
-            </WrapItem>
-            <WrapItem>
-              <Tag size="sm" colorScheme="blue">
-                {battle.size}PR
-              </Tag>
-            </WrapItem>
-          </Wrap>
-        </VStack>
-      </Box>
-    </Link>
-  );
-};
+const BattleCard: React.FC<Props> = ({ battle }) => (
+  <Link className={styles.card} to={`/battle/${battle.id}`}>
+    <Card>
+      <div className={styles.heading}>
+        <span className={styles.title}>{battle.name}</span>
+        <Tag variant={getBattleStatusColor(battle.statusId)}>{battle.status}</Tag>
+      </div>
+      <div className={styles.grid}>
+        <Stat
+          description={battle.attackerOrderOfBattle}
+          title="Attacker"
+          value={battle.attackerScore}
+        />
+        <Stat
+          description={battle.defenderOrderOfBattle}
+          title="Defender"
+          value={battle.defenderScore}
+        />
+      </div>
+      <TagGroup className={styles.tags}>
+        <Tag>{format(parseISO(battle.createdDate), 'yyyy-MM-dd')}</Tag>
+        <Tag variant="success">{battle.mission}</Tag>
+        <Tag variant="info">{battle.size}PR</Tag>
+      </TagGroup>
+    </Card>
+  </Link>
+);
 
 export default BattleCard;

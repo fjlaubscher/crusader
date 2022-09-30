@@ -23,7 +23,7 @@ router.post('/', async (req, res) => {
 
 router.put('/', async (req, res) => {
   try {
-    const player = await updatePlayerAsync(req.body as Crusader.ListItem);
+    const player = await updatePlayerAsync(req.body as Crusader.Player);
     return res.status(200).json({ status: 'ok', data: player });
   } catch (ex: any) {
     return res.status(500).json({ status: 'error', data: ex.message });

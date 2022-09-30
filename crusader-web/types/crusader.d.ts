@@ -4,6 +4,11 @@ declare namespace Crusader {
     data: any;
   }
 
+  interface Toast {
+    variant: Variant
+    text: string;
+  }
+
   interface Battle {
     id: number;
     crusadeId: number;
@@ -80,5 +85,11 @@ declare namespace Crusader {
     requisition: number;
     supplyLimit: number;
     supplyUsed: number;
+  }
+
+  interface Player {
+    id: number;
+    name: string;
+    notes: string;
   }
 }

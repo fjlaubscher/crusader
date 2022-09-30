@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -32,11 +31,9 @@ const initAPI = async () => {
     });
 
     const port = process.env.PORT ? parseInt(process.env.PORT) : 5000;
-    app.listen(port, () =>
-      console.log(chalk.green(`Crusader API is listening on http://localhost:${port}`))
-    );
+    app.listen(port, () => console.log(`Crusader API is listening on http://localhost:${port}`));
   } catch (ex: any) {
-    console.log(chalk.red(ex.stack));
+    console.log(ex.stack);
   }
 };
 

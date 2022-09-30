@@ -1,0 +1,38 @@
+@use "../../../styles/breakpoints";
+@use "../../../styles/colors";
+
+.crusadeButton {
+  background-color: darken(colors.$light-surface, 15%);
+  color: colors.$light-text;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: lighten(colors.$dark-surface, 15%);
+    color: colors.$dark-text;
+  }
+}
+
+.scoreButton {
+  margin-top: 1rem;
+}
+
+.tabs {
+  margin-top: 1rem;
+}
+
+.tags {
+  margin-top: 1rem;
+}
+
+.settings {
+  button {
+    margin-bottom: 1rem;
+  }
+
+  @media (min-width: breakpoints.$tablet) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}

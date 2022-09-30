@@ -1,10 +1,9 @@
 import React from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { Button, IconButton, useToast } from '@chakra-ui/react';
-import { MdArrowBack, MdSave } from 'react-icons/md';
+import { useNavigate, useParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';
+import { FaArrowLeft, FaSave } from 'react-icons/fa';
 
 // api
 import { createBattleAsync } from '../../api/battle';
@@ -12,13 +11,17 @@ import { getCrusadeOrdersOfBattleAsync } from '../../api/order-of-battle';
 
 // components
 import BattleForm from '../../components/battle/form';
+import IconButton from '../../components/button/icon';
 import Layout from '../../components/layout';
+import LinkButton from '../../components/button/link';
 
-// helpers
-import { SUCCESS_MESSAGE, ERROR_MESSAGE } from '../../helpers/messages';
+// hooks
+import useToast from '../../hooks/use-toast';
 
 // state
 import { PlayerAtom } from '../../state/player';
+
+import styles from './crusade.module.scss';
 
 const CreateBattle = () => {
   const { id } = useParams();
@@ -28,6 +31,7 @@ const CreateBattle = () => {
   const player = useRecoilValue(PlayerAtom);
 
   const form = useForm<Crusader.Battle>({ mode: 'onChange' });
+  const { isValid, isSubmitting } = form.formState;
 
   const { loading, value: ordersOfBattle } = useAsync(async () => {
     if (id) {
@@ -44,22 +48,22 @@ const CreateBattle = () => {
     <FormProvider {...form}>
       <Layout
         title="New Battle"
-        actionComponent={
+        action={
           <IconButton
-            aria-label="Save"
-            icon={<MdSave />}
-            disabled={!form.formState.isValid || form.formState.isSubmitting}
-            colorScheme="blue"
-            isLoading={form.formState.isSubmitting}
+            disabled={!isValid || isSubmitting}
+            loading={isSubmitting}
             type="submit"
             form="battle-form"
-          />
+            variant="info"
+          >
+            <FaSave />
+          </IconButton>
         }
         isLoading={loading}
       >
-        <Button leftIcon={<MdArrowBack />} as={Link} to={`/crusade/${id}`}>
+        <LinkButton className={styles.back} leftIcon={<FaArrowLeft />} to={`/crusade/${id}`}>
           Back
-        </Button>
+        </LinkButton>
         {ordersOfBattle && (
           <BattleForm
             ordersOfBattle={ordersOfBattle}
@@ -74,18 +78,16 @@ const CreateBattle = () => {
 
                   if (newBattle) {
                     toast({
-                      status: 'success',
-                      title: SUCCESS_MESSAGE,
-                      description: 'Battle created'
+                      variant: 'success',
+                      text: 'Battle created'
                     });
                     navigate(`/battle/${newBattle.id}`);
                   }
                 }
               } catch (ex: any) {
                 toast({
-                  status: 'error',
-                  title: ERROR_MESSAGE,
-                  description: ex.message
+                  variant: 'error',
+                  text: ex.message || 'Unable to create Battle'
                 });
               }
             }}

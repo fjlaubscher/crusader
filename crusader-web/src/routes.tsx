@@ -5,27 +5,27 @@ import { Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './components/protected-route';
 
 // containers
-const CrusadeOverview = lazy(() => import('./containers/crusade'));
+const CrusadeOverview = lazy(() => import('./containers/crusade/overview'));
 const CreateCrusade = lazy(() => import('./containers/crusade/create'));
 const CreateBattle = lazy(() => import('./containers/crusade/battle'));
 const EditCrusade = lazy(() => import('./containers/crusade/edit'));
 const JoinCrusade = lazy(() => import('./containers/crusade/join'));
 
-const BattleOverview = lazy(() => import('./containers/battle'));
+const BattleOverview = lazy(() => import('./containers/battle/overview'));
 const EditBattle = lazy(() => import('./containers/battle/edit'));
 const EditBattleScore = lazy(() => import('./containers/battle/score'));
 
-const Player = lazy(() => import('./containers/player'));
-const OrderOfBattleOverview = lazy(() => import('./containers/order-of-battle'));
+const PlayerOverview = lazy(() => import('./containers/player/overview'));
+const PlayerEdit = lazy(() => import('./containers/player/edit'));
+const OrderOfBattleOverview = lazy(() => import('./containers/order-of-battle/overview'));
 const EditOrderOfBattle = lazy(() => import('./containers/order-of-battle/edit'));
 
+const CrusadeCardOverview = lazy(() => import('./containers/crusade-card/overview'));
 const CreateCrusadeCard = lazy(() => import('./containers/crusade-card/create'));
-const CrusadeCard = lazy(() => import('./containers/crusade-card'));
 const EditCrusadeCard = lazy(() => import('./containers/crusade-card/edit'));
 
 const Home = lazy(() => import('./containers/home'));
 const NotFound = lazy(() => import('./containers/not-found'));
-const Settings = lazy(() => import('./containers/settings'));
 const SignOut = lazy(() => import('./containers/sign-out'));
 
 const AppRoutes = () => (
@@ -39,14 +39,14 @@ const AppRoutes = () => (
       }
     />
     <Route
-      path="/settings"
+      path="/player/:id/edit"
       element={
         <ProtectedRoute>
-          <Settings />
+          <PlayerEdit />
         </ProtectedRoute>
       }
     />
-    <Route path="/player/:id" element={<Player />} />
+    <Route path="/player/:id" element={<PlayerOverview />} />
 
     <Route
       path="/order-of-battle/:id/crusade-card"
@@ -74,7 +74,7 @@ const AppRoutes = () => (
         </ProtectedRoute>
       }
     />
-    <Route path="/crusade-card/:id" element={<CrusadeCard />} />
+    <Route path="/crusade-card/:id" element={<CrusadeCardOverview />} />
 
     <Route path="/crusade/:id/join" element={<JoinCrusade />} />
     <Route

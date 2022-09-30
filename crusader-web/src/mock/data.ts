@@ -64,7 +64,8 @@ export const MOCK_BATTLE: Crusader.Battle = {
   mission: 'Sweep and Clear',
   size: 25,
   name: 'The Siege of Macragge',
-  notes: 'The survivors of the Ultramarines 1st Company were still believed to be fighting amongst the defence laser silos of the northern citadel, but all contact with them had been lost after the Tyranids overran the surface outposts.',
+  notes:
+    'The survivors of the Ultramarines 1st Company were still believed to be fighting amongst the defence laser silos of the northern citadel, but all contact with them had been lost after the Tyranids overran the surface outposts.',
   statusId: 3,
   createdDate: '2022-09-18T00:00:00.000Z',
   crusade: 'Battle of Macragge',

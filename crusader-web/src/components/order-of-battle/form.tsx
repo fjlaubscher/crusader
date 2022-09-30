@@ -1,15 +1,18 @@
 import React from 'react';
-import { SimpleGrid } from '@chakra-ui/react';
 import { useFormContext, useController } from 'react-hook-form';
 import { useRecoilValue } from 'recoil';
 
 // components
 import InputField from '../field/input';
+import Grid from '../grid';
+import NumberField from '../field/number';
 import SelectField from '../field/select';
 import TextAreaField from '../field/textarea';
 
 // state
 import { FactionAtom } from '../../state/config';
+
+import styles from './order-of-battle.module.scss';
 
 interface Props {
   isCompact?: boolean;
@@ -30,6 +33,22 @@ const OrderOfBattleForm = ({ isCompact, onSubmit }: Props) => {
     control,
     name: 'factionId'
   });
+  const { field: supplyLimitField } = useController({
+    control,
+    name: 'supplyLimit'
+  });
+  const { field: requisitionField } = useController({
+    control,
+    name: 'requisition'
+  });
+  const { field: battlesField } = useController({
+    control,
+    name: 'battles'
+  });
+  const { field: battlesWonField } = useController({
+    control,
+    name: 'battlesWon'
+  });
 
   return (
     <form
@@ -43,6 +62,7 @@ const OrderOfBattleForm = ({ isCompact, onSubmit }: Props) => {
       onSubmit={handleSubmit(onSubmit)}
     >
       <SelectField
+        name="faction"
         options={factions}
         label="Faction"
         value={factionField.value}
@@ -52,41 +72,49 @@ const OrderOfBattleForm = ({ isCompact, onSubmit }: Props) => {
         label="Name"
         type="text"
         placeholder="Eg. Crusaders"
-        isRequired
         errorMessage={errors.name ? 'Required' : undefined}
+        required
         {...register('name', { required: true })}
       />
       {!isCompact && (
-        <SimpleGrid columns={2} columnGap={4}>
-          <InputField
+        <Grid className={styles.grid}>
+          <NumberField
+            name="supplyLimit"
             label="Supply Limit"
-            type="tel"
-            isRequired
             errorMessage={errors.supplyLimit ? 'Required' : undefined}
-            {...register('supplyLimit', { required: true, valueAsNumber: true })}
+            value={supplyLimitField.value}
+            onChange={supplyLimitField.onChange}
+            minimum={50}
+            step={5}
+            required
           />
-          <InputField
+          <NumberField
+            name="requisition"
             label="Requisition"
-            type="tel"
-            isRequired
             errorMessage={errors.requisition ? 'Required' : undefined}
-            {...register('requisition', { required: true, valueAsNumber: true })}
+            value={requisitionField.value}
+            onChange={requisitionField.onChange}
+            maximum={5}
+            required
           />
-          <InputField
+          <NumberField
+            name="battles"
             label="Battle Tally"
-            type="tel"
-            isRequired
             errorMessage={errors.battles ? 'Required' : undefined}
-            {...register('battles', { required: true, valueAsNumber: true })}
+            value={battlesField.value}
+            onChange={battlesField.onChange}
+            required
           />
-          <InputField
+          <NumberField
+            name="battlesWon"
             label="Battles Won"
-            type="tel"
-            isRequired
             errorMessage={errors.battlesWon ? 'Required' : undefined}
-            {...register('battlesWon', { required: true, valueAsNumber: true })}
+            value={battlesWonField.value}
+            onChange={battlesWonField.onChange}
+            required
+            maximum={battlesField.value}
           />
-        </SimpleGrid>
+        </Grid>
       )}
       <TextAreaField
         label="Notes"

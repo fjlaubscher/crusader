@@ -1,109 +1,93 @@
-import React, { useState } from 'react';
+import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { useForm } from 'react-hook-form';
-import { Button, Input, Progress, useToast } from '@chakra-ui/react';
-import { MdLogin } from 'react-icons/md';
+import { FaHammer, FaKey } from 'react-icons/fa';
 import slugify from 'slugify';
 
 // api
 import { createPlayerAsync, getPlayersAsync } from '../../api/player';
 
 // components
-import AuthLayout from '../../components/layout/auth';
+import Button from '../../components/button';
+import Form from '../../components/form';
+import InputField from '../../components/field/input';
+import Layout from '../../components/layout';
 
 // helpers
-import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '../../helpers/messages';
+import { PLAYER } from '../../helpers/storage';
+
+// hooks
+import useToast from '../../hooks/use-toast';
 
 // state
 import { PlayerAtom } from '../../state/player';
 
-// storage
-import { PLAYER } from '../../helpers/storage';
+import styles from './sign-in.module.scss';
 
 const SignIn = () => {
   const navigate = useNavigate();
   const toast = useToast();
 
-  const [player, setPlayer] = useRecoilState(PlayerAtom);
-  const [loading, setLoading] = useState(false);
+  const setPlayer = useSetRecoilState(PlayerAtom);
 
   const { formState, handleSubmit, register } = useForm<Crusader.ListItem>({
-    mode: 'onChange',
-    defaultValues: {
-      name: ''
-    }
+    mode: 'onChange'
   });
 
-  async function onSubmit(player: Crusader.ListItem) {
-    try {
-      setLoading(true);
-      const sluggedName = slugify(player.name);
-      const players = await getPlayersAsync(sluggedName);
-      let crusaderPlayer: Crusader.ListItem | undefined = undefined;
+  const onSubmit = useCallback(
+    async (player: Crusader.ListItem) => {
+      try {
+        const sluggedName = slugify(player.name);
+        const players = await getPlayersAsync(sluggedName);
+        let crusaderPlayer: Crusader.Player | undefined = undefined;
 
-      if (players && players.length) {
-        crusaderPlayer = players[0];
-      } else {
-        crusaderPlayer = await createPlayerAsync(sluggedName);
+        if (players && players.length) {
+          crusaderPlayer = players[0];
+        } else {
+          crusaderPlayer = await createPlayerAsync(sluggedName);
+        }
+
+        if (crusaderPlayer) {
+          localStorage.setItem(PLAYER, JSON.stringify(crusaderPlayer));
+          setPlayer(crusaderPlayer);
+          navigate('/');
+        }
+
+        toast({ variant: 'success', text: 'Signed in' });
+      } catch (ex: any) {
+        toast({ variant: 'error', text: ex.message || 'Error signing in' });
       }
-
-      if (crusaderPlayer) {
-        localStorage.setItem(PLAYER, JSON.stringify(crusaderPlayer));
-        setPlayer(crusaderPlayer);
-      }
-
-      toast({
-        status: 'success',
-        title: SUCCESS_MESSAGE,
-        description: 'Signed in'
-      });
-    } catch (ex: any) {
-      toast({
-        status: 'error',
-        title: ERROR_MESSAGE,
-        description: ex.message
-      });
-    }
-
-    setLoading(false);
-  }
-
-  if (player) {
-    navigate('/');
-  }
+    },
+    [setPlayer, toast, navigate]
+  );
 
   return (
-    <AuthLayout title="Sign In">
-      {loading ? (
-        <Progress isIndeterminate data-testid="loader" />
-      ) : (
-        <form
-          style={{ width: '100%' }}
-          onSubmit={handleSubmit(onSubmit)}
-          data-testid="sign-in-form"
+    <div className={styles.page}>
+      <div className={styles.logo}>
+        <FaHammer />
+        <span className={styles.title}>Crusader</span>
+      </div>
+      <Form className={styles.form} onSubmit={handleSubmit(onSubmit)} testId="sign-in-form">
+        <InputField
+          type="text"
+          placeholder="Username"
+          {...register('name', {
+            required: true,
+            validate: (value) => value.length > 3
+          })}
+        />
+        <Button
+          disabled={!formState.isValid}
+          loading={formState.isSubmitting}
+          type="submit"
+          variant="info"
+          leftIcon={<FaKey />}
         >
-          <Input
-            mb={4}
-            type="text"
-            placeholder="Enter your username"
-            {...register('name', {
-              required: true,
-              validate: (value) => value.length > 6
-            })}
-          />
-          <Button
-            disabled={!formState.isValid}
-            type="submit"
-            leftIcon={<MdLogin />}
-            colorScheme="blue"
-            width="100%"
-          >
-            Sign In
-          </Button>
-        </form>
-      )}
-    </AuthLayout>
+          Sign In
+        </Button>
+      </Form>
+    </div>
   );
 };
 

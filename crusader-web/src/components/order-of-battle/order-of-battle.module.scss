@@ -1,0 +1,11 @@
+.card {
+  text-decoration: none;
+}
+
+.grid {
+  margin-bottom: 1rem;
+  
+  > div {
+    margin-bottom: 0;
+  }
+}

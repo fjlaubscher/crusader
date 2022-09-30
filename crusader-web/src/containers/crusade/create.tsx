@@ -1,19 +1,19 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Button, IconButton, useToast } from '@chakra-ui/react';
-import { MdArrowBack, MdSave } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useRecoilValue } from 'recoil';
+import { FaSave } from 'react-icons/fa';
 
 // api
 import { createCrusadeAsync } from '../../api/crusade';
 
 // components
 import CrusadeForm from '../../components/crusade/form';
+import IconButton from '../../components/button/icon';
 import Layout from '../../components/layout';
 
-// helpers
-import { SUCCESS_MESSAGE, ERROR_MESSAGE } from '../../helpers/messages';
+// hooks
+import useToast from '../../hooks/use-toast';
 
 // state
 import { PlayerAtom } from '../../state/player';
@@ -25,26 +25,24 @@ const CreateCrusade = () => {
   const player = useRecoilValue(PlayerAtom);
 
   const form = useForm<Crusader.Crusade>({ mode: 'onChange' });
+  const { isValid, isSubmitting } = form.formState;
 
   return (
     <FormProvider {...form}>
       <Layout
         title="New Crusade"
-        actionComponent={
+        action={
           <IconButton
-            aria-label="Save"
-            icon={<MdSave />}
-            disabled={!form.formState.isValid || form.formState.isSubmitting}
-            colorScheme="blue"
-            isLoading={form.formState.isSubmitting}
+            disabled={!isValid || isSubmitting}
+            loading={isSubmitting}
             type="submit"
             form="crusade-form"
-          />
+            variant="info"
+          >
+            <FaSave />
+          </IconButton>
         }
       >
-        <Button leftIcon={<MdArrowBack />} as={Link} to="/">
-          Back
-        </Button>
         <CrusadeForm
           onSubmit={async (values) => {
             try {
@@ -57,18 +55,16 @@ const CreateCrusade = () => {
 
                 if (newCrusade) {
                   toast({
-                    status: 'success',
-                    title: SUCCESS_MESSAGE,
-                    description: 'Crusade created'
+                    variant: 'success',
+                    text: 'Crusade created'
                   });
                   navigate(`/crusade/${newCrusade.id}`);
                 }
               }
             } catch (ex: any) {
               toast({
-                status: 'error',
-                title: ERROR_MESSAGE,
-                description: ex.message
+                variant: 'error',
+                text: ex.message || 'Unable to create Crusade'
               });
             }
           }}

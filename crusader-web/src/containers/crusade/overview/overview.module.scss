@@ -1,0 +1,27 @@
+@use "../../../styles/breakpoints";
+
+.battles {
+  .newBattle {
+    margin-bottom: 1rem;
+  }
+}
+
+.join {
+  margin-top: 1rem;
+}
+
+.tabs {
+  margin-top: 1rem;
+}
+
+.settings {
+  button {
+    margin-bottom: 1rem;
+  }
+
+  @media (min-width: breakpoints.$tablet) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}

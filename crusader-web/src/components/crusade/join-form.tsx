@@ -3,6 +3,7 @@ import { useFormContext, useController } from 'react-hook-form';
 import { useRecoilValue } from 'recoil';
 
 // components
+import Form from '../form';
 import InputField from '../field/input';
 import SelectField from '../field/select';
 
@@ -29,16 +30,9 @@ const JoinCrusadeForm = ({ onSubmit }: Props) => {
   });
 
   return (
-    <form
-      id="join-crusade-form"
-      style={{
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column'
-      }}
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <Form id="join-crusade-form" onSubmit={handleSubmit(onSubmit)}>
       <SelectField
+        name="faction"
         options={factions}
         label="Faction"
         value={factionField.value}
@@ -48,19 +42,19 @@ const JoinCrusadeForm = ({ onSubmit }: Props) => {
         label="Username"
         type="text"
         placeholder="Your username"
-        isRequired
         errorMessage={errors.player ? 'Required' : undefined}
+        required
         {...register('player', { required: true, validate: (value) => value.length > 6 })}
       />
       <InputField
-        label="Name"
+        label="Order of Battle"
         type="text"
-        placeholder="Eg. Crusaders"
-        isRequired
+        placeholder="Eg. The Sons of Gulliman"
+        required
         errorMessage={errors.name ? 'Required' : undefined}
         {...register('name', { required: true })}
       />
-    </form>
+    </Form>
   );
 };
 

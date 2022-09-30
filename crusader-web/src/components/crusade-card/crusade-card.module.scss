@@ -1,0 +1,20 @@
+@use "../../styles/breakpoints";
+
+.card {
+  text-decoration: none;
+}
+
+.noMargin {
+  row-gap: 0;
+  margin-bottom: 0;
+}
+
+.grid {
+  grid-template-columns: 1fr 1fr;
+  row-gap: 0;
+  margin-bottom: 0;
+
+  @media (min-width: breakpoints.$desktop) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}

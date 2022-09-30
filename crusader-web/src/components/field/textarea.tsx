@@ -1,49 +1,30 @@
 import React, { forwardRef } from 'react';
-import {
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Textarea,
-  useColorModeValue
-} from '@chakra-ui/react';
+
+// components
+import Field from '.';
+
+import styles from './field.module.scss';
 
 interface Props {
   label: string;
   name?: string;
   placeholder?: string;
   isFullHeight?: boolean;
-  isRequired?: boolean;
+  required?: boolean;
   errorMessage?: string;
   onChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
 }
 
 const TextAreaField = forwardRef<HTMLTextAreaElement, Props>(
-  ({ label, name, placeholder, isFullHeight, isRequired, errorMessage, onChange }, ref) => {
-    const background = useColorModeValue('white', 'gray.900');
-    return (
-      <FormControl
-        display="flex"
-        flexDirection="column"
-        height={isFullHeight ? '100%' : undefined}
-        mb="2"
-        id={name}
-        isRequired={isRequired || false}
-        isInvalid={!!errorMessage}
-      >
-        <FormLabel>{label}</FormLabel>
-        <Textarea
-          flex={isFullHeight ? 1 : undefined}
-          background={background}
-          resize="vertical"
-          onChange={onChange}
-          name={name}
-          ref={ref as React.ForwardedRef<HTMLTextAreaElement>}
-          placeholder={placeholder}
-        />
-        <FormErrorMessage>{errorMessage}</FormErrorMessage>
-      </FormControl>
-    );
-  }
+  (
+    { label, name, placeholder, isFullHeight, required, errorMessage, onChange },
+    ref: React.ForwardedRef<HTMLTextAreaElement>
+  ) => (
+    <Field className={isFullHeight ? styles.fullHeight : undefined} error={errorMessage}>
+      <label htmlFor={name}>{`${label} ${!required ? '(optional)' : ''}`}</label>
+      <textarea id={name} onChange={onChange} name={name} ref={ref} placeholder={placeholder} />
+    </Field>
+  )
 );
 
 export default TextAreaField;

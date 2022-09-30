@@ -1,5 +1,5 @@
-@use "../../styles/breakpoints";
-@use "../../styles/colors";
+@use '../../styles/breakpoints';
+@use '../../styles/colors';
 
 .container {
   background-color: colors.$light-background;
@@ -12,14 +12,15 @@
 }
 
 .tabs {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(4rem, 1fr));
+  display: flex;
   width: 100%;
+  overflow-y: hidden;
+  overflow-x: scroll;
 }
 
 .tab {
   text-align: center;
-  padding: 1rem 0 0.875rem;
+  padding: 1rem;
   background-color: transparent;
   border: 0;
   color: colors.$accent;
@@ -29,6 +30,8 @@
   font-size: 0.8125rem;
   font-weight: 500;
   cursor: pointer;
+  white-space: nowrap;
+  flex: 1;
 
   &:last-child {
     border-right: 0;

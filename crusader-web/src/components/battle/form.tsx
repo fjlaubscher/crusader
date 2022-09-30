@@ -8,6 +8,9 @@ import InputField from '../field/input';
 import SelectField from '../field/select';
 import TextAreaField from '../field/textarea';
 
+import styles from './battle.module.scss';
+import NumberField from '../field/number';
+
 interface Props {
   ordersOfBattle: Crusader.ListItem[];
   onSubmit: (values: Crusader.Battle) => Promise<void>;
@@ -25,28 +28,25 @@ const BattleForm = ({ ordersOfBattle, onSubmit }: Props) => {
     control,
     name: 'attackerOrderOfBattleId'
   });
-
   const { field: defenderField } = useController({
     control,
     name: 'defenderOrderOfBattleId'
   });
+  const { field: sizeField } = useController({
+    control,
+    name: 'size'
+  });
 
   return (
     <Form id="battle-form" onSubmit={handleSubmit(onSubmit)}>
-      <Grid simple>
-        <InputField
-          label="Mission"
-          type="text"
-          placeholder="Eg. Core Book - Sweep and Clear"
-          errorMessage={errors.mission ? 'Required' : undefined}
-          {...register('mission', { required: true })}
-        />
-        <InputField
+      <Grid className={styles.formGrid} simple>
+        <NumberField
+          name="size"
           label="Size (Maximum PR)"
-          type="number"
-          placeholder="25"
           errorMessage={errors.size ? 'Required' : undefined}
-          {...register('size', { required: true, valueAsNumber: true })}
+          value={sizeField.value}
+          onChange={sizeField.onChange}
+          required
         />
         <SelectField
           name="attacker"
@@ -64,18 +64,26 @@ const BattleForm = ({ ordersOfBattle, onSubmit }: Props) => {
         />
       </Grid>
       <InputField
+        label="Mission"
+        type="text"
+        placeholder="Eg. Core Book - Sweep and Clear"
+        errorMessage={errors.mission ? 'Required' : undefined}
+        {...register('mission', { required: true })}
+        required
+      />
+      <InputField
         label="Name"
         type="text"
         placeholder="Eg. The Battle of Ultramar"
         errorMessage={errors.name ? 'Required' : undefined}
         {...register('name', { required: true })}
+        required
       />
       <TextAreaField
         label="Description"
         isFullHeight
         placeholder="Use Markdown to describe your battle!"
-        errorMessage={errors.notes ? 'Required' : undefined}
-        {...register('notes', { required: true })}
+        {...register('notes', { required: false })}
       />
     </Form>
   );

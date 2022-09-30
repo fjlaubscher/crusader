@@ -1,22 +1,31 @@
-import React from 'react';
-import { Alert, AlertIcon, VStack } from '@chakra-ui/react';
-import { GiBolterGun } from 'react-icons/gi';
+import React, { useEffect } from 'react';
+import { FaBiohazard } from 'react-icons/fa';
 
 // components
 import Layout from '../../components/layout';
 
-import styles from './not-found.module.css';
+// hooks
+import useToast from '../../hooks/use-toast';
 
-const NotFound = () => (
-  <Layout title="Not Found">
-    <Alert status="error" variant="left-accent">
-      <AlertIcon />
-      This page doesn&apos;t exist.
-    </Alert>
-    <VStack width="100%" height="100%" alignItems="center" justifyContent="center">
-      <GiBolterGun fontSize="8rem" className={styles.notFound} />
-    </VStack>
-  </Layout>
-);
+import styles from './not-found.module.scss';
+
+const NotFound = () => {
+  const toast = useToast();
+
+  useEffect(() => {
+    toast({
+      variant: 'error',
+      text: `The page you're looking for doesn't exist!`
+    })
+  }, []);
+
+  return (
+    <Layout title="Not Found">
+      <div className={styles.content}>
+        <FaBiohazard className={styles.notFound} />
+      </div>
+    </Layout>
+  );
+};
 
 export default NotFound;

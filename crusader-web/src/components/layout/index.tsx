@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FiFileText, FiArrowLeft } from 'react-icons/fi';
+import { FaHammer } from 'react-icons/fa';
 import { Helmet } from 'react-helmet';
 
 // components
@@ -12,25 +12,24 @@ import styles from './layout.module.scss';
 interface Props {
   children: React.ReactNode;
   title: string;
-  backLink?: string;
   action?: React.ReactNode;
   isLoading?: boolean;
 }
 
-const Layout = ({ backLink, children, title, action, isLoading }: Props) => {
-  return (
-    <div className={styles.container}>
-      <Helmet title={`${title} | Crusader`} />
-      <div className={styles.navbar}>
-        <Link className={styles.home} to={backLink || '/'}>
-          {backLink ? <FiArrowLeft /> : <FiFileText />}
+const Layout = ({ children, title, action, isLoading }: Props) => (
+  <div className={styles.container}>
+    <Helmet title={`${title} | Crusader`} />
+    <div className={styles.navbar}>
+      <nav>
+        <Link className={styles.home} to="/">
+          <FaHammer />
         </Link>
         <h1 className={styles.title}>{title}</h1>
         <div className={styles.action}>{action}</div>
-      </div>
-      {isLoading ? <Progress /> : <Container className={styles.content}>{children}</Container>}
+      </nav>
     </div>
-  );
-};
+    {isLoading ? <Progress /> : <Container className={styles.content}>{children}</Container>}
+  </div>
+);
 
 export default Layout;

@@ -4,6 +4,7 @@
   width: 100%;
   line-height: 1;
 
+
   h1,
   h2,
   h3,
@@ -14,6 +15,7 @@
     font-size: revert;
     font-weight: revert;
     margin: revert;
+    white-space: pre-line;
   }
 
   a {
@@ -27,7 +29,7 @@
 
   ul,
   ol {
-    margin-left: 2rem;
+    padding-left: 2rem;
   }
 
   li {
@@ -37,9 +39,5 @@
   img {
     max-width: 100%;
     margin: 0 auto;
-  }
-
-  .preLineWrap {
-    white-space: pre-line;
   }
 }

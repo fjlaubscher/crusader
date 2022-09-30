@@ -98,16 +98,16 @@ const Crusade = () => {
             </LinkButton>
           )}
           <Tabs
+            className={styles.tabs}
             active={tabIndex || 0}
             onChange={setTabIndex}
             tabs={['About', 'Battles', 'Crusaders', 'Settings']}
-            content={[
-              <AboutTab crusade={currentCrusade} />,
-              <BattlesTab battles={battles} crusade={currentCrusade} hasJoinedCrusade={hasJoined} />,
-              <OrdersOfBattleTab ordersOfBattle={ordersOfBattle} />,
-              <SettingsTab crusade={currentCrusade} />
-            ]}
-          />
+          >
+            <AboutTab crusade={currentCrusade} />
+            <BattlesTab battles={battles} crusade={currentCrusade} hasJoinedCrusade={hasJoined} />
+            <OrdersOfBattleTab ordersOfBattle={ordersOfBattle} />
+            <SettingsTab crusade={currentCrusade} />
+          </Tabs>
         </>
       )}
     </Layout>

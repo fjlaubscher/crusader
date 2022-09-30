@@ -24,7 +24,7 @@ const CardsTab: React.FC<Props> = ({ cards, orderOfBattle }) => {
   const isOwner = orderOfBattle.playerId === player?.id;
   const hasCards = cards.length > 0;
   return (
-    <div className={styles.cards}>
+    <div>
       {!hasCards && (
         <Alert variant="warning">
           This Order of Battle doesn&apos;t have any Crusade Cards yet.
@@ -36,7 +36,7 @@ const CardsTab: React.FC<Props> = ({ cards, orderOfBattle }) => {
         </LinkButton>
       )}
       {hasCards && (
-        <Grid>
+        <Grid className={isOwner ? styles.cards : undefined}>
           {cards.map((c) => (
             <CrusadeCard key={c.id} crusadeCard={c} />
           ))}

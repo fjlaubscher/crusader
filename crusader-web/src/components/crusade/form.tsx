@@ -23,15 +23,15 @@ const CrusadeForm = ({ onSubmit }: Props) => {
         label="Name"
         type="text"
         placeholder="Eg. My FLGS Crusade"
-        isRequired
+        required
         errorMessage={errors.name ? 'Required' : undefined}
         {...register('name', { required: true })}
       />
       <TextAreaField
         label="Description"
         isFullHeight
-        placeholder="Use Markdown to describe your crusade!"
-        isRequired
+        placeholder="Use Markdown to describe your Crusade!"
+        required
         errorMessage={errors.notes ? 'Required' : undefined}
         {...register('notes', { required: true })}
       />

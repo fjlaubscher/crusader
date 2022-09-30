@@ -7,7 +7,6 @@ import { useAsync, useSessionStorage } from 'react-use';
 import { getPlayerCrusadesAsync } from '../../api/crusade';
 
 // components
-import CrusaderAlert from '../../components/crusader-alert';
 import CrusadesTab from './crusades-tab';
 import IconButton from '../../components/button/icon';
 import Layout from '../../components/layout';
@@ -38,7 +37,7 @@ const Home = () => {
 
   return (
     <>
-      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      <Sidebar visible={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       <Layout
         title="Home"
         action={
@@ -48,16 +47,14 @@ const Home = () => {
         }
         isLoading={loading}
       >
-        <CrusaderAlert playerName={player ? player.name : ''} />
         <Tabs
           tabs={['Orders of Battle', 'Your Crusades']}
-          content={[
-            <OrdersOfBattleTab ordersOfBattle={ordersOfBattle} />,
-            <CrusadesTab crusades={crusades} />
-          ]}
           active={tabIndex || 0}
           onChange={setTabIndex}
-        />
+        >
+          <OrdersOfBattleTab ordersOfBattle={ordersOfBattle} />
+          <CrusadesTab crusades={crusades} />
+        </Tabs>
       </Layout>
     </>
   );

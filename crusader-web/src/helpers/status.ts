@@ -1,4 +1,4 @@
-export const getBattleStatusColor = (statusId: number) => {
+export const getBattleStatusColor = (statusId: number): Variant | undefined => {
   switch (statusId) {
     case 2:
       return 'info';

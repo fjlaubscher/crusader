@@ -42,15 +42,15 @@ const JoinCrusadeForm = ({ onSubmit }: Props) => {
         label="Username"
         type="text"
         placeholder="Your username"
-        isRequired
         errorMessage={errors.player ? 'Required' : undefined}
+        required
         {...register('player', { required: true, validate: (value) => value.length > 6 })}
       />
       <InputField
-        label="Name"
+        label="Order of Battle"
         type="text"
-        placeholder="Eg. Crusaders"
-        isRequired
+        placeholder="Eg. The Sons of Gulliman"
+        required
         errorMessage={errors.name ? 'Required' : undefined}
         {...register('name', { required: true })}
       />

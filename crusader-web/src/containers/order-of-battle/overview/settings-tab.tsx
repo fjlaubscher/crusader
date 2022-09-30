@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaShareAlt, FaTrash } from 'react-icons/fa';
+import { FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
@@ -9,6 +9,7 @@ import { deleteOrderOfBattleAsync } from '../../../api/order-of-battle';
 // components
 import Button from '../../../components/button';
 import DeleteModal from '../../../components/delete-modal';
+import ShareButton from '../../../components/button/share';
 
 // hooks
 import useToast from '../../../hooks/use-toast';
@@ -27,43 +28,12 @@ const SettingsTab: React.FC<Props> = ({ orderOfBattle }) => {
   const toast = useToast();
   const player = useRecoilValue(PlayerAtom);
   const [showModal, setShowModal] = useState(false);
-  
+
   const isOwner = orderOfBattle.playerId === player?.id;
 
   return (
     <div className={styles.settings}>
-      <Button
-        leftIcon={<FaShareAlt />}
-        variant="info"
-        onClick={async () => {
-          try {
-            const shareLink = `${window.location.origin}/order-of-battle/${orderOfBattle.id}`;
-            if (!navigator.canShare()) {
-              await navigator.clipboard.writeText(shareLink);
-              toast({
-                variant: 'success',
-                text: 'Link copied to your clipboard.'
-              });
-            } else {
-              await navigator.share({
-                title: orderOfBattle.name,
-                url: shareLink
-              });
-              toast({
-                variant: 'success',
-                text: 'Order of Battle shared.'
-              });
-            }
-          } catch (ex: any) {
-            toast({
-              variant: 'error',
-              text: ex.message || 'Unable to share.'
-            });
-          }
-        }}
-      >
-        Share
-      </Button>
+      <ShareButton link={`/order-of-battle/${orderOfBattle.id}`} title={orderOfBattle.name} />
       {isOwner && (
         <Button variant="error" onClick={() => setShowModal(true)} leftIcon={<FaTrash />}>
           Delete

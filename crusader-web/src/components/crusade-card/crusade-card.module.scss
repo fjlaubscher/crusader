@@ -1,11 +1,7 @@
 @use "../../styles/breakpoints";
 
 .card {
-  text-decoration: none !important;
-}
-
-.card:hover p:first-child {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .noMargin {

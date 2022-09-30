@@ -4,7 +4,7 @@ import React, { forwardRef } from 'react';
 import Field from '.';
 
 interface Props {
-  label: string;
+  label?: string;
   type: string;
   name?: string;
   placeholder?: string;
@@ -16,7 +16,7 @@ interface Props {
 const InputField = forwardRef<HTMLInputElement, Props>(
   ({ label, name, type, placeholder, required, errorMessage, onChange }, ref) => (
     <Field error={errorMessage}>
-      <label htmlFor={name}>{`${label} ${!required ? '(optional)' : ''}`}</label>
+      {label && <label htmlFor={name}>{`${label} ${!required ? '(optional)' : ''}`}</label>}
       <input
         id={name}
         onChange={onChange}

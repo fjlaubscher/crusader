@@ -22,6 +22,7 @@ const SelectField = ({ label, name, value, options, onChange }: Props) => (
         onChange(parseInt(e.currentTarget.value));
       }}
     >
+      <option disabled>Select an option</option>
       {options.map((o, i) => (
         <option key={`option-${i}`} value={`${o.id}`}>
           {o.name}

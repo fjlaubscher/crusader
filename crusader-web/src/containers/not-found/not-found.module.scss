@@ -7,6 +7,14 @@
   }
 }
 
+.content {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .notFound {
+  font-size: 10rem;
   animation: rotation 5s linear infinite;
 }

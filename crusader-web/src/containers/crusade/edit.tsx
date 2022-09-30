@@ -70,7 +70,7 @@ const EditCrusade = () => {
             loading={isSubmitting}
             type="submit"
             form="crusade-form"
-            variant="accent"
+            variant="info"
           >
             <FaSave />
           </IconButton>
@@ -102,7 +102,7 @@ const EditCrusade = () => {
             } catch (ex: any) {
               toast({
                 variant: 'error',
-                text: ex.message || 'Unable to update crusade'
+                text: ex.message || 'Unable to update Crusade'
               });
             }
           }}

@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { IconButton, useToast } from '@chakra-ui/react';
-import { MdSave } from 'react-icons/md';
+import { FaArrowLeft, FaSave } from 'react-icons/fa';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useAsync } from 'react-use';
 
@@ -11,11 +10,15 @@ import { getBattleAsync, updateBattleAsync } from '../../api/battle';
 // components
 import BattleScoreForm from '../../components/battle/score-form';
 import Layout from '../../components/layout';
+import LinkButton from '../../components/button/link';
+import IconButton from '../../components/button/icon';
 
-// helpers
-import { SUCCESS_MESSAGE, ERROR_MESSAGE } from '../../helpers/messages';
+// hooks
+import useToast from '../../hooks/use-toast';
 
-const EditBattle = () => {
+import styles from './battle.module.scss';
+
+const EditBattleScore = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const toast = useToast();
@@ -42,19 +45,22 @@ const EditBattle = () => {
     <FormProvider {...form}>
       <Layout
         title="Edit Battle"
-        actionComponent={
+        action={
           <IconButton
-            aria-label="Save"
-            icon={<MdSave />}
             disabled={!isValid || isSubmitting}
-            colorScheme="blue"
-            isLoading={isSubmitting}
+            loading={isSubmitting}
             type="submit"
             form="battle-score-form"
-          />
+            variant="info"
+          >
+            <FaSave />
+          </IconButton>
         }
         isLoading={loading}
       >
+        <LinkButton className={styles.back} leftIcon={<FaArrowLeft />} to={`/battle/${id}`}>
+          Back
+        </LinkButton>
         <BattleScoreForm
           onSubmit={async (values) => {
             try {
@@ -66,18 +72,16 @@ const EditBattle = () => {
 
                 if (updatedBattle) {
                   toast({
-                    status: 'success',
-                    title: SUCCESS_MESSAGE,
-                    description: 'Battle updated'
+                    variant: 'success',
+                    text: 'Battle updated'
                   });
                   navigate(`/battle/${updatedBattle.id}`);
                 }
               }
             } catch (ex: any) {
               toast({
-                status: 'error',
-                title: ERROR_MESSAGE,
-                description: ex.message
+                variant: 'error',
+                text: ex.message || 'Unable to update Battle'
               });
             }
           }}
@@ -87,4 +91,4 @@ const EditBattle = () => {
   );
 };
 
-export default EditBattle;
+export default EditBattleScore;

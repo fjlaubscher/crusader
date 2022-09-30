@@ -11,6 +11,11 @@
     color: colors.$accent;
     font-size: 1rem;
     margin-bottom: 0.25rem;
+    font-weight: 500;
+
+    @media (prefers-color-scheme: dark) {
+      font-weight: normal;
+    }
   }
 
   .value {

@@ -27,6 +27,7 @@
   text-decoration: none;
   transition: 0.2s ease-in-out border-color, 0.2s ease-in-out color;
   font-size: 0.8125rem;
+  font-weight: 500;
   cursor: pointer;
 
   &:last-child {
@@ -39,6 +40,7 @@
 
   @media (prefers-color-scheme: dark) {
     border-bottom-color: colors.$dark-surface;
+    font-weight: normal;
   }
 
   @media (min-width: breakpoints.$tablet) {

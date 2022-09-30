@@ -5,6 +5,7 @@ import { useRecoilValue } from 'recoil';
 // components
 import InputField from '../field/input';
 import Grid from '../grid';
+import NumberField from '../field/number';
 import SelectField from '../field/select';
 import TextAreaField from '../field/textarea';
 
@@ -31,6 +32,22 @@ const OrderOfBattleForm = ({ isCompact, onSubmit }: Props) => {
   const { field: factionField } = useController({
     control,
     name: 'factionId'
+  });
+  const { field: supplyLimitField } = useController({
+    control,
+    name: 'supplyLimit'
+  });
+  const { field: requisitionField } = useController({
+    control,
+    name: 'requisition'
+  });
+  const { field: battlesField } = useController({
+    control,
+    name: 'battles'
+  });
+  const { field: battlesWonField } = useController({
+    control,
+    name: 'battlesWon'
   });
 
   return (
@@ -61,33 +78,41 @@ const OrderOfBattleForm = ({ isCompact, onSubmit }: Props) => {
       />
       {!isCompact && (
         <Grid className={styles.grid}>
-          <InputField
+          <NumberField
+            name="supplyLimit"
             label="Supply Limit"
-            type="tel"
             errorMessage={errors.supplyLimit ? 'Required' : undefined}
+            value={supplyLimitField.value}
+            onChange={supplyLimitField.onChange}
+            minimum={50}
+            step={5}
             required
-            {...register('supplyLimit', { required: true, valueAsNumber: true })}
           />
-          <InputField
+          <NumberField
+            name="requisition"
             label="Requisition"
-            type="tel"
             errorMessage={errors.requisition ? 'Required' : undefined}
+            value={requisitionField.value}
+            onChange={requisitionField.onChange}
+            maximum={5}
             required
-            {...register('requisition', { required: true, valueAsNumber: true })}
           />
-          <InputField
+          <NumberField
+            name="battles"
             label="Battle Tally"
-            type="tel"
             errorMessage={errors.battles ? 'Required' : undefined}
+            value={battlesField.value}
+            onChange={battlesField.onChange}
             required
-            {...register('battles', { required: true, valueAsNumber: true })}
           />
-          <InputField
+          <NumberField
+            name="battlesWon"
             label="Battles Won"
-            type="tel"
             errorMessage={errors.battlesWon ? 'Required' : undefined}
+            value={battlesWonField.value}
+            onChange={battlesWonField.onChange}
             required
-            {...register('battlesWon', { required: true, valueAsNumber: true })}
+            maximum={battlesField.value}
           />
         </Grid>
       )}

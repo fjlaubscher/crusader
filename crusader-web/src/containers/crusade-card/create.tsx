@@ -66,7 +66,7 @@ const CreateCrusadeCard = () => {
             loading={isSubmitting}
             type="submit"
             form="crusade-card-form"
-            variant="accent"
+            variant="info"
           >
             <FaSave />
           </IconButton>

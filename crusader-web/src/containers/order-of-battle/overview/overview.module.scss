@@ -13,8 +13,8 @@
   }
 }
 
-.about {
-  width: 100%;
+.cards {
+  margin-top: 1rem;
 }
 
 .battles {
@@ -24,7 +24,7 @@
 }
 
 .stats {
-  margin-top: 1rem;
+  margin: 1rem 0;
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -34,7 +34,7 @@
     text-align: right;
   }
 
-  @media (min-width: breakpoints.$desktop) {
+  @media (min-width: breakpoints.$tablet) {
     grid-template-columns: 1fr 1fr 1fr 1fr;
 
     > div:nth-child(even) {
@@ -46,5 +46,11 @@
 .settings {
   button {
     margin-bottom: 1rem;
+  }
+
+  @media (min-width: breakpoints.$tablet) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 }

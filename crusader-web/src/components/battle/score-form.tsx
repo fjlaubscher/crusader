@@ -5,11 +5,13 @@ import { useRecoilValue } from 'recoil';
 // components
 import Form from '../form';
 import Grid from '../grid';
-import InputField from '../field/input';
+import NumberField from '../field/number';
 import SelectField from '../field/select';
 
 // state
 import { BattleStatusAtom } from '../../state/config';
+
+import styles from './battle.module.scss';
 
 interface Props {
   onSubmit: (values: Crusader.Battle) => Promise<void>;
@@ -29,12 +31,17 @@ const BattleScoreForm: React.FC<Props> = ({ onSubmit }) => {
     control,
     name: 'statusId'
   });
+  const { field: attackerScoreField } = useController({
+    control,
+    name: 'attackerScore'
+  });
+  const { field: defenderScoreField } = useController({
+    control,
+    name: 'defenderScore'
+  });
 
   return (
-    <Form
-      id="battle-score-form"
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <Form id="battle-score-form" onSubmit={handleSubmit(onSubmit)}>
       <SelectField
         name="status"
         options={battleStatuses}
@@ -42,22 +49,22 @@ const BattleScoreForm: React.FC<Props> = ({ onSubmit }) => {
         value={statusField.value}
         onChange={statusField.onChange}
       />
-      <Grid simple>
-        <InputField
+      <Grid className={styles.formGrid} simple>
+        <NumberField
+          name="attackerScore"
           label="Attacker"
-          type="number"
-          placeholder="10"
-          isRequired
           errorMessage={errors.attackerScore ? 'Required' : undefined}
-          {...register('attackerScore', { required: true, valueAsNumber: true })}
+          value={attackerScoreField.value}
+          onChange={attackerScoreField.onChange}
+          required
         />
-        <InputField
+        <NumberField
+          name="defenderScore"
           label="Defender"
-          type="number"
-          placeholder="10"
-          isRequired
           errorMessage={errors.defenderScore ? 'Required' : undefined}
-          {...register('defenderScore', { required: true, valueAsNumber: true })}
+          value={defenderScoreField.value}
+          onChange={defenderScoreField.onChange}
+          required
         />
       </Grid>
     </Form>

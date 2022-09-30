@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { FaEdit, FaPen, FaUsers } from 'react-icons/fa';
+import { FaPen, FaUsers } from 'react-icons/fa';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useAsync, useSessionStorage } from 'react-use';
 
@@ -108,13 +108,12 @@ const OrderOfBattle = () => {
             active={tabIndex || 0}
             onChange={setTabIndex}
             tabs={['About', 'Battles', 'Cards', 'Settings']}
-            content={[
-              <AboutTab orderOfBattle={orderOfBattle} />,
-              <BattlesTab battles={battles} orderOfBattle={orderOfBattle} />,
-              <CardsTab cards={crusadeCards} orderOfBattle={orderOfBattle} />,
-              <SettingsTab orderOfBattle={orderOfBattle} />
-            ]}
-          />
+          >
+            <AboutTab orderOfBattle={orderOfBattle} />
+            <BattlesTab battles={battles} orderOfBattle={orderOfBattle} />
+            <CardsTab cards={crusadeCards} orderOfBattle={orderOfBattle} />
+            <SettingsTab orderOfBattle={orderOfBattle} />
+          </Tabs>
         </>
       )}
     </Layout>

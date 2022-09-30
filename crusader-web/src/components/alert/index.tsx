@@ -15,7 +15,7 @@ interface Props {
 
 const Alert: React.FC<Props> = ({ children, variant, title, className }) => (
   <article className={classnames(styles.alert, styles[variant], className)}>
-    {<p className={styles.title}>{title || getMessageFromVariant(variant)}</p>}
+    {<span className={styles.title}>{title || getMessageFromVariant(variant)}</span>}
     {children}
   </article>
 );

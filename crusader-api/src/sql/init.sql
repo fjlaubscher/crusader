@@ -9,7 +9,9 @@ CREATE INDEX ix_battlefield_role ON battlefield_role (id);
 -- Player
 CREATE TABLE player (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(50) NOT NULL
+  name VARCHAR(50) NOT NULL,
+  avatar VARCHAR(50) NOT NULL,
+  notes VARCHAR(2000) NOT NULL
 );
 CREATE INDEX ix_player ON player(id);
 

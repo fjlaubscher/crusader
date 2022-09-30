@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useAsync, useMount } from 'react-use';
+import { useAsync } from 'react-use';
 import { FaSave } from 'react-icons/fa';
 import slugify from 'slugify';
 
@@ -33,6 +33,7 @@ const JoinCrusade = () => {
   const navigate = useNavigate();
   const toast = useToast();
 
+  const [hasPrefilledForm, setHasPrefilledForm] = useState(false);
   const [currentCrusade, setCurrentCrusade] = useRecoilState(CrusadeAtom);
   const [ordersOfBattle, setOrdersOfBattle] = useRecoilState(PlayerOrdersOfBattleAtom);
   const [player, setPlayer] = useRecoilState(PlayerAtom);
@@ -47,15 +48,17 @@ const JoinCrusade = () => {
   const form = useForm<Crusader.OrderOfBattle>({
     mode: 'onChange'
   });
-  const { isValid, isSubmitting } = form.formState;
+  const {
+    reset,
+    formState: { isValid, isSubmitting }
+  } = form;
 
-  useMount(() => {
-    if (player) {
-      form.reset({
-        player: player.name
-      });
+  useEffect(() => {
+    if (!hasPrefilledForm && player) {
+      reset({ player: player.name });
+      setHasPrefilledForm(true);
     }
-  });
+  }, [hasPrefilledForm, setHasPrefilledForm, player, reset]);
 
   return (
     <FormProvider {...form}>
@@ -67,7 +70,7 @@ const JoinCrusade = () => {
             loading={isSubmitting}
             type="submit"
             form="join-crusade-form"
-            variant="accent"
+            variant="info"
           >
             <FaSave />
           </IconButton>

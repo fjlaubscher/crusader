@@ -6,6 +6,7 @@ import { useRecoilValue } from 'recoil';
 import Form from '../form';
 import Grid from '../grid';
 import InputField from '../field/input';
+import NumberField from '../field/number';
 import SelectField from '../field/select';
 import TextAreaField from '../field/textarea';
 
@@ -31,6 +32,38 @@ const CrusadeCardForm = ({ onSubmit }: Props) => {
   const { field: battlefieldRoleField } = useController({
     control,
     name: 'battlefieldRoleId'
+  });
+  const { field: powerRatingField } = useController({
+    control,
+    name: 'powerRating'
+  });
+  const { field: crusadePointsField } = useController({
+    control,
+    name: 'crusadePoints'
+  });
+  const { field: experiencePointsField } = useController({
+    control,
+    name: 'experiencePoints'
+  });
+  const { field: battlesField } = useController({
+    control,
+    name: 'battles'
+  });
+  const { field: battlesSurvivedField } = useController({
+    control,
+    name: 'battlesSurvived'
+  });
+  const { field: unitsDestroyedMeleeField } = useController({
+    control,
+    name: 'unitsDestroyedMelee'
+  });
+  const { field: unitsDestroyedPsychicField } = useController({
+    control,
+    name: 'unitsDestroyedPsychic'
+  });
+  const { field: unitsDestroyedRangedField } = useController({
+    control,
+    name: 'unitsDestroyedRanged'
   });
 
   return (
@@ -61,70 +94,79 @@ const CrusadeCardForm = ({ onSubmit }: Props) => {
         />
       </Grid>
       <Grid className={styles.grid}>
-        <InputField
+        <NumberField
+          name="powerRating"
           label="Power Rating"
-          type="tel"
           errorMessage={errors.powerRating ? 'Required' : undefined}
+          value={powerRatingField.value}
+          onChange={powerRatingField.onChange}
           required
-          {...register('powerRating', { required: true, valueAsNumber: true })}
         />
-        <InputField
+        <NumberField
+          name="crusadePoints"
           label="Crusade Points"
-          type="tel"
           errorMessage={errors.crusadePoints ? 'Required' : undefined}
+          value={crusadePointsField.value}
+          onChange={crusadePointsField.onChange}
           required
-          {...register('crusadePoints', { required: true, valueAsNumber: true })}
         />
-        <InputField
+        <NumberField
+          name="experiencePoints"
           label="Experience Points"
-          type="tel"
           errorMessage={errors.experiencePoints ? 'Required' : undefined}
+          value={experiencePointsField.value}
+          onChange={experiencePointsField.onChange}
           required
-          {...register('experiencePoints', { required: true, valueAsNumber: true })}
         />
-        <InputField
+        <NumberField
+          name="battles"
           label="Battle Tally"
-          type="tel"
           errorMessage={errors.battles ? 'Required' : undefined}
+          value={battlesField.value}
+          onChange={battlesField.onChange}
           required
-          {...register('battles', { required: true, valueAsNumber: true })}
         />
-        <InputField
+        <NumberField
+          name="battlesSurvived"
           label="Battles Survived"
-          type="tel"
           errorMessage={errors.battlesSurvived ? 'Required' : undefined}
+          value={battlesSurvivedField.value}
+          onChange={battlesSurvivedField.onChange}
           required
-          {...register('battlesSurvived', { required: true, valueAsNumber: true })}
         />
       </Grid>
       <Grid className={styles.grid}>
-        <InputField
+        <NumberField
+          name="unitsDestroyedMelee"
           label="Units Destroyed (Melee)"
-          type="tel"
           errorMessage={errors.unitsDestroyedMelee ? 'Required' : undefined}
+          value={unitsDestroyedMeleeField.value}
+          onChange={unitsDestroyedMeleeField.onChange}
           required
-          {...register('unitsDestroyedMelee', { required: true, valueAsNumber: true })}
         />
-        <InputField
+        <NumberField
+          name="unitsDestroyedPsychic"
           label="Units Destroyed (Psychic)"
-          type="tel"
           errorMessage={errors.unitsDestroyedPsychic ? 'Required' : undefined}
+          value={unitsDestroyedPsychicField.value}
+          onChange={unitsDestroyedPsychicField.onChange}
           required
-          {...register('unitsDestroyedPsychic', { required: true, valueAsNumber: true })}
         />
-        <InputField
+        <NumberField
+          name="unitsDestroyedRanged"
           label="Units Destroyed (Ranged)"
-          type="tel"
           errorMessage={errors.unitsDestroyedRanged ? 'Required' : undefined}
+          value={unitsDestroyedRangedField.value}
+          onChange={unitsDestroyedRangedField.onChange}
           required
-          {...register('unitsDestroyedRanged', { required: true, valueAsNumber: true })}
         />
       </Grid>
       <Grid className={styles.noMargin} simple>
         <TextAreaField
           label="Abilities"
           placeholder="Use Markdown to describe this unit's Abilities that must be selected before the game."
-          {...register('abilities', { required: false })}
+          required
+          {...register('abilities', { required: true })}
         />
         <TextAreaField
           label="Battle Honours"

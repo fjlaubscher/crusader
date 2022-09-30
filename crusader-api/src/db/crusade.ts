@@ -36,11 +36,12 @@ export const getCrusadesByPlayerIdAsync = async (playerId: number) => {
   await client.connect();
 
   const query = `
-    SELECT crusade.*
+    SELECT crusade.*, player.name as created_by
     FROM crusade
     LEFT OUTER JOIN order_of_battle ON order_of_battle.crusade_id = crusade.id
+    INNER JOIN player ON crusade.created_by_id = player.id
     WHERE order_of_battle.player_id = $1 OR crusade.created_by_id = $1
-    GROUP BY crusade.id
+    GROUP BY crusade.id, player.id
   `;
   const { rows } = await client.query<TableRow>(query, [playerId]);
   await client.end();

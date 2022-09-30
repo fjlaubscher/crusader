@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
-import { Button, IconButton, useToast } from '@chakra-ui/react';
-import { MdArrowBack, MdSave } from 'react-icons/md';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';
@@ -13,12 +11,17 @@ import { getOrderOfBattleAsync } from '../../api/order-of-battle';
 // components
 import CrusadeCardForm from '../../components/crusade-card/form';
 import Layout from '../../components/layout';
+import LinkButton from '../../components/button/link';
 
-// helpers
-import { SUCCESS_MESSAGE, ERROR_MESSAGE } from '../../helpers/messages';
+// hooks
+import useToast from '../../hooks/use-toast';
 
 // state
 import { PlayerAtom } from '../../state/player';
+
+import styles from './crusade-card.module.scss';
+import IconButton from '../../components/button/icon';
+import { FaArrowLeft, FaSave } from 'react-icons/fa';
 
 const EditCrusadeCard = () => {
   const { id } = useParams();
@@ -57,22 +60,22 @@ const EditCrusadeCard = () => {
     <FormProvider {...form}>
       <Layout
         title="Edit Crusade Card"
-        actionComponent={
+        action={
           <IconButton
-            aria-label="Save"
-            icon={<MdSave />}
             disabled={!isValid || isSubmitting}
-            colorScheme="blue"
-            isLoading={isSubmitting}
+            loading={isSubmitting}
             type="submit"
             form="crusade-card-form"
-          />
+            variant="info"
+          >
+            <FaSave />
+          </IconButton>
         }
         isLoading={loading}
       >
-        <Button leftIcon={<MdArrowBack />} as={Link} to={`/crusade-card/${id}`}>
+        <LinkButton className={styles.back} leftIcon={<FaArrowLeft />} to={`/crusade-card/${id}`}>
           Back
-        </Button>
+        </LinkButton>
         <CrusadeCardForm
           onSubmit={async (values) => {
             try {
@@ -84,9 +87,8 @@ const EditCrusadeCard = () => {
 
                 if (updatedCrusadeCard) {
                   toast({
-                    status: 'success',
-                    title: SUCCESS_MESSAGE,
-                    description: 'Crusade Card updated.'
+                    variant: 'success',
+                    text: 'Crusade Card updated'
                   });
 
                   navigate(`/crusade-card/${updatedCrusadeCard.id}`);
@@ -94,9 +96,8 @@ const EditCrusadeCard = () => {
               }
             } catch (ex: any) {
               toast({
-                status: 'error',
-                title: ERROR_MESSAGE,
-                description: ex.message
+                variant: 'error',
+                text: ex.message || 'Unable to update Crusade Card'
               });
             }
           }}

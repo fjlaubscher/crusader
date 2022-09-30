@@ -86,4 +86,10 @@ declare namespace Crusader {
     supplyLimit: number;
     supplyUsed: number;
   }
+
+  interface Player {
+    id: number;
+    name: string;
+    notes: string;
+  }
 }

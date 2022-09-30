@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';
@@ -70,7 +70,7 @@ const EditOrderOfBattle = () => {
             loading={isSubmitting}
             type="submit"
             form="order-of-battle-form"
-            variant="accent"
+            variant="info"
           >
             <FaSave />
           </IconButton>

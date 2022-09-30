@@ -1,9 +1,8 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { IconButton, useToast } from '@chakra-ui/react';
-import { MdSave } from 'react-icons/md';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useAsync } from 'react-use';
+import { FaArrowLeft, FaSave } from 'react-icons/fa';
 
 // api
 import { getBattleAsync, updateBattleAsync } from '../../api/battle';
@@ -11,16 +10,20 @@ import { getCrusadeOrdersOfBattleAsync } from '../../api/order-of-battle';
 
 // components
 import BattleForm from '../../components/battle/form';
+import IconButton from '../../components/button/icon';
 import Layout from '../../components/layout';
+import LinkButton from '../../components/button/link';
 
-// helpers
-import { SUCCESS_MESSAGE, ERROR_MESSAGE } from '../../helpers/messages';
+// hooks
+import useToast from '../../hooks/use-toast';
+
+import styles from './battle.module.scss';
 
 const EditBattle = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-
   const toast = useToast();
+
 
   const form = useForm<Crusader.Battle>({ mode: 'onChange' });
   const {
@@ -55,19 +58,22 @@ const EditBattle = () => {
     <FormProvider {...form}>
       <Layout
         title="Edit Battle"
-        actionComponent={
+        action={
           <IconButton
-            aria-label="Save"
-            icon={<MdSave />}
             disabled={!isValid || isSubmitting}
-            colorScheme="blue"
-            isLoading={isSubmitting}
+            loading={isSubmitting}
             type="submit"
             form="battle-form"
-          />
+            variant="info"
+          >
+            <FaSave />
+          </IconButton>
         }
         isLoading={loadingBattle || loadingOrdersOfBattle}
       >
+        <LinkButton className={styles.back} leftIcon={<FaArrowLeft />} to={`/battle/${id}`}>
+          Back
+        </LinkButton>
         {ordersOfBattle && (
           <BattleForm
             ordersOfBattle={ordersOfBattle}
@@ -81,18 +87,16 @@ const EditBattle = () => {
 
                   if (updatedBattle) {
                     toast({
-                      status: 'success',
-                      title: SUCCESS_MESSAGE,
-                      description: 'Battle updated'
+                      variant: 'success',
+                      text: 'Battle updated'
                     });
                     navigate(`/battle/${updatedBattle.id}`);
                   }
                 }
               } catch (ex: any) {
                 toast({
-                  status: 'error',
-                  title: ERROR_MESSAGE,
-                  description: ex.message
+                  variant: 'error',
+                  text: ex.message || 'Unable to update Battle'
                 });
               }
             }}

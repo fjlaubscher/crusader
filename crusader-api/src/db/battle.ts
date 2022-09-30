@@ -70,6 +70,7 @@ export const getBattlesByCrusadeIdAsync = async (crusadeId: number) => {
     INNER JOIN order_of_battle attacker ON battle.attacker_order_of_battle_id = attacker.id
     INNER JOIN order_of_battle defender ON battle.defender_order_of_battle_id = defender.id
     WHERE battle.crusade_id = $1
+    ORDER BY battle.created_date DESC
   `;
   const { rows } = await client.query<TableRow>(query, [crusadeId]);
   await client.end();
@@ -89,6 +90,7 @@ export const getBattlesByOrderOfBattleIdAsync = async (orderOfBattleId: number) 
     INNER JOIN order_of_battle attacker ON battle.attacker_order_of_battle_id = attacker.id
     INNER JOIN order_of_battle defender ON battle.defender_order_of_battle_id = defender.id
     WHERE battle.attacker_order_of_battle_id = $1 OR battle.defender_order_of_battle_id = $1
+    ORDER BY battle.created_date DESC
   `;
   const { rows } = await client.query<TableRow>(query, [orderOfBattleId]);
   await client.end();

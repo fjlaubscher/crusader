@@ -105,6 +105,7 @@ export const getCrusadeCardsByOrderOfBattleIdAsync = async (orderOfBattleId: num
     INNER JOIN order_of_battle on order_of_battle.id = crusade_card.order_of_battle_id
     WHERE crusade_card.order_of_battle_id = $1
     GROUP BY crusade_card.id, battlefield_role.name, order_of_battle.name
+    ORDER BY crusade_card.battlefield_role_id
   `;
   const { rows } = await client.query<TableRow>(query, [orderOfBattleId]);
   await client.end();

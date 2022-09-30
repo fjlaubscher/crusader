@@ -108,7 +108,8 @@ export const getOrdersOfBattleByPlayerIdAsync = async (playerId: number) => {
     INNER JOIN player ON order_of_battle.player_id = player.id
     LEFT OUTER JOIN crusade_card ON order_of_battle.id = crusade_card.order_of_battle_id
     WHERE order_of_battle.player_id = $1
-    GROUP BY order_of_battle.id, crusade.name, faction.name, player.name
+    GROUP BY order_of_battle.id, crusade.created_date, crusade.name, faction.name, player.name
+    ORDER BY crusade.created_date DESC
   `;
   const { rows } = await client.query<TableRow>(query, [playerId]);
   await client.end();

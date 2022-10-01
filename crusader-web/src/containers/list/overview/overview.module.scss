@@ -1,0 +1,25 @@
+@use "../../../styles/breakpoints";
+
+.scoreButton {
+  margin-bottom: 1rem;
+}
+
+.cards {
+  margin-top: 1rem;
+}
+
+.tags {
+  margin-top: 1rem;
+}
+
+.settings {
+  button {
+    margin-bottom: 1rem;
+  }
+
+  @media (min-width: breakpoints.$tablet) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}

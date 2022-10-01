@@ -7,7 +7,7 @@ import ProtectedRoute from './components/protected-route';
 // containers
 const CrusadeOverview = lazy(() => import('./containers/crusade/overview'));
 const CreateCrusade = lazy(() => import('./containers/crusade/create'));
-const CreateBattle = lazy(() => import('./containers/crusade/battle'));
+const CreateBattle = lazy(() => import('./containers/battle/create'));
 const EditCrusade = lazy(() => import('./containers/crusade/edit'));
 const JoinCrusade = lazy(() => import('./containers/crusade/join'));
 
@@ -24,7 +24,9 @@ const CrusadeCardOverview = lazy(() => import('./containers/crusade-card/overvie
 const CreateCrusadeCard = lazy(() => import('./containers/crusade-card/create'));
 const EditCrusadeCard = lazy(() => import('./containers/crusade-card/edit'));
 
+const Lists = lazy(() => import('./containers/list/lists'));
 const ListOverview = lazy(() => import('./containers/list/overview'));
+const EditList = lazy(() => import('./containers/list/edit'));
 const CreateList = lazy(() => import('./containers/list/create'));
 
 const Home = lazy(() => import('./containers/home'));
@@ -126,18 +128,27 @@ const AppRoutes = () => (
     />
 
     <Route
-      path="/list/:id"
+      path="/list/:id/edit"
       element={
         <ProtectedRoute>
-          <ListOverview />
+          <EditList />
+        </ProtectedRoute>
+      }
+    />
+    <Route path="/list/:id" element={<ListOverview />} />
+    <Route
+      path="/list"
+      element={
+        <ProtectedRoute>
+          <CreateList />
         </ProtectedRoute>
       }
     />
     <Route
-      path="/list-builder"
+      path="/lists"
       element={
         <ProtectedRoute>
-          <CreateList />
+          <Lists />
         </ProtectedRoute>
       }
     />

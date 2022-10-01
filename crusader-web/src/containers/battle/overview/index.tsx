@@ -10,7 +10,6 @@ import { getBattleAsync } from '../../../api/battle';
 import { getOrderOfBattleAsync } from '../../../api/order-of-battle';
 
 // components
-import Grid from '../../../components/grid';
 import IconButton from '../../../components/button/icon';
 import Layout from '../../../components/layout';
 import LinkButton from '../../../components/button/link';

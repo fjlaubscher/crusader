@@ -7,9 +7,9 @@ import Grid from '../grid';
 import InputField from '../field/input';
 import SelectField from '../field/select';
 import TextAreaField from '../field/textarea';
+import NumberField from '../field/number';
 
 import styles from './battle.module.scss';
-import NumberField from '../field/number';
 
 interface Props {
   ordersOfBattle: Crusader.ListItem[];

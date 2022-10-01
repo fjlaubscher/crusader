@@ -113,19 +113,27 @@ CREATE TABLE crusade_card (
 CREATE INDEX ix_crusade_card ON crusade_card(id);
 CREATE INDEX ix_order_of_battle_crusade_card ON crusade_card(order_of_battle_id);
 
-CREATE TABLE battle_card (
+CREATE TABLE list (
   id SERIAL PRIMARY KEY,
-  battle_id INTEGER NOT NULL,
   order_of_battle_id INTEGER NOT NULL,
+  size INTEGER NOT NULL,
+  name VARCHAR(50) NOT NULL,
+  notes VARCHAR(2000) NOT NULL,
+  FOREIGN KEY (order_of_battle_id) REFERENCES order_of_battle(id) ON DELETE CASCADE
+);
+CREATE INDEX ix_list ON list(id);
+CREATE INDEX ix_order_of_battle_list ON list(order_of_battle_id);
+
+CREATE TABLE list_card (
+  id SERIAL PRIMARY KEY,
+  list_id INTEGER NOT NULL,
   crusade_card_id INTEGER NOT NULL,
-  FOREIGN KEY (battle_id) REFERENCES battle(id) ON DELETE CASCADE,
-  FOREIGN KEY (order_of_battle_id) REFERENCES order_of_battle(id) ON DELETE CASCADE,
+  FOREIGN KEY (list_id) REFERENCES list(id) ON DELETE CASCADE,
   FOREIGN KEY (crusade_card_id) REFERENCES crusade_card(id) ON DELETE CASCADE
 );
-CREATE INDEX ix_battle_card ON battle_card(id);
-CREATE INDEX ix_battle_card_battle ON battle_card(battle_id);
-CREATE INDEX ix_battle_card_order_of_battle ON battle_card(order_of_battle_id);
-CREATE INDEX ix_battle_card_card ON battle_card(crusade_card_id);
+CREATE INDEX ix_list_card ON list_card(id);
+CREATE INDEX ix_list_card_list ON list_card(list_id);
+CREATE INDEX ix_list_card_card ON list_card(crusade_card_id);
 
 -- seed data
 INSERT INTO battlefield_role (name) VALUES ('HQ');

@@ -9,6 +9,8 @@ import BattlefieldRoleRouter from './api/battlefield-role';
 import CrusadeRouter from './api/crusade';
 import CrusadeCardRouter from './api/crusade-card';
 import FactionRouter from './api/faction';
+import ListRouter from './api/list';
+import ListCardRouter from './api/list-card';
 import OrderOfBattleRouter from './api/order-of-battle';
 import PlayerRouter from './api/player';
 
@@ -23,6 +25,8 @@ const initAPI = async () => {
     app.use('/api/crusade', CrusadeRouter);
     app.use('/api/crusade-card', CrusadeCardRouter);
     app.use('/api/faction', FactionRouter);
+    app.use('/api/list', ListRouter);
+    app.use('/api/list-card', ListCardRouter);
     app.use('/api/order-of-battle', OrderOfBattleRouter);
     app.use('/api/player', PlayerRouter);
 

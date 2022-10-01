@@ -1,13 +1,7 @@
 @use "../../styles/colors";
 
-.page {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .loader {
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -15,7 +9,7 @@
   > div {
     width: 1rem;
     height: 1rem;
-    background-color: colors.$primary;
+    background-color: colors.$accent;
     border-radius: 100%;
     animation: bounce 1.4s infinite ease-in-out both;
   }

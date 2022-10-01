@@ -7,7 +7,7 @@ import { getBattlefieldRolesAsync, getBattleStatusesAsync, getFactionsAsync } fr
 import { getPlayerOrdersOfBattleAsync } from './api/order-of-battle';
 
 // components
-import Progress from './components/progress';
+import Loader from './components/loader';
 
 // state
 import { BattlefieldRoleAtom, FactionAtom, BattleStatusAtom } from './state/config';
@@ -66,9 +66,9 @@ const Router = () => {
   const loading = loadingConfig || loadingOrdersOfBattle;
 
   return loading ? (
-    <Progress />
+    <Loader />
   ) : (
-    <Suspense fallback={<Progress />}>
+    <Suspense fallback={<Loader />}>
       <Routes />
     </Suspense>
   );

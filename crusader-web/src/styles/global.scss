@@ -17,6 +17,7 @@ body {
   padding: 0;
   background-color: colors.$light-background;
   color: colors.$light-text;
+  overflow-x: hidden;
 
   &::-webkit-scrollbar {
     width: 0.5rem;

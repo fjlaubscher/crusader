@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import { FaBars } from 'react-icons/fa';
+import { FaPowerOff } from 'react-icons/fa';
 import { useAsync, useSessionStorage } from 'react-use';
+import { Link } from 'react-router-dom';
 
 // api
 import { getPlayerCrusadesAsync } from '../../api/crusade';
 
 // components
 import CrusadesTab from './crusades-tab';
-import IconButton from '../../components/button/icon';
 import Layout from '../../components/layout';
 import OrdersOfBattleTab from './orders-of-battle-tab';
-import Sidebar from '../../components/sidebar';
 import Tabs from '../../components/tabs';
 
 // helpers
@@ -21,8 +20,9 @@ import { HOME_TAB } from '../../helpers/storage';
 import { PlayerAtom } from '../../state/player';
 import { PlayerOrdersOfBattleAtom } from '../../state/order-of-battle';
 
+import styles from './home.module.scss';
+
 const Home = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [tabIndex, setTabIndex] = useSessionStorage<number | undefined>(HOME_TAB);
   const player = useRecoilValue(PlayerAtom);
   const ordersOfBattle = useRecoilValue(PlayerOrdersOfBattleAtom);
@@ -36,27 +36,24 @@ const Home = () => {
   }, [player]);
 
   return (
-    <>
-      <Sidebar visible={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
-      <Layout
-        title="Home"
-        action={
-          <IconButton onClick={() => setIsSidebarOpen(true)}>
-            <FaBars />
-          </IconButton>
-        }
-        isLoading={loading}
+    <Layout
+      title="Home"
+      action={
+        <Link className={styles.signOut} to="/sign-out">
+          <FaPowerOff />
+        </Link>
+      }
+      isLoading={loading}
+    >
+      <Tabs
+        tabs={['Orders of Battle', 'Your Crusades']}
+        active={tabIndex || 0}
+        onChange={setTabIndex}
       >
-        <Tabs
-          tabs={['Orders of Battle', 'Your Crusades']}
-          active={tabIndex || 0}
-          onChange={setTabIndex}
-        >
-          <OrdersOfBattleTab ordersOfBattle={ordersOfBattle} />
-          <CrusadesTab crusades={crusades} />
-        </Tabs>
-      </Layout>
-    </>
+        <OrdersOfBattleTab ordersOfBattle={ordersOfBattle} />
+        <CrusadesTab crusades={crusades} />
+      </Tabs>
+    </Layout>
   );
 };
 

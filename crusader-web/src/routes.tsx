@@ -24,6 +24,9 @@ const CrusadeCardOverview = lazy(() => import('./containers/crusade-card/overvie
 const CreateCrusadeCard = lazy(() => import('./containers/crusade-card/create'));
 const EditCrusadeCard = lazy(() => import('./containers/crusade-card/edit'));
 
+const ListOverview = lazy(() => import('./containers/list/overview'));
+const CreateList = lazy(() => import('./containers/list/create'));
+
 const Home = lazy(() => import('./containers/home'));
 const NotFound = lazy(() => import('./containers/not-found'));
 const SignOut = lazy(() => import('./containers/sign-out'));
@@ -118,6 +121,23 @@ const AppRoutes = () => (
       element={
         <ProtectedRoute>
           <CreateCrusade />
+        </ProtectedRoute>
+      }
+    />
+
+    <Route
+      path="/list/:id"
+      element={
+        <ProtectedRoute>
+          <ListOverview />
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/list-builder"
+      element={
+        <ProtectedRoute>
+          <CreateList />
         </ProtectedRoute>
       }
     />

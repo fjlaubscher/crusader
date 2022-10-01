@@ -5,7 +5,7 @@ declare namespace Crusader {
   }
 
   interface Toast {
-    variant: Variant
+    variant: Variant;
     text: string;
   }
 
@@ -62,6 +62,25 @@ declare namespace Crusader {
     unitsDestroyedPsychic: number;
     unitsDestroyedRanged: number;
     warlordTraits: string;
+  }
+
+  interface List {
+    id: number;
+    orderOfBattleId: number;
+    orderOfBattle: string;
+    playerId: number;
+    player: string;
+    size: number;
+    name: string;
+    notes: string;
+  }
+
+  interface ListCard {
+    id: number;
+    listId: number;
+    list: string;
+    crusadeCardId: number;
+    crusadeCard: string;
   }
 
   interface ListItem {

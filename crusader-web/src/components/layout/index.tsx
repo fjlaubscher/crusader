@@ -40,45 +40,47 @@ const Layout = ({ children, title, action, isLoading }: Props) => {
       </div>
       <div className={styles.content}>
         <Container className={styles.children}>{isLoading ? <Loader /> : children}</Container>
-        <div className={classnames(styles.actionBar, styles.visible)}>
-          <LinkButton
-            leftIcon={<FaHome />}
-            className={classnames(styles.action, pathname === '/' ? styles.active : undefined)}
-            to="/"
-          >
-            Home
-          </LinkButton>
-          <LinkButton
-            leftIcon={<FaPlus />}
-            className={classnames(
-              styles.action,
-              pathname === '/crusade' ? styles.active : undefined
-            )}
-            to="/crusade"
-          >
-            New Crusade
-          </LinkButton>
-          <LinkButton
-            leftIcon={<FaListAlt />}
-            className={classnames(
-              styles.action,
-              pathname === '/list-builder' ? styles.active : undefined
-            )}
-            to="/list-builder"
-          >
-            List Builder
-          </LinkButton>
-          <LinkButton
-            leftIcon={<FaUser />}
-            className={classnames(
-              styles.action,
-              pathname === `/player/${player?.id}` ? styles.active : undefined
-            )}
-            to={`/player/${player?.id}`}
-          >
-            Profile
-          </LinkButton>
-        </div>
+        {player && (
+          <div className={classnames(styles.actionBar, styles.visible)}>
+            <LinkButton
+              leftIcon={<FaHome />}
+              className={classnames(styles.action, pathname === '/' ? styles.active : undefined)}
+              to="/"
+            >
+              Home
+            </LinkButton>
+            <LinkButton
+              leftIcon={<FaPlus />}
+              className={classnames(
+                styles.action,
+                pathname === '/crusade' ? styles.active : undefined
+              )}
+              to="/crusade"
+            >
+              New Crusade
+            </LinkButton>
+            <LinkButton
+              leftIcon={<FaListAlt />}
+              className={classnames(
+                styles.action,
+                pathname === '/lists' ? styles.active : undefined
+              )}
+              to="/lists"
+            >
+              Lists
+            </LinkButton>
+            <LinkButton
+              leftIcon={<FaUser />}
+              className={classnames(
+                styles.action,
+                pathname === `/player/${player?.id}` ? styles.active : undefined
+              )}
+              to={`/player/${player?.id}`}
+            >
+              Profile
+            </LinkButton>
+          </div>
+        )}
       </div>
     </div>
   );

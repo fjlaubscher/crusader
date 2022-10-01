@@ -113,6 +113,31 @@ export const getCrusadeCardsByOrderOfBattleIdAsync = async (orderOfBattleId: num
   return mapFromPSQL<Crusader.CrusadeCard>(rows);
 };
 
+export const getCrusadeCardsByListIdAsync = async (listId: number) => {
+  const client = new Client();
+  await client.connect();
+
+  const query = `
+    SELECT
+      crusade_card.*, 
+      battlefield_role.name as battlefield_role, 
+      order_of_battle.name as order_of_battle, 
+      COALESCE(SUM(crusade_card.units_destroyed_melee + crusade_card.units_destroyed_psychic + crusade_card.units_destroyed_ranged)::integer, 0) as units_destroyed
+    FROM crusade_card
+    INNER JOIN battlefield_role on battlefield_role.id = crusade_card.battlefield_role_id
+    INNER JOIN order_of_battle on order_of_battle.id = crusade_card.order_of_battle_id
+    INNER JOIN list_card on list_card.crusade_card_id = crusade_card.id
+    INNER JOIN list on list.id = list_card.list_id
+    WHERE list.id = $1
+    GROUP BY crusade_card.id, battlefield_role.name, order_of_battle.name
+    ORDER BY crusade_card.battlefield_role_id
+  `;
+  const { rows } = await client.query<TableRow>(query, [listId]);
+  await client.end();
+
+  return mapFromPSQL<Crusader.CrusadeCard>(rows);
+};
+
 export const updateCrusadeCardAsync = async (input: Crusader.CrusadeCard) => {
   const client = new Client();
   await client.connect();

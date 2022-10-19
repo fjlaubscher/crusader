@@ -24,7 +24,7 @@ const ListForm = ({ ordersOfBattle, onSubmit }: Props) => {
     <Form id="list-form" onSubmit={handleSubmit(onSubmit)}>
       <SelectField
         name="orderOfBattle"
-        options={ordersOfBattle}
+        options={ordersOfBattle.map((oob) => ({ value: oob.id, description: oob.name }))}
         label="Order of Battle"
         value={orderOfBattleField.value}
         onChange={orderOfBattleField.onChange}

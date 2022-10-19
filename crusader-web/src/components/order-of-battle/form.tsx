@@ -56,7 +56,7 @@ const OrderOfBattleForm = ({ isCompact, onSubmit }: Props) => {
     >
       <SelectField
         name="faction"
-        options={factions}
+        options={factions.map((f) => ({ value: f.id, description: f.name }))}
         label="Faction"
         value={factionField.value}
         onChange={factionField.onChange}

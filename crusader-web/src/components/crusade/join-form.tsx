@@ -29,7 +29,7 @@ const JoinCrusadeForm = ({ onSubmit }: Props) => {
     <Form id="join-crusade-form" onSubmit={handleSubmit(onSubmit)}>
       <SelectField
         name="faction"
-        options={factions}
+        options={factions.map((f) => ({ value: f.id, description: f.name }))}
         label="Faction"
         value={factionField.value}
         onChange={factionField.onChange}

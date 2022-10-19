@@ -42,7 +42,7 @@ const BattleScoreForm: React.FC<Props> = ({ onSubmit }) => {
     <Form id="battle-score-form" onSubmit={handleSubmit(onSubmit)}>
       <SelectField
         name="status"
-        options={battleStatuses}
+        options={battleStatuses.map((bs) => ({ value: bs.id, description: bs.name }))}
         label="Status"
         value={statusField.value}
         onChange={statusField.onChange}

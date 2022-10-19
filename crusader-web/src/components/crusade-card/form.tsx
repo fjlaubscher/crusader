@@ -67,7 +67,7 @@ const CrusadeCardForm = ({ onSubmit }: Props) => {
       <Grid className={styles.noMargin}>
         <SelectField
           name="battlefieldRole"
-          options={battlefieldRoles}
+          options={battlefieldRoles.map((b) => ({ value: b.id, description: b.name }))}
           label="Battlefield Role"
           value={battlefieldRoleField.value}
           onChange={battlefieldRoleField.onChange}

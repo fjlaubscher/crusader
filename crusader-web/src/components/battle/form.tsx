@@ -46,14 +46,14 @@ const BattleForm = ({ ordersOfBattle, onSubmit }: Props) => {
         />
         <SelectField
           name="attacker"
-          options={ordersOfBattle}
+          options={ordersOfBattle.map((oob) => ({ value: oob.id, description: oob.name }))}
           label="Attacker"
           value={attackerField.value}
           onChange={attackerField.onChange}
         />
         <SelectField
           name="defender"
-          options={ordersOfBattle}
+          options={ordersOfBattle.map((oob) => ({ value: oob.id, description: oob.name }))}
           label="Defender"
           value={defenderField.value}
           onChange={defenderField.onChange}

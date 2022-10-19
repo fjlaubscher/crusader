@@ -1,7 +1,5 @@
-interface SelectOption {
-  value: string;
-  description: string;
-}
+/// <reference types="@fjlaubscher/matter/src/matter" />
+
 interface CrusadeFactions {
   totalAeldari: number;
   totalChaos: number;
@@ -12,7 +10,5 @@ interface CrusadeFactions {
   totalTyranids: number;
   totalVotann: number;
 }
-
-type Variant = 'info' | 'success' | 'error' | 'warning' | 'accent';
 
 declare module 'react-helmet';

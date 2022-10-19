@@ -1,12 +1,10 @@
 import React from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 import { useRecoilValue } from 'recoil';
+import { Form, Grid, SelectField } from '@fjlaubscher/matter';
 
 // components
-import Form from '../form';
-import Grid from '../grid';
 import NumberField from '../field/number';
-import SelectField from '../field/select';
 
 // state
 import { BattleStatusAtom } from '../../state/config';

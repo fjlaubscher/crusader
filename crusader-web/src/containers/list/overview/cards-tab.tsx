@@ -1,9 +1,8 @@
 import React from 'react';
+import { Alert, Grid } from '@fjlaubscher/matter';
 
 // components
-import Alert from '../../../components/alert';
 import CrusadeCard from '../../../components/crusade-card/card';
-import Grid from '../../../components/grid';
 
 import styles from './overview.module.scss';
 

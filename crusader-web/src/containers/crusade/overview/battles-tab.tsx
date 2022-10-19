@@ -1,9 +1,9 @@
 import React from 'react';
 import { FaPlus } from 'react-icons/fa';
+import { Grid } from '@fjlaubscher/matter';
 
 // components
 import BattleCard from '../../../components/battle/card';
-import Grid from '../../../components/grid';
 import LinkButton from '../../../components/button/link';
 
 import styles from './overview.module.scss';

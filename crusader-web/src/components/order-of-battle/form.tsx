@@ -2,14 +2,10 @@ import React from 'react';
 import classnames from 'classnames';
 import { useFormContext, useController } from 'react-hook-form';
 import { useRecoilValue } from 'recoil';
+import { Form, Grid, InputField, SelectField, TextAreaField } from '@fjlaubscher/matter';
 
 // components
-import Form from '../form';
-import InputField from '../field/input';
-import Grid from '../grid';
 import NumberField from '../field/number';
-import SelectField from '../field/select';
-import TextAreaField from '../field/textarea';
 
 // state
 import { FactionAtom } from '../../state/config';

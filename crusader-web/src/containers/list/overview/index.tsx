@@ -3,17 +3,13 @@ import { FaPen } from 'react-icons/fa';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAsync } from 'react-use';
 import { useRecoilValue } from 'recoil';
+import { IconButton, Stat, Tabs, Tag, TagGroup } from '@fjlaubscher/matter';
 
 // api
 import { getListAsync, getListCrusadeCardsAsync } from '../../../api/list';
 
 // components
-import IconButton from '../../../components/button/icon';
 import Layout from '../../../components/layout';
-import Stat from '../../../components/stat';
-import Tabs from '../../../components/tabs';
-import Tag from '../../../components/tag';
-import TagGroup from '../../../components/tag/group';
 
 // state
 import { PlayerAtom } from '../../../state/player';

@@ -1,11 +1,10 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { FaPlus } from 'react-icons/fa';
+import { Alert, Grid } from '@fjlaubscher/matter';
 
 // components
-import Alert from '../../../components/alert';
 import BattleCard from '../../../components/battle/card';
-import Grid from '../../../components/grid';
 import LinkButton from '../../../components/button/link';
 
 // state

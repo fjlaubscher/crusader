@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { FaPen, FaUsers } from 'react-icons/fa';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useAsync, useSessionStorage } from 'react-use';
+import { IconButton, Tabs, Stat } from '@fjlaubscher/matter';
 
 // api
 import { getOrderOfBattleCrusadeCardsAsync } from '../../../api/crusade-card';
@@ -11,9 +12,6 @@ import { getOrderOfBattleAsync, getOrderOfBattleBattlesAsync } from '../../../ap
 // components
 import Layout from '../../../components/layout';
 import LinkButton from '../../../components/button/link';
-import IconButton from '../../../components/button/icon';
-import Stat from '../../../components/stat';
-import Tabs from '../../../components/tabs';
 
 // helpers
 import { ORDER_OF_BATTLE_TAB } from '../../../helpers/storage';

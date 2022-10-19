@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, RouteProps } from 'react-router-dom';
+import { RouteProps } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 // containers

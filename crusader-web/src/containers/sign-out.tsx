@@ -1,14 +1,12 @@
 import React, { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
+import { useToast } from '@fjlaubscher/matter';
 
 // state
 import { CrusadeAtom } from '../state/crusade';
 import { OrderOfBattleAtom } from '../state/order-of-battle';
 import { PlayerAtom } from '../state/player';
-
-// hooks
-import useToast from '../hooks/use-toast';
 
 // storage
 import { PLAYER } from '../helpers/storage';

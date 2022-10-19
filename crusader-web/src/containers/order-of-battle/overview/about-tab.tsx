@@ -1,9 +1,7 @@
 import React from 'react';
-import classnames from 'classnames';
 import ReactMarkdown from 'react-markdown';
+import { Alert } from '@fjlaubscher/matter';
 
-// components
-import Alert from '../../../components/alert';
 
 import styles from '../../../styles/markdown.module.scss';
 

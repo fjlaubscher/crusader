@@ -1,11 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
-
-// components
-import Card from '../card';
-import Tag from '../tag';
-import TagGroup from '../tag/group';
+import { Card, Tag, TagGroup } from '@fjlaubscher/matter';
 
 import styles from './crusade.module.scss';
 

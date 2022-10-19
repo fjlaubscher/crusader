@@ -1,12 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
-
-// components
-import Card from '../card';
-import Stat from '../stat';
-import Tag from '../tag';
-import TagGroup from '../tag/group';
+import { Card, Tag, TagGroup, Stat } from '@fjlaubscher/matter';
 
 // helpers
 import { getBattleStatusColor } from '../../helpers/status';

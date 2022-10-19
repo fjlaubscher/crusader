@@ -1,7 +1,5 @@
 import React from 'react';
-
-// components
-import Alert from './alert';
+import { Alert } from '@fjlaubscher/matter';
 
 interface Props {
   playerName: string;

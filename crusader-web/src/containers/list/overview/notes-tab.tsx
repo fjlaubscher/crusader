@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
-
-// components
-import Alert from '../../../components/alert';
+import { Alert } from '@fjlaubscher/matter';
 
 import styles from '../../../styles/markdown.module.scss';
 

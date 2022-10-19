@@ -1,11 +1,7 @@
 import React from 'react';
 import { useFormContext, useController } from 'react-hook-form';
 import { useRecoilValue } from 'recoil';
-
-// components
-import Form from '../form';
-import InputField from '../field/input';
-import SelectField from '../field/select';
+import { Form, InputField, SelectField } from '@fjlaubscher/matter';
 
 // state
 import { FactionAtom } from '../../state/config';

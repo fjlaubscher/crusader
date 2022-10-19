@@ -1,12 +1,6 @@
 import React, { useCallback, useState } from 'react';
-import classnames from 'classnames';
 import { FaTrash, FaUndo } from 'react-icons/fa';
-
-// components
-import Button from '../button';
-
-// hooks
-import useToast from '../../hooks/use-toast';
+import { Button, Modal, useToast } from '@fjlaubscher/matter';
 
 import styles from './delete-modal.module.scss';
 
@@ -42,24 +36,22 @@ const DeleteModal: React.FC<Props> = ({
   }, [setIsBusy, onDeleteClick, onDeleteSuccess]);
 
   return (
-    <div className={classnames(styles.modal, show && styles.show)}>
-      <div className={styles.content}>
-        {children}
-        <div className={styles.buttons}>
-          <Button
-            className={styles.cancel}
-            type="button"
-            onClick={onCloseClick}
-            leftIcon={<FaUndo />}
-          >
-            Cancel
-          </Button>
-          <Button variant="error" loading={isBusy} onClick={handleDelete} leftIcon={<FaTrash />}>
-            Delete
-          </Button>
-        </div>
+    <Modal visible={show}>
+      {children}
+      <div className={styles.buttons}>
+        <Button
+          className={styles.cancel}
+          type="button"
+          onClick={onCloseClick}
+          leftIcon={<FaUndo />}
+        >
+          Cancel
+        </Button>
+        <Button variant="error" loading={isBusy} onClick={handleDelete} leftIcon={<FaTrash />}>
+          Delete
+        </Button>
       </div>
-    </div>
+    </Modal>
   );
 };
 

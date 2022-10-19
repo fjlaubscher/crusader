@@ -1,12 +1,8 @@
 import React from 'react';
 import { useController, useFormContext } from 'react-hook-form';
+import { Form, Grid, InputField, SelectField, TextAreaField } from '@fjlaubscher/matter';
 
 // components
-import Form from '../form';
-import Grid from '../grid';
-import InputField from '../field/input';
-import SelectField from '../field/select';
-import TextAreaField from '../field/textarea';
 import NumberField from '../field/number';
 
 import styles from './battle.module.scss';
@@ -50,14 +46,14 @@ const BattleForm = ({ ordersOfBattle, onSubmit }: Props) => {
         />
         <SelectField
           name="attacker"
-          options={ordersOfBattle}
+          options={ordersOfBattle.map((oob) => ({ value: oob.id, description: oob.name }))}
           label="Attacker"
           value={attackerField.value}
           onChange={attackerField.onChange}
         />
         <SelectField
           name="defender"
-          options={ordersOfBattle}
+          options={ordersOfBattle.map((oob) => ({ value: oob.id, description: oob.name }))}
           label="Defender"
           value={defenderField.value}
           onChange={defenderField.onChange}

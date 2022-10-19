@@ -4,19 +4,15 @@ import { useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';
 import { parseISO, format } from 'date-fns';
 import { FaCalculator, FaPen, FaUsers } from 'react-icons/fa';
+import { IconButton, Stat, Tabs, Tag, TagGroup } from '@fjlaubscher/matter';
 
 // api
 import { getBattleAsync } from '../../../api/battle';
 import { getOrderOfBattleAsync } from '../../../api/order-of-battle';
 
 // components
-import IconButton from '../../../components/button/icon';
 import Layout from '../../../components/layout';
 import LinkButton from '../../../components/button/link';
-import Stat from '../../../components/stat';
-import Tabs from '../../../components/tabs';
-import Tag from '../../../components/tag';
-import TagGroup from '../../../components/tag/group';
 
 // helpers
 import { getBattleStatusColor } from '../../../helpers/status';

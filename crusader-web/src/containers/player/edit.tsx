@@ -3,18 +3,15 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { FaArrowLeft, FaSave } from 'react-icons/fa';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useRecoilState } from 'recoil';
+import { IconButton, useToast } from '@fjlaubscher/matter';
 
 // api
 import { updatePlayerAsync } from '../../api/player';
 
 // components
-import IconButton from '../../components/button/icon';
 import Layout from '../../components/layout';
 import LinkButton from '../../components/button/link';
 import PlayerForm from '../../components/player/form';
-
-// hooks
-import useToast from '../../hooks/use-toast';
 
 // state
 import { PlayerAtom } from '../../state/player';

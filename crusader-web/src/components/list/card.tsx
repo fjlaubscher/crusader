@@ -1,10 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
-// components
-import Card from '../card';
-import Tag from '../tag';
-import TagGroup from '../tag/group';
+import { Card, Tag, TagGroup } from '@fjlaubscher/matter';
 
 import styles from './list.module.scss';
 

@@ -1,9 +1,6 @@
 import React from 'react';
 import { FaMinus, FaPlus } from 'react-icons/fa';
-
-// components
-import Field from '.';
-import Button from '../button';
+import { Button, Field } from '@fjlaubscher/matter';
 
 import styles from './field.module.scss';
 

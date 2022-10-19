@@ -1,7 +1,7 @@
 import React from 'react';
+import { Grid } from '@fjlaubscher/matter';
 
 // components
-import Grid from '../../../components/grid';
 import OrderOfBattleCard from '../../../components/order-of-battle/card';
 
 interface Props {

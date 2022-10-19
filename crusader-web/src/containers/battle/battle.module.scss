@@ -1,4 +1,4 @@
-@use "../../styles/colors";
+@use "@fjlaubscher/matter/src/styles/colors";
 
 .back {
   background-color: darken(colors.$light-surface, 15%);

@@ -1,14 +1,10 @@
 import React from 'react';
 import { useFormContext, useController } from 'react-hook-form';
 import { useRecoilValue } from 'recoil';
+import { Form, Grid, InputField, SelectField, TextAreaField } from '@fjlaubscher/matter';
 
 // components
-import Form from '../form';
-import Grid from '../grid';
-import InputField from '../field/input';
 import NumberField from '../field/number';
-import SelectField from '../field/select';
-import TextAreaField from '../field/textarea';
 
 // state
 import { BattlefieldRoleAtom } from '../../state/config';
@@ -71,7 +67,7 @@ const CrusadeCardForm = ({ onSubmit }: Props) => {
       <Grid className={styles.noMargin}>
         <SelectField
           name="battlefieldRole"
-          options={battlefieldRoles}
+          options={battlefieldRoles.map((b) => ({ value: b.id, description: b.name }))}
           label="Battlefield Role"
           value={battlefieldRoleField.value}
           onChange={battlefieldRoleField.onChange}

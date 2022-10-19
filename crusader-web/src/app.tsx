@@ -1,13 +1,11 @@
 import React, { Suspense, useEffect } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useAsync } from 'react-use';
+import { Loader } from '@fjlaubscher/matter';
 
 // api
 import { getBattlefieldRolesAsync, getBattleStatusesAsync, getFactionsAsync } from './api/config';
 import { getPlayerOrdersOfBattleAsync } from './api/order-of-battle';
-
-// components
-import Loader from './components/loader';
 
 // state
 import { BattlefieldRoleAtom, FactionAtom, BattleStatusAtom } from './state/config';

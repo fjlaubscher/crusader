@@ -4,18 +4,15 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';
 import { FaSave, FaArrowLeft } from 'react-icons/fa';
+import { IconButton, useToast } from '@fjlaubscher/matter';
 
 // api
 import { getOrderOfBattleAsync, updateOrderOfBattleAsync } from '../../api/order-of-battle';
 
 // components
-import IconButton from '../../components/button/icon';
 import Layout from '../../components/layout';
 import LinkButton from '../../components/button/link';
 import OrderOfBattleForm from '../../components/order-of-battle/form';
-
-// hooks
-import useToast from '../../hooks/use-toast';
 
 // state
 import { OrderOfBattleAtom } from '../../state/order-of-battle';

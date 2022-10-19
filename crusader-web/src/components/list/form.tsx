@@ -1,11 +1,6 @@
 import React from 'react';
 import { useController, useFormContext } from 'react-hook-form';
-
-// components
-import Form from '../form';
-import InputField from '../field/input';
-import SelectField from '../field/select';
-import TextAreaField from '../field/textarea';
+import { Form, InputField, SelectField, TextAreaField } from '@fjlaubscher/matter';
 
 interface Props {
   ordersOfBattle: Crusader.ListItem[];
@@ -29,7 +24,7 @@ const ListForm = ({ ordersOfBattle, onSubmit }: Props) => {
     <Form id="list-form" onSubmit={handleSubmit(onSubmit)}>
       <SelectField
         name="orderOfBattle"
-        options={ordersOfBattle}
+        options={ordersOfBattle.map((oob) => ({ value: oob.id, description: oob.name }))}
         label="Order of Battle"
         value={orderOfBattleField.value}
         onChange={orderOfBattleField.onChange}

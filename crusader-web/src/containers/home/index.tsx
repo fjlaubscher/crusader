@@ -3,6 +3,7 @@ import { useRecoilValue } from 'recoil';
 import { FaPowerOff } from 'react-icons/fa';
 import { useAsync, useSessionStorage } from 'react-use';
 import { Link } from 'react-router-dom';
+import { Tabs } from '@fjlaubscher/matter';
 
 // api
 import { getPlayerCrusadesAsync } from '../../api/crusade';
@@ -11,7 +12,6 @@ import { getPlayerCrusadesAsync } from '../../api/crusade';
 import CrusadesTab from './crusades-tab';
 import Layout from '../../components/layout';
 import OrdersOfBattleTab from './orders-of-battle-tab';
-import Tabs from '../../components/tabs';
 
 // helpers
 import { HOME_TAB } from '../../helpers/storage';

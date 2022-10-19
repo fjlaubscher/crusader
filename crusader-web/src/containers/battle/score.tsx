@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { FaArrowLeft, FaSave } from 'react-icons/fa';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useAsync } from 'react-use';
+import { IconButton, useToast } from '@fjlaubscher/matter';
 
 // api
 import { getBattleAsync, updateBattleAsync } from '../../api/battle';
@@ -11,10 +12,6 @@ import { getBattleAsync, updateBattleAsync } from '../../api/battle';
 import BattleScoreForm from '../../components/battle/score-form';
 import Layout from '../../components/layout';
 import LinkButton from '../../components/button/link';
-import IconButton from '../../components/button/icon';
-
-// hooks
-import useToast from '../../hooks/use-toast';
 
 import styles from './battle.module.scss';
 

@@ -3,17 +3,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { FaClipboardList, FaPen } from 'react-icons/fa';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';
+import { IconButton, Stat, Tabs } from '@fjlaubscher/matter';
 
 // api
 import { getCrusadeCardAsync } from '../../../api/crusade-card';
 import { getOrderOfBattleAsync } from '../../../api/order-of-battle';
 
 // components
-import IconButton from '../../../components/button/icon';
 import Layout from '../../../components/layout';
 import LinkButton from '../../../components/button/link';
-import Stat from '../../../components/stat';
-import Tabs from '../../../components/tabs';
 
 // state
 import { OrderOfBattleAtom } from '../../../state/order-of-battle';

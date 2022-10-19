@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useAsync } from 'react-use';
 import { useRecoilValue } from 'recoil';
 import { FaPen } from 'react-icons/fa';
+import { IconButton, Stat, Tabs } from '@fjlaubscher/matter';
 
 // api
 import { getPlayerCrusadesAsync } from '../../../api/crusade';
@@ -10,10 +11,7 @@ import { getPlayerOrdersOfBattleAsync } from '../../../api/order-of-battle';
 import { getPlayerByIdAsync } from '../../../api/player';
 
 // components
-import IconButton from '../../../components/button/icon';
 import Layout from '../../../components/layout';
-import Stat from '../../../components/stat';
-import Tabs from '../../../components/tabs';
 
 // state
 import { PlayerAtom } from '../../../state/player';

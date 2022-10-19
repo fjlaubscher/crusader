@@ -1,10 +1,6 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
-
-// components
-import Form from '../form';
-import InputField from '../field/input';
-import TextAreaField from '../field/textarea';
+import { Form, InputField, TextAreaField } from '@fjlaubscher/matter';
 
 interface Props {
   onSubmit: (values: Crusader.Crusade) => Promise<void>;

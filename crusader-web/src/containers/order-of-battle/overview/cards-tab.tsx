@@ -1,12 +1,11 @@
 import React from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { useRecoilValue } from 'recoil';
-import Alert from '../../../components/alert';
-import LinkButton from '../../../components/button/link';
+import { Alert, Grid } from '@fjlaubscher/matter';
 
 // components
 import CrusadeCard from '../../../components/crusade-card/card';
-import Grid from '../../../components/grid';
+import LinkButton from '../../../components/button/link';
 
 // state
 import { PlayerAtom } from '../../../state/player';

@@ -19,4 +19,20 @@
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
+
+  &.yesNo {
+    > button {
+      box-shadow: none;
+    }
+
+    .button {
+      background-color: darken(colors.$light-surface, 15%);
+      color: colors.$light-text;
+
+      @media (prefers-color-scheme: dark) {
+        background-color: lighten(colors.$dark-surface, 15%);
+        color: colors.$dark-text;
+      }
+    }
+  }
 }

@@ -1,0 +1,37 @@
+@use '@fjlaubscher/matter/src/styles/breakpoints';
+@use '@fjlaubscher/matter/src/styles/colors';
+
+.tags {
+  margin: 1rem 0;
+}
+
+.backButton {
+  background-color: darken(colors.$light-surface, 15%);
+  color: colors.$light-text;
+  margin-bottom: 1rem;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: lighten(colors.$dark-surface, 15%);
+    color: colors.$dark-text;
+  }
+}
+
+.stats {
+  margin: 1rem 0;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  > div:nth-child(even) {
+    text-align: right;
+  }
+
+  @media (min-width: breakpoints.$tablet) {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+
+    > div:nth-child(even) {
+      text-align: left;
+    }
+  }
+}

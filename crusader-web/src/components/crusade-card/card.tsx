@@ -16,6 +16,9 @@ const CrusadeCard: React.FC<Props> = ({ className, crusadeCard, onClick }) => (
       <Tag>{crusadeCard.battlefieldRole}</Tag>
       <Tag variant="info">{crusadeCard.unitType}</Tag>
       <Tag variant="success">{crusadeCard.powerRating}PR</Tag>
+      {crusadeCard.experiencePoints > 0 && (
+        <Tag variant="accent">{crusadeCard.experiencePoints}XP</Tag>
+      )}
       {crusadeCard.crusadePoints > 0 && <Tag variant="warning">{crusadeCard.crusadePoints}CP</Tag>}
     </TagGroup>
   </Card>

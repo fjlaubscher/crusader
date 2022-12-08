@@ -1,10 +1,10 @@
-export const getCrusadePointIncrement = (powerRating: number) => powerRating >= 11 ? 2 : 1;
+export const getCrusadePointIncrement = (powerRating: number) => (powerRating >= 11 ? 2 : 1);
 
 export const getCrusadePointsFromXP = (experiencePoints: number, powerRating: number) => {
   let crusadePointIncrement = getCrusadePointIncrement(powerRating);
 
   if (experiencePoints >= 6) {
-    return crusadePointIncrement
+    return crusadePointIncrement;
   } else if (experiencePoints >= 16) {
     return crusadePointIncrement * 2;
   } else if (experiencePoints >= 31) {
@@ -14,4 +14,4 @@ export const getCrusadePointsFromXP = (experiencePoints: number, powerRating: nu
   }
 
   return 0;
-}
+};

@@ -70,7 +70,9 @@ const CrusadeCard = () => {
           >
             {crusadeCard.orderOfBattle}
           </LinkButton>
-          {crusadeCard.avatar && <Avatar className={styles.avatar} src={crusadeCard.avatar} />}
+          {crusadeCard.avatar && (
+            <Avatar className={styles.avatar} src={crusadeCard.avatar} alt={crusadeCard.name} />
+          )}
           <Stat
             title={crusadeCard.unitType}
             value={crusadeCard.name}

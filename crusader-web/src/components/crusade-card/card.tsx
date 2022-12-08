@@ -2,6 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, Tag, TagGroup } from '@fjlaubscher/matter';
 
+// components
+import Avatar from '../avatar';
+
 import styles from './crusade-card.module.scss';
 
 interface Props {
@@ -12,6 +15,9 @@ interface Props {
 
 const CrusadeCard: React.FC<Props> = ({ className, crusadeCard, onClick }) => (
   <Card className={className} title={crusadeCard.name} onClick={onClick}>
+    {crusadeCard.avatar && (
+      <Avatar className={styles.avatar} src={crusadeCard.avatar} alt={crusadeCard.name} />
+    )}
     <TagGroup>
       <Tag>{crusadeCard.battlefieldRole}</Tag>
       <Tag variant="info">{crusadeCard.unitType}</Tag>

@@ -2,6 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, Tag, TagGroup } from '@fjlaubscher/matter';
 
+// components
+import Avatar from '../avatar';
+
 import styles from './order-of-battle.module.scss';
 
 interface Props {
@@ -14,6 +17,9 @@ const OrderOfBattleCard = ({ orderOfBattle, showCrusadeName, showPlayerName }: P
   return (
     <Link className={styles.card} to={`/order-of-battle/${orderOfBattle.id}`}>
       <Card title={orderOfBattle.name}>
+        {orderOfBattle.avatar && (
+          <Avatar className={styles.avatar} src={orderOfBattle.avatar} alt={orderOfBattle.name} />
+        )}
         <TagGroup>
           {showPlayerName && <Tag variant="info">@{orderOfBattle.player}</Tag>}
           {showCrusadeName && <Tag variant="info">{orderOfBattle.crusade}</Tag>}

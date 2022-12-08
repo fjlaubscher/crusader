@@ -10,6 +10,7 @@ import { getOrderOfBattleCrusadeCardsAsync } from '../../../api/crusade-card';
 import { getOrderOfBattleAsync, getOrderOfBattleBattlesAsync } from '../../../api/order-of-battle';
 
 // components
+import Avatar from '../../../components/avatar';
 import Layout from '../../../components/layout';
 import LinkButton from '../../../components/button/link';
 
@@ -83,6 +84,9 @@ const OrderOfBattle = () => {
           >
             {orderOfBattle.crusade}
           </LinkButton>
+          {orderOfBattle.avatar && (
+            <Avatar className={styles.avatar} src={orderOfBattle.avatar} alt={orderOfBattle.name} />
+          )}
           <Stat
             title={`@${orderOfBattle.player}'s`}
             value={orderOfBattle.name}

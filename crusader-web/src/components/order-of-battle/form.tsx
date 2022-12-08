@@ -54,6 +54,13 @@ const OrderOfBattleForm = ({ isCompact, onSubmit }: Props) => {
       className={classnames(styles.form, isCompact && styles.compact)}
       onSubmit={handleSubmit(onSubmit)}
     >
+      <InputField
+        label="Avatar"
+        type="url"
+        placeholder="https://example.com/image.jpg"
+        required
+        {...register('avatar')}
+      />
       <SelectField
         name="faction"
         options={factions.map((f) => ({ value: f.id, description: f.name }))}

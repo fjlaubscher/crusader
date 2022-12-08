@@ -1,6 +1,10 @@
 @use "@fjlaubscher/matter/src/styles/breakpoints";
 @use "@fjlaubscher/matter/src/styles/colors";
 
+.avatar {
+  margin-bottom: 1rem;
+}
+
 .crusadeButton {
   background-color: darken(colors.$light-surface, 15%);
   color: colors.$light-text;

@@ -37,9 +37,10 @@ export const createBattleAsync = async (input: Crusader.Battle) => {
       name,
       notes,
       status_id,
-      created_date
+      created_date,
+      avatar
     )
-    VALUES ($1, $2, 0, $3, 0, $4, $5, $6, $7, 1, $8)
+    VALUES ($1, $2, 0, $3, 0, $4, $5, $6, $7, 1, $8, $9)
     RETURNING *    
   `;
 
@@ -51,7 +52,8 @@ export const createBattleAsync = async (input: Crusader.Battle) => {
     input.size,
     input.name,
     input.notes,
-    parseISO(input.createdDate)
+    parseISO(input.createdDate),
+    input.avatar
   ]);
   await client.end();
 
@@ -109,8 +111,9 @@ export const updateBattleAsync = async (input: Crusader.Battle) => {
         mission = $3,
         name = $4,
         notes = $5,
-        status_id = $6
-    WHERE id = $7
+        status_id = $6,
+        avatar = $7
+    WHERE id = $8
   `;
   await client.query<TableRow>(query, [
     input.attackerScore,
@@ -119,6 +122,7 @@ export const updateBattleAsync = async (input: Crusader.Battle) => {
     input.name,
     input.notes,
     input.statusId,
+    input.avatar,
     input.id
   ]);
   await client.end();

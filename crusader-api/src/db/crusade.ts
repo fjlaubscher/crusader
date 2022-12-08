@@ -23,8 +23,8 @@ export const createCrusadeAsync = async (input: Crusader.Crusade) => {
   await client.connect();
 
   const { rows } = await client.query<TableRow>(
-    'INSERT INTO crusade (name, created_date, created_by_id, notes) VALUES ($1, $2, $3, $4) RETURNING *',
-    [input.name, parseISO(input.createdDate), input.createdById, input.notes]
+    'INSERT INTO crusade (name, created_date, created_by_id, notes) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+    [input.name, parseISO(input.createdDate), input.createdById, input.notes, input.avatar]
   );
   await client.end();
 
@@ -55,10 +55,10 @@ export const updateCrusadeAsync = async (input: Crusader.Crusade) => {
 
   const query = `
     UPDATE crusade
-    SET name = $1, notes = $2
-    WHERE id = $3
+    SET name = $1, notes = $2, avatar = $3
+    WHERE id = $4
   `;
-  await client.query<TableRow>(query, [input.name, input.notes, input.id]);
+  await client.query<TableRow>(query, [input.name, input.notes, input.avatar, input.id]);
   await client.end();
 
   return getCrusadeByIdAsync(input.id);

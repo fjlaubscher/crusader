@@ -32,8 +32,8 @@ export const createOrderOfBattleAsync = async (input: Crusader.OrderOfBattle) =>
   await client.connect();
 
   const query = `
-    INSERT INTO order_of_battle (battles, battles_won, crusade_id, faction_id, name, notes, player_id, requisition, supply_limit)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+    INSERT INTO order_of_battle (battles, battles_won, crusade_id, faction_id, name, notes, player_id, requisition, supply_limit, avatar)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
     RETURNING *
   `;
   const { rows } = await client.query<TableRow>(query, [
@@ -45,7 +45,8 @@ export const createOrderOfBattleAsync = async (input: Crusader.OrderOfBattle) =>
     input.notes,
     input.playerId,
     input.requisition,
-    input.supplyLimit
+    input.supplyLimit,
+    input.avatar
   ]);
   await client.end();
 
@@ -129,8 +130,9 @@ export const updateOrderOfBattleAsync = async (input: Crusader.OrderOfBattle) =>
         name = $4,
         notes = $5,
         requisition = $6,
-        supply_limit = $7
-    WHERE id = $8
+        supply_limit = $7,
+        avatar = $8
+    WHERE id = $9
   `;
   await client.query<TableRow>(query, [
     input.battles,
@@ -140,6 +142,7 @@ export const updateOrderOfBattleAsync = async (input: Crusader.OrderOfBattle) =>
     input.notes,
     input.requisition,
     input.supplyLimit,
+    input.avatar,
     input.id
   ]);
   await client.end();

@@ -48,9 +48,10 @@ export const createCrusadeCardAsync = async (input: Crusader.CrusadeCard) => {
       units_destroyed_melee, 
       units_destroyed_psychic, 
       units_destroyed_ranged, 
-      warlord_traits
+      warlord_traits,
+      avatar
     )
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21)
     RETURNING *
   `;
   const { rows } = await client.query<TableRow>(query, [
@@ -73,7 +74,8 @@ export const createCrusadeCardAsync = async (input: Crusader.CrusadeCard) => {
     input.unitsDestroyedMelee,
     input.unitsDestroyedPsychic,
     input.unitsDestroyedRanged,
-    input.warlordTraits
+    input.warlordTraits,
+    input.avatar
   ]);
   await client.end();
 
@@ -163,8 +165,9 @@ export const updateCrusadeCardAsync = async (input: Crusader.CrusadeCard) => {
         units_destroyed_melee = $17,
         units_destroyed_psychic = $18,
         units_destroyed_ranged = $19,
-        warlord_traits = $20
-    WHERE id = $21
+        warlord_traits = $20,
+        avatar = $21
+    WHERE id = $22
   `;
   await client.query<TableRow>(query, [
     input.abilities,
@@ -187,6 +190,7 @@ export const updateCrusadeCardAsync = async (input: Crusader.CrusadeCard) => {
     input.unitsDestroyedPsychic,
     input.unitsDestroyedRanged,
     input.warlordTraits,
+    input.avatar,
     input.id
   ]);
   await client.end();

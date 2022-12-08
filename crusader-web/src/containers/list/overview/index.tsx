@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaPen } from 'react-icons/fa';
+import { FaCalculator, FaChevronRight, FaPen } from 'react-icons/fa';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAsync } from 'react-use';
 import { useRecoilValue } from 'recoil';
@@ -20,6 +20,7 @@ import NotesTab from './notes-tab';
 import SettingsTab from './settings-tab';
 
 import styles from './overview.module.scss';
+import LinkButton from '../../../components/button/link';
 
 const List = () => {
   const { id } = useParams();
@@ -64,6 +65,16 @@ const List = () => {
           <TagGroup className={styles.tags}>
             <Tag variant="info">{list.size}PR</Tag>
           </TagGroup>
+          {isOwner && (
+            <LinkButton
+              className={styles.postGameButton}
+              leftIcon={<FaCalculator />}
+              rightIcon={<FaChevronRight />}
+              to={`/list/${list.id}/post-game`}
+            >
+              Complete Battle
+            </LinkButton>
+          )}
           <Tabs active={tabIndex} onChange={setTabIndex} tabs={['Cards', 'Notes', 'Settings']}>
             <CardsTab cards={cards} isOwner={isOwner} />
             <NotesTab list={list} />

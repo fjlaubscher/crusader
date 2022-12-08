@@ -26,6 +26,7 @@ const EditCrusadeCard = lazy(() => import('./containers/crusade-card/edit'));
 
 const Lists = lazy(() => import('./containers/list/lists'));
 const ListOverview = lazy(() => import('./containers/list/overview'));
+const ListPostGame = lazy(() => import('./containers/list/post-game'));
 const EditList = lazy(() => import('./containers/list/edit'));
 const CreateList = lazy(() => import('./containers/list/create'));
 
@@ -132,6 +133,14 @@ const AppRoutes = () => (
       element={
         <ProtectedRoute>
           <EditList />
+        </ProtectedRoute>
+      }
+    />
+    <Route
+      path="/list/:id/post-game"
+      element={
+        <ProtectedRoute>
+          <ListPostGame />
         </ProtectedRoute>
       }
     />

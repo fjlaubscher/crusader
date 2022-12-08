@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaShareAlt } from 'react-icons/fa';
-import { Button, useToast } from '@fjlaubscher/matter'
+import { Button, useToast } from '@fjlaubscher/matter';
 
 interface Props {
   link: string;

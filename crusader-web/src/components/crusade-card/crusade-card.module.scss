@@ -1,4 +1,5 @@
-@use "@fjlaubscher/matter/src/styles/breakpoints";
+@use '@fjlaubscher/matter/src/styles/breakpoints';
+@use '@fjlaubscher/matter/src/styles/colors';
 
 .card {
   text-decoration: none;
@@ -16,5 +17,20 @@
 
   @media (min-width: breakpoints.$desktop) {
     grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.question {
+  margin-bottom: 1rem;
+
+  input,
+  textarea {
+    background-color: colors.$light-background;
+    color: colors.$light-text;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: colors.$dark-background;
+      color: colors.$dark-text;
+    }
   }
 }

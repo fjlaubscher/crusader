@@ -2,7 +2,6 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Alert } from '@fjlaubscher/matter';
 
-
 import styles from '../../../styles/markdown.module.scss';
 
 interface Props {

@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAsync } from 'react-use';
-import { FaChevronLeft, FaUndo } from 'react-icons/fa';
+import { FaArrowLeft, FaUndo } from 'react-icons/fa';
 import { Alert, Button, IconButton, Stat, Tag, TagGroup, useToast } from '@fjlaubscher/matter';
 
 // api
@@ -156,7 +156,7 @@ const ListPostGame = () => {
           {currentIndex > 0 && (
             <Button
               className={styles.backButton}
-              leftIcon={<FaChevronLeft />}
+              leftIcon={<FaArrowLeft />}
               onClick={() => setCurrentIndex(currentIndex - 1)}
             >
               Back

@@ -35,6 +35,12 @@ const BattleForm = ({ ordersOfBattle, onSubmit }: Props) => {
 
   return (
     <Form id="battle-form" onSubmit={handleSubmit(onSubmit)}>
+      <InputField
+        label="Avatar"
+        type="url"
+        placeholder="https://example.com/image.jpg"
+        {...register('avatar')}
+      />
       <Grid className={styles.formGrid} simple>
         <NumberField
           name="size"
@@ -75,12 +81,14 @@ const BattleForm = ({ ordersOfBattle, onSubmit }: Props) => {
         {...register('name', { required: true })}
         required
       />
-      <TextAreaField
-        label="Description"
-        isFullHeight
-        placeholder="Use Markdown to describe your battle!"
-        {...register('notes', { required: false })}
-      />
+      <div className={styles.notes}>
+        <TextAreaField
+          label="Description"
+          isFullHeight
+          placeholder="Use Markdown to describe your battle!"
+          {...register('notes', { required: false })}
+        />
+      </div>
     </Form>
   );
 };

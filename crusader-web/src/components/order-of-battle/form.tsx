@@ -58,7 +58,6 @@ const OrderOfBattleForm = ({ isCompact, onSubmit }: Props) => {
         label="Avatar"
         type="url"
         placeholder="https://example.com/image.jpg"
-        required
         {...register('avatar')}
       />
       <SelectField

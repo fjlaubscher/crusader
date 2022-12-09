@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { FaHammer, FaHome, FaListAlt, FaPlus, FaUser } from 'react-icons/fa';
 import { Helmet } from 'react-helmet';
 import { useRecoilValue } from 'recoil';
-import { Layout, LayoutProps } from '@fjlaubscher/matter';
+import { Layout } from '@fjlaubscher/matter';
 
 // components
 import LinkButton from '../button/link';
@@ -17,11 +17,13 @@ import styles from './layout.module.scss';
 interface Props {
   children: React.ReactNode;
   title: string;
+  description?: string;
+  image?: string;
   action?: React.ReactNode;
   isLoading?: boolean;
 }
 
-const AppLayout = ({ children, title, action, isLoading }: Props) => {
+const AppLayout = ({ children, title, description, image, action, isLoading }: Props) => {
   const { pathname } = useLocation();
   const player = useRecoilValue(PlayerAtom);
 
@@ -74,7 +76,13 @@ const AppLayout = ({ children, title, action, isLoading }: Props) => {
       }
       isLoading={isLoading}
     >
-      <Helmet title={`${title} | Crusader`} />
+      <Helmet>
+        <title>{title} | Crusader</title>
+        <meta property="og:title" content={`${title} | Crusader`} />
+        {description && <meta name="description" content={description} />}
+        {description && <meta property="og:description" content={description} />}
+        {image && <meta property="og:image" content={image} />}
+      </Helmet>
       {children}
     </Layout>
   );

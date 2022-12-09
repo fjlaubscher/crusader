@@ -16,6 +16,12 @@ const PlayerForm = ({ onSubmit }: Props) => {
   return (
     <Form id="player-form" onSubmit={handleSubmit(onSubmit)}>
       <InputField
+        label="Avatar"
+        type="url"
+        placeholder="https://example.com/image.jpg"
+        {...register('avatar')}
+      />
+      <InputField
         label="Username"
         type="text"
         placeholder="Eg. Player69"
@@ -28,8 +34,7 @@ const PlayerForm = ({ onSubmit }: Props) => {
         isFullHeight
         placeholder="Use Markdown to describe yourself!"
         required
-        errorMessage={errors.notes ? 'Required' : undefined}
-        {...register('notes', { required: true })}
+        {...register('notes', { required: false })}
       />
     </Form>
   );

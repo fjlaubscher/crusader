@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';
 import { parseISO, format } from 'date-fns';
-import { FaCalculator, FaPen, FaUsers } from 'react-icons/fa';
+import { FaArrowLeft, FaCalculator, FaPen, FaUsers } from 'react-icons/fa';
 import { IconButton, Stat, Tabs, Tag, TagGroup } from '@fjlaubscher/matter';
 
 // api
@@ -11,6 +11,7 @@ import { getBattleAsync } from '../../../api/battle';
 import { getOrderOfBattleAsync } from '../../../api/order-of-battle';
 
 // components
+import Avatar from '../../../components/avatar';
 import Layout from '../../../components/layout';
 import LinkButton from '../../../components/button/link';
 
@@ -71,6 +72,8 @@ const Battle = () => {
   return (
     <Layout
       title="Battle"
+      description={battle?.name}
+      image={battle?.avatar}
       action={
         isPlayerBattle && (
           <IconButton onClick={() => navigate(`/battle/${id}/edit`)}>
@@ -84,7 +87,8 @@ const Battle = () => {
         <>
           <LinkButton
             className={styles.crusadeButton}
-            leftIcon={<FaUsers />}
+            leftIcon={<FaArrowLeft />}
+            rightIcon={<FaUsers />}
             to={`/crusade/${battle.crusadeId}`}
           >
             {battle.crusade}
@@ -94,6 +98,9 @@ const Battle = () => {
             value={battle.name}
             description={format(parseISO(battle.createdDate), 'yyyy-MM-dd')}
           />
+          {battle.avatar && (
+            <Avatar className={styles.avatar} src={battle.avatar} alt={battle.name} />
+          )}
           <TagGroup className={styles.tags}>
             <Tag variant="info">{battle.size}PR</Tag>
             <Tag variant={getBattleStatusColor(battle.statusId)}>{battle.status}</Tag>

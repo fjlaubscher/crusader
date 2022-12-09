@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaCalculator, FaChevronRight, FaPen } from 'react-icons/fa';
+import { FaArrowLeft, FaCalculator, FaPen } from 'react-icons/fa';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAsync } from 'react-use';
 import { useRecoilValue } from 'recoil';
@@ -50,6 +50,7 @@ const List = () => {
   return (
     <Layout
       title="List"
+      description={list?.name}
       action={
         isOwner && (
           <IconButton onClick={() => navigate(`/list/${id}/edit`)}>
@@ -68,8 +69,8 @@ const List = () => {
           {isOwner && (
             <LinkButton
               className={styles.postGameButton}
-              leftIcon={<FaCalculator />}
-              rightIcon={<FaChevronRight />}
+              leftIcon={<FaArrowLeft />}
+              rightIcon={<FaCalculator />}
               to={`/list/${list.id}/post-game`}
             >
               Complete Battle

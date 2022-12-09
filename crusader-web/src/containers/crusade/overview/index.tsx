@@ -11,6 +11,7 @@ import { getCrusadeAsync, getCrusadeBattlesAsync } from '../../../api/crusade';
 import { getCrusadeOrdersOfBattleAsync } from '../../../api/order-of-battle';
 
 // components
+import Avatar from '../../../components/avatar';
 import Layout from '../../../components/layout';
 import LinkButton from '../../../components/button/link';
 
@@ -69,6 +70,8 @@ const Crusade = () => {
   return (
     <Layout
       title="Crusade"
+      description={currentCrusade?.name}
+      image={currentCrusade?.avatar}
       action={
         isOwner && (
           <IconButton onClick={() => navigate(`/crusade/${id}/edit`)}>
@@ -85,6 +88,13 @@ const Crusade = () => {
             value={currentCrusade.name}
             description={`Created on ${format(parseISO(currentCrusade.createdDate), 'yyyy-MM-dd')}`}
           />
+          {currentCrusade.avatar && (
+            <Avatar
+              className={styles.avatar}
+              src={currentCrusade.avatar}
+              alt={currentCrusade.name}
+            />
+          )}
           {!hasJoined && (
             <LinkButton
               className={styles.join}

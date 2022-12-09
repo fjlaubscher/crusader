@@ -68,7 +68,6 @@ const CrusadeCardForm = ({ onSubmit }: Props) => {
         label="Avatar"
         type="url"
         placeholder="https://example.com/image.jpg"
-        required
         {...register('avatar')}
       />
       <Grid className={styles.noMargin}>

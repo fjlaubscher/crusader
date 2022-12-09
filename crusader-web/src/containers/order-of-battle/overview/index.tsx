@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { FaPen, FaUsers } from 'react-icons/fa';
+import { FaArrowLeft, FaPen, FaUsers } from 'react-icons/fa';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useAsync, useSessionStorage } from 'react-use';
 import { IconButton, Tabs, Stat } from '@fjlaubscher/matter';
@@ -66,6 +66,12 @@ const OrderOfBattle = () => {
   return (
     <Layout
       title="Order of Battle"
+      description={
+        orderOfBattle
+          ? `${orderOfBattle.faction} - ${orderOfBattle.name} (${orderOfBattle.supplyLimit}PR)`
+          : undefined
+      }
+      image={orderOfBattle?.avatar}
       action={
         isOwner && (
           <IconButton onClick={() => navigate(`/order-of-battle/${id}/edit`)}>
@@ -79,19 +85,20 @@ const OrderOfBattle = () => {
         <>
           <LinkButton
             className={styles.crusadeButton}
-            leftIcon={<FaUsers />}
+            leftIcon={<FaArrowLeft />}
+            rightIcon={<FaUsers />}
             to={`/crusade/${orderOfBattle.crusadeId}`}
           >
             {orderOfBattle.crusade}
           </LinkButton>
-          {orderOfBattle.avatar && (
-            <Avatar className={styles.avatar} src={orderOfBattle.avatar} alt={orderOfBattle.name} />
-          )}
           <Stat
             title={`@${orderOfBattle.player}'s`}
             value={orderOfBattle.name}
             description={orderOfBattle.faction}
           />
+          {orderOfBattle.avatar && (
+            <Avatar className={styles.avatar} src={orderOfBattle.avatar} alt={orderOfBattle.name} />
+          )}
           <div className={styles.stats}>
             <Stat
               title="Power Rating"

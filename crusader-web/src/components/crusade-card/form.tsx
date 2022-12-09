@@ -64,6 +64,12 @@ const CrusadeCardForm = ({ onSubmit }: Props) => {
 
   return (
     <Form id="crusade-card-form" onSubmit={handleSubmit(onSubmit)}>
+      <InputField
+        label="Avatar"
+        type="url"
+        placeholder="https://example.com/image.jpg"
+        {...register('avatar')}
+      />
       <Grid className={styles.noMargin}>
         <SelectField
           name="battlefieldRole"

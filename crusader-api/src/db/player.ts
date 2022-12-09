@@ -39,11 +39,15 @@ export const updatePlayerAsync = async (input: Crusader.Player) => {
   const client = new Client();
   await client.connect();
 
-  const { rows } = await client.query<TableRow>(
-    'UPDATE player SET name = $1 WHERE id = $2 RETURNING *',
-    [input.name, input.id]
-  );
+  const query = `
+    UPDATE player
+    SET name = $1,
+        notes = $2,
+        avatar = $3
+    WHERE id = $4
+  `;
+  await client.query<TableRow>(query, [input.name, input.notes, input.avatar, input.id]);
   await client.end();
 
-  return mapFromPSQL<Crusader.Player>(rows)[0];
+  return getPlayerByIdAsync(input.id);
 };

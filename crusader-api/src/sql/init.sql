@@ -10,7 +10,7 @@ CREATE INDEX ix_battlefield_role ON battlefield_role (id);
 CREATE TABLE player (
   id SERIAL PRIMARY KEY,
   name VARCHAR(50) NOT NULL,
-  avatar VARCHAR(50) NOT NULL,
+  avatar VARCHAR(1000) NOT NULL,
   notes VARCHAR(2000) NOT NULL
 );
 CREATE INDEX ix_player ON player(id);
@@ -36,6 +36,7 @@ CREATE TABLE crusade (
   created_by_id INTEGER NOT NULL,
   name VARCHAR(50) NOT NULL,
   notes VARCHAR(2000) NOT NULL,
+  avatar VARCHAR(1000) NOT NULL,
   FOREIGN KEY (created_by_id) REFERENCES player(id) ON DELETE CASCADE
 );
 CREATE INDEX ix_crusade ON crusade(id);
@@ -53,6 +54,7 @@ CREATE TABLE order_of_battle (
   player_id INTEGER NOT NULL,
   requisition INTEGER NOT NULL,
   supply_limit INTEGER NOT NULL,
+  avatar VARCHAR(1000) NOT NULL,
   FOREIGN KEY (crusade_id) REFERENCES crusade(id) ON DELETE CASCADE,
   FOREIGN KEY (faction_id) REFERENCES faction(id) ON DELETE CASCADE,
   FOREIGN KEY (player_id) REFERENCES player(id) ON DELETE CASCADE
@@ -74,6 +76,7 @@ CREATE TABLE battle (
   notes VARCHAR(2000) NOT NULL,
   status_id INTEGER NOT NULL,
   created_date date NOT NULL,
+  avatar VARCHAR(1000) NOT NULL,
   FOREIGN KEY (attacker_order_of_battle_id) REFERENCES order_of_battle(id) ON DELETE CASCADE,
   FOREIGN KEY (defender_order_of_battle_id) REFERENCES order_of_battle(id) ON DELETE CASCADE,
   FOREIGN KEY (status_id) REFERENCES battle_status(id) ON DELETE CASCADE,
@@ -107,6 +110,7 @@ CREATE TABLE crusade_card (
   units_destroyed_psychic INTEGER NOT NULL,
   units_destroyed_ranged INTEGER NOT NULL,
   warlord_traits VARCHAR(2000) NOT NULL,
+  avatar VARCHAR(1000) NOT NULL,
   FOREIGN KEY (battlefield_role_id) REFERENCES battlefield_role(id) ON DELETE CASCADE,
   FOREIGN KEY (order_of_battle_id) REFERENCES order_of_battle(id) ON DELETE CASCADE
 );

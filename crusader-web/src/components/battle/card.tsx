@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import { Card, Tag, TagGroup, Stat } from '@fjlaubscher/matter';
 
+// components
+import Avatar from '../avatar';
+
 // helpers
 import { getBattleStatusColor } from '../../helpers/status';
 
@@ -19,6 +22,7 @@ const BattleCard: React.FC<Props> = ({ battle }) => (
         <span className={styles.title}>{battle.name}</span>
         <Tag variant={getBattleStatusColor(battle.statusId)}>{battle.status}</Tag>
       </div>
+      {battle.avatar && <Avatar className={styles.avatar} src={battle.avatar} alt={battle.name} />}
       <div className={styles.grid}>
         <Stat
           description={battle.attackerOrderOfBattle}

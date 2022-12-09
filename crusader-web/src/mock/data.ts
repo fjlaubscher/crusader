@@ -13,6 +13,7 @@ export const MOCK_CRUSADE: Crusader.Crusade = {
   createdBy: 'Marneus Calgar',
   createdDate: '2022-09-07T00:00:00.000Z',
   name: 'Battle of Macragge',
+  avatar: '',
   notes:
     'The blasphemy of the Tyranids is such that only one solution is acceptable. Extermination. There can only be two sides in a fight - choose carefully, lest you and I find ourselves on different sides.'
 };
@@ -33,7 +34,8 @@ export const MOCK_ORDER_OF_BATTLE: Crusader.OrderOfBattle = {
   supplyUsed: 49,
   crusade: 'Battle of Macragge',
   faction: 'Imperium',
-  player: 'Marneus Calgar'
+  player: 'Marneus Calgar',
+  avatar: ''
 };
 export const MOCK_ORDER_OF_BATTLE_ALT: Crusader.OrderOfBattle = {
   id: 1,
@@ -51,7 +53,8 @@ export const MOCK_ORDER_OF_BATTLE_ALT: Crusader.OrderOfBattle = {
   supplyUsed: 50,
   crusade: 'Battle of Macragge',
   faction: 'Tyranids',
-  player: 'Hive Mind'
+  player: 'Hive Mind',
+  avatar: ''
 };
 
 export const MOCK_BATTLE: Crusader.Battle = {
@@ -71,5 +74,6 @@ export const MOCK_BATTLE: Crusader.Battle = {
   crusade: 'Battle of Macragge',
   status: 'Complete',
   attackerOrderOfBattle: 'Ultramarines',
-  defenderOrderOfBattle: 'Hive Fleet Behemoth'
+  defenderOrderOfBattle: 'Hive Fleet Behemoth',
+  avatar: ''
 };

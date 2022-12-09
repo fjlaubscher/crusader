@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { FaClipboardList, FaPen } from 'react-icons/fa';
+import { FaArrowLeft, FaClipboardList, FaPen } from 'react-icons/fa';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';
 import { IconButton, Stat, Tabs } from '@fjlaubscher/matter';
@@ -10,6 +10,7 @@ import { getCrusadeCardAsync } from '../../../api/crusade-card';
 import { getOrderOfBattleAsync } from '../../../api/order-of-battle';
 
 // components
+import Avatar from '../../../components/avatar';
 import Layout from '../../../components/layout';
 import LinkButton from '../../../components/button/link';
 
@@ -51,6 +52,8 @@ const CrusadeCard = () => {
   return (
     <Layout
       title="Crusade Card"
+      description={crusadeCard?.name}
+      image={crusadeCard?.avatar}
       action={
         isOwner && (
           <IconButton onClick={() => navigate(`/crusade-card/${id}/edit`)}>
@@ -64,7 +67,8 @@ const CrusadeCard = () => {
         <>
           <LinkButton
             className={styles.orderOfBattleButton}
-            leftIcon={<FaClipboardList />}
+            leftIcon={<FaArrowLeft />}
+            rightIcon={<FaClipboardList />}
             to={`/order-of-battle/${crusadeCard.orderOfBattleId}`}
           >
             {crusadeCard.orderOfBattle}
@@ -74,6 +78,9 @@ const CrusadeCard = () => {
             value={crusadeCard.name}
             description={crusadeCard.battlefieldRole}
           />
+          {crusadeCard.avatar && (
+            <Avatar className={styles.avatar} src={crusadeCard.avatar} alt={crusadeCard.name} />
+          )}
           <div className={styles.stats}>
             <Stat title="Power Rating" value={crusadeCard.powerRating} />
             <Stat title="Crusade Points" value={crusadeCard.crusadePoints} />

@@ -6,6 +6,7 @@ declare namespace Crusader {
 
   interface Battle {
     id: number;
+    avatar: string;
     crusadeId: number;
     crusade: string;
     attackerOrderOfBattle: string;
@@ -25,6 +26,7 @@ declare namespace Crusader {
 
   interface Crusade {
     id: number;
+    avatar: string;
     createdDate: string;
     createdById: number;
     createdBy: string;
@@ -34,6 +36,7 @@ declare namespace Crusader {
 
   interface CrusadeCard {
     id: number;
+    avatar: string;
     abilities: string;
     battlefieldRoleId: number;
     battlefieldRole: string;
@@ -85,6 +88,7 @@ declare namespace Crusader {
 
   interface OrderOfBattle {
     id: number;
+    avatar: string;
     battles: number;
     battlesWon: number;
     crusadeId: number;
@@ -103,6 +107,7 @@ declare namespace Crusader {
 
   interface Player {
     id: number;
+    avatar: string;
     name: string;
     notes: string;
   }

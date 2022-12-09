@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAsync } from 'react-use';
 import { useRecoilValue } from 'recoil';
@@ -11,6 +11,7 @@ import { getPlayerOrdersOfBattleAsync } from '../../../api/order-of-battle';
 import { getPlayerByIdAsync } from '../../../api/player';
 
 // components
+import Avatar from '../../../components/avatar';
 import Layout from '../../../components/layout';
 
 // state
@@ -43,42 +44,13 @@ const Player = () => {
     [id]
   );
 
-  const { totalBattles, totalBattlesWon, totalCrusades, highestSupply } = useMemo(() => {
-    let totalBattles = 0;
-    let totalBattlesWon = 0;
-    let playerCrusades: number[] = [];
-    let highestSupply = 0;
-
-    if (ordersOfBattle) {
-      for (let i = 0; i < ordersOfBattle.length; i++) {
-        const orderOfBattle = ordersOfBattle[i];
-
-        if (playerCrusades.indexOf(orderOfBattle.crusadeId) < 0) {
-          playerCrusades.push(orderOfBattle.crusadeId);
-        }
-
-        totalBattles += orderOfBattle.battles;
-        totalBattlesWon += orderOfBattle.battlesWon;
-
-        if (orderOfBattle.supplyUsed > highestSupply) {
-          highestSupply = orderOfBattle.supplyUsed;
-        }
-      }
-    }
-
-    return {
-      totalBattles,
-      totalBattlesWon,
-      totalCrusades: playerCrusades.length,
-      highestSupply
-    };
-  }, [ordersOfBattle]);
-
   const isCurrentPlayer = currentPlayer && id ? currentPlayer.id === parseInt(id) : false;
 
   return (
     <Layout
-      title={player ? player.name : 'Player'}
+      title="Profile"
+      description={player?.name}
+      image={player?.avatar}
       isLoading={loadingPlayer || loadingOrdersOfBattle || loadingCrusades}
       action={
         isCurrentPlayer && (
@@ -90,16 +62,10 @@ const Player = () => {
     >
       {player && ordersOfBattle && crusades && (
         <>
-          <div className={styles.stats}>
-            <Stat title="Crusades" value={totalCrusades} />
-            <Stat title="Orders of Battle" value={ordersOfBattle.length} />
-            <Stat title="Largest Force" value={`${highestSupply}PR`} />
-            <Stat
-              title="Battles Won"
-              value={totalBattlesWon}
-              description={`Total Battles: ${totalBattles}`}
-            />
-          </div>
+          <Stat title="Crusader" value={`@${player.name}`} />
+          {player.avatar && (
+            <Avatar className={styles.avatar} src={player.avatar} alt={player.name} />
+          )}
           <Tabs
             active={tabIndex}
             onChange={setTabIndex}

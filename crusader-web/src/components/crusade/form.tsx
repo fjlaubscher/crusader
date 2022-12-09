@@ -16,6 +16,12 @@ const CrusadeForm = ({ onSubmit }: Props) => {
   return (
     <Form id="crusade-form" onSubmit={handleSubmit(onSubmit)}>
       <InputField
+        label="Avatar"
+        type="url"
+        placeholder="https://example.com/image.jpg"
+        {...register('avatar')}
+      />
+      <InputField
         label="Name"
         type="text"
         placeholder="Eg. My FLGS Crusade"

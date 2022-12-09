@@ -1,6 +1,10 @@
 @use '@fjlaubscher/matter/src/styles/breakpoints';
 @use '@fjlaubscher/matter/src/styles/colors';
 
+.avatar { 
+  margin: 1rem 0;
+}
+
 .orderOfBattleButton {
   background-color: darken(colors.$light-surface, 15%);
   color: colors.$light-text;

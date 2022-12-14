@@ -13,6 +13,7 @@ import { getOrderOfBattleAsync } from '../../../api/order-of-battle';
 import Avatar from '../../../components/avatar';
 import Layout from '../../../components/layout';
 import LinkButton from '../../../components/button/link';
+import MarkdownTab from '../../../components/markdown-tab';
 
 // helpers
 import { CRUSADE_CARD_TAB } from '../../../helpers/storage';
@@ -23,7 +24,6 @@ import { CrusadeCardsAtom } from '../../../state/crusade-card';
 import { PlayerAtom } from '../../../state/player';
 
 // tabs
-import MarkdownTab from './markdown-tab';
 import SettingsTab from './settings-tab';
 
 import styles from './overview.module.scss';

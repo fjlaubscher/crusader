@@ -1,7 +1,7 @@
 import { Alert, Grid } from '@fjlaubscher/matter';
 
 // components
-import CrusadeCard from '../../../components/crusade-card/card';
+import CrusadeListCard from '../../../components/crusade-card/list-card';
 
 import styles from './overview.module.scss';
 
@@ -16,7 +16,7 @@ const CardsTab = ({ cards, isOwner }: Props) => {
   return hasCards ? (
     <Grid className={isOwner ? styles.cards : undefined}>
       {cards.map((c) => (
-        <CrusadeCard key={c.id} crusadeCard={c} />
+        <CrusadeListCard key={c.id} crusadeCard={c} />
       ))}
     </Grid>
   ) : (

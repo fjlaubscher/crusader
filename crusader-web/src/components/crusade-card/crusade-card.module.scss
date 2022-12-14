@@ -38,3 +38,31 @@
     }
   }
 }
+
+.listCard {
+  .heading {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    .title {
+      font-weight: 500;
+      font-size: 1rem;
+    }
+  }
+
+  .info {
+    h4 {
+      color: colors.$accent;
+    }
+
+    border-bottom: 1px solid colors.$light-background;
+    margin-bottom: 1rem;
+
+    @media (prefers-color-scheme: dark) {
+      border-bottom-color: colors.$dark-background;
+    }
+  }
+}

@@ -77,9 +77,13 @@ const List = () => {
               Complete Battle
             </LinkButton>
           )}
-          <Tabs active={tabIndex} onChange={setTabIndex} tabs={['Cards', 'Notes', 'Settings']}>
+          <Tabs
+            active={tabIndex}
+            onChange={setTabIndex}
+            tabs={['Cards', list.notes && 'Notes', 'Settings']}
+          >
             <CardsTab cards={cards} isOwner={isOwner} />
-            <NotesTab list={list} />
+            {list.notes && <NotesTab list={list} />}
             <SettingsTab list={list} isOwner={isOwner} />
           </Tabs>
         </>

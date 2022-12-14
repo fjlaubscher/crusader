@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FaArrowLeft, FaPen, FaUsers } from 'react-icons/fa';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -6,8 +6,9 @@ import { useAsync, useSessionStorage } from 'react-use';
 import { IconButton, Tabs, Stat } from '@fjlaubscher/matter';
 
 // api
+import { getCrusadeOrdersOfBattleAsync } from '../../../api/order-of-battle';
 import { getOrderOfBattleCrusadeCardsAsync } from '../../../api/crusade-card';
-import { getOrderOfBattleAsync, getOrderOfBattleBattlesAsync } from '../../../api/order-of-battle';
+import { getOrderOfBattleAsync } from '../../../api/order-of-battle';
 
 // components
 import Avatar from '../../../components/avatar';
@@ -16,14 +17,15 @@ import LinkButton from '../../../components/button/link';
 
 // helpers
 import { ORDER_OF_BATTLE_TAB } from '../../../helpers/storage';
+import useSwipeNavigation from '../../../helpers/use-swipe-navigation';
 
 // state
-import { OrderOfBattleAtom } from '../../../state/order-of-battle';
+import { CrusadeCardsAtom } from '../../../state/crusade-card';
+import { OrdersOfBattleAtom } from '../../../state/order-of-battle';
 import { PlayerAtom } from '../../../state/player';
 
 // tabs
 import AboutTab from './about-tab';
-import BattlesTab from './battles-tab';
 import CardsTab from './cards-tab';
 import SettingsTab from './settings-tab';
 
@@ -32,36 +34,43 @@ import styles from './overview.module.scss';
 const OrderOfBattle = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [tabIndex, setTabIndex] = useSessionStorage<number | undefined>(ORDER_OF_BATTLE_TAB);
+  const [tabIndex, setTabIndex] = useSessionStorage<number | undefined>(
+    `${ORDER_OF_BATTLE_TAB}-${id}`
+  );
 
-  const [orderOfBattle, setOrderOfBattle] = useRecoilState(OrderOfBattleAtom);
+  const [crusadeCards, setCrusadeCards] = useRecoilState(CrusadeCardsAtom);
+  const [ordersOfBattle, setOrdersOfBattle] = useRecoilState(OrdersOfBattleAtom);
   const player = useRecoilValue(PlayerAtom);
 
-  const [battles, setBattles] = useState<Crusader.Battle[]>([]);
-  const [crusadeCards, setCrusadeCards] = useState<Crusader.CrusadeCard[]>([]);
+  const orderOfBattle = useMemo(() => {
+    if (id && ordersOfBattle.length) {
+      const filteredOrders = ordersOfBattle.filter((o) => o.id === parseInt(id));
+      return filteredOrders.length ? filteredOrders[0] : undefined;
+    }
+
+    return undefined;
+  }, [id, ordersOfBattle]);
 
   const { loading } = useAsync(async () => {
-    const oob = id ? await getOrderOfBattleAsync(id) : undefined;
-    if (oob) {
-      setOrderOfBattle(oob);
+    if (id) {
+      const oob = orderOfBattle || (await getOrderOfBattleAsync(id));
 
-      const [battles, cards] = await Promise.all([
-        getOrderOfBattleBattlesAsync(oob.id),
-        getOrderOfBattleCrusadeCardsAsync(oob.id)
-      ]);
+      if (oob) {
+        const [cards, orders] = await Promise.all([
+          getOrderOfBattleCrusadeCardsAsync(oob.id),
+          getCrusadeOrdersOfBattleAsync(oob.crusadeId)
+        ]);
 
-      if (battles) {
-        setBattles(battles);
-      }
-
-      if (cards) {
-        setCrusadeCards(cards);
+        setCrusadeCards(cards || []);
+        setOrdersOfBattle(orders || []);
       }
     }
-  }, [id]);
+  }, []);
 
   const playerId = player ? player.id : 0;
-  const isOwner = orderOfBattle && orderOfBattle.playerId === playerId;
+  const isOwner = orderOfBattle ? orderOfBattle.playerId === playerId : false;
+
+  const { ref } = useSwipeNavigation('order-of-battle', ordersOfBattle, id);
 
   return (
     <Layout
@@ -91,35 +100,36 @@ const OrderOfBattle = () => {
           >
             {orderOfBattle.crusade}
           </LinkButton>
-          <Stat
-            title={`@${orderOfBattle.player}'s`}
-            value={orderOfBattle.name}
-            description={orderOfBattle.faction}
-          />
-          {orderOfBattle.avatar && (
-            <Avatar className={styles.avatar} src={orderOfBattle.avatar} alt={orderOfBattle.name} />
-          )}
-          <div className={styles.stats}>
+          <div ref={ref}>
             <Stat
-              title="Power Rating"
-              value={`${orderOfBattle.supplyUsed}PR`}
-              description={`Supply Limit: ${orderOfBattle.supplyLimit}PR`}
+              title={`@${orderOfBattle.player}'s`}
+              value={orderOfBattle.name}
+              description={orderOfBattle.faction}
             />
-            <Stat title="Crusade Points" value={`${orderOfBattle.crusadePoints}CP`} />
-            <Stat title="Requisition" value={`${orderOfBattle.requisition}RP`} />
-            <Stat
-              title="Battles Won"
-              value={orderOfBattle.battlesWon}
-              description={`Total Battles: ${orderOfBattle.battles}`}
-            />
+            {orderOfBattle.avatar && (
+              <Avatar
+                className={styles.avatar}
+                src={orderOfBattle.avatar}
+                alt={orderOfBattle.name}
+              />
+            )}
+            <div className={styles.stats}>
+              <Stat
+                title="Power Rating"
+                value={`${orderOfBattle.supplyUsed}PR`}
+                description={`Supply Limit: ${orderOfBattle.supplyLimit}PR`}
+              />
+              <Stat title="Crusade Points" value={`${orderOfBattle.crusadePoints}CP`} />
+              <Stat title="Requisition" value={`${orderOfBattle.requisition}RP`} />
+              <Stat
+                title="Battles Won"
+                value={orderOfBattle.battlesWon}
+                description={`Total Battles: ${orderOfBattle.battles}`}
+              />
+            </div>
           </div>
-          <Tabs
-            active={tabIndex || 0}
-            onChange={setTabIndex}
-            tabs={['About', 'Battles', 'Cards', 'Settings']}
-          >
+          <Tabs active={tabIndex || 0} onChange={setTabIndex} tabs={['About', 'Cards', 'Settings']}>
             <AboutTab orderOfBattle={orderOfBattle} />
-            <BattlesTab battles={battles} orderOfBattle={orderOfBattle} />
             <CardsTab cards={crusadeCards} orderOfBattle={orderOfBattle} />
             <SettingsTab orderOfBattle={orderOfBattle} />
           </Tabs>

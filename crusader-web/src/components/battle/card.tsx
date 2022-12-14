@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import { Card, Tag, TagGroup, Stat } from '@fjlaubscher/matter';
@@ -15,7 +14,7 @@ interface Props {
   battle: Crusader.Battle;
 }
 
-const BattleCard: React.FC<Props> = ({ battle }) => (
+const BattleCard = ({ battle }: Props) => (
   <Link className={styles.card} to={`/battle/${battle.id}`}>
     <Card>
       <div className={styles.heading}>

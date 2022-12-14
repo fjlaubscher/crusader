@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { Button, useToast } from '@fjlaubscher/matter';
@@ -8,7 +8,6 @@ import { deleteListAsync } from '../../../api/list';
 
 // components
 import DeleteModal from '../../../components/delete-modal';
-import ShareButton from '../../../components/button/share';
 
 import styles from './overview.module.scss';
 
@@ -17,14 +16,13 @@ interface Props {
   isOwner: boolean;
 }
 
-const SettingsTab: React.FC<Props> = ({ list, isOwner }) => {
+const SettingsTab = ({ list, isOwner }: Props) => {
   const navigate = useNavigate();
   const toast = useToast();
   const [showModal, setShowModal] = useState(false);
 
   return (
     <div className={styles.settings}>
-      <ShareButton link={`/list/${list.id}`} title={list.name} />
       {isOwner && (
         <Button variant="error" onClick={() => setShowModal(true)} leftIcon={<FaTrash />}>
           Delete

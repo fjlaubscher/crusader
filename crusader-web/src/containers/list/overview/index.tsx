@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaArrowLeft, FaCalculator, FaPen } from 'react-icons/fa';
+import { FaArrowRight, FaCalculator, FaPen } from 'react-icons/fa';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAsync } from 'react-use';
 import { useRecoilValue } from 'recoil';
@@ -68,17 +68,22 @@ const List = () => {
           </TagGroup>
           {isOwner && (
             <LinkButton
+              variant="accent"
               className={styles.postGameButton}
-              leftIcon={<FaArrowLeft />}
-              rightIcon={<FaCalculator />}
+              leftIcon={<FaCalculator />}
+              rightIcon={<FaArrowRight />}
               to={`/list/${list.id}/post-game`}
             >
               Complete Battle
             </LinkButton>
           )}
-          <Tabs active={tabIndex} onChange={setTabIndex} tabs={['Cards', 'Notes', 'Settings']}>
+          <Tabs
+            active={tabIndex}
+            onChange={setTabIndex}
+            tabs={['Cards', list.notes && 'Notes', 'Settings']}
+          >
             <CardsTab cards={cards} isOwner={isOwner} />
-            <NotesTab list={list} />
+            {list.notes && <NotesTab list={list} />}
             <SettingsTab list={list} isOwner={isOwner} />
           </Tabs>
         </>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { FaArrowLeft, FaSave } from 'react-icons/fa';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -48,7 +48,7 @@ const EditPlayer = () => {
   return (
     <FormProvider {...form}>
       <Layout
-        title="Edit Player"
+        title="Settings"
         action={
           <IconButton
             disabled={!isValid || isSubmitting}
@@ -61,7 +61,7 @@ const EditPlayer = () => {
           </IconButton>
         }
       >
-        <LinkButton className={styles.back} leftIcon={<FaArrowLeft />} to={`/player/${id}`}>
+        <LinkButton className={styles.back} leftIcon={<FaArrowLeft />} to="/">
           Back
         </LinkButton>
         <PlayerForm

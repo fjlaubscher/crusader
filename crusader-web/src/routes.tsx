@@ -1,10 +1,11 @@
-import React, { lazy } from 'react';
+import { lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 // components
 import ProtectedRoute from './components/protected-route';
 
 // containers
+const Crusades = lazy(() => import('./containers/crusade/crusades'));
 const CrusadeOverview = lazy(() => import('./containers/crusade/overview'));
 const CreateCrusade = lazy(() => import('./containers/crusade/create'));
 const CreateBattle = lazy(() => import('./containers/battle/create'));
@@ -100,6 +101,14 @@ const AppRoutes = () => (
       }
     />
     <Route path="/crusade/:id" element={<CrusadeOverview />} />
+    <Route
+      path="/crusades"
+      element={
+        <ProtectedRoute>
+          <Crusades />
+        </ProtectedRoute>
+      }
+    />
 
     <Route path="/battle/:id" element={<BattleOverview />} />
     <Route

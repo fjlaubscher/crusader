@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { FaBiohazard } from 'react-icons/fa';
 import { useToast } from '@fjlaubscher/matter';
 

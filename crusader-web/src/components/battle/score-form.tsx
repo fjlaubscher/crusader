@@ -1,4 +1,3 @@
-import React from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 import { useRecoilValue } from 'recoil';
 import { Form, Grid, SelectField } from '@fjlaubscher/matter';
@@ -15,11 +14,10 @@ interface Props {
   onSubmit: (values: Crusader.Battle) => Promise<void>;
 }
 
-const BattleScoreForm: React.FC<Props> = ({ onSubmit }) => {
+const BattleScoreForm = ({ onSubmit }: Props) => {
   const battleStatuses = useRecoilValue(BattleStatusAtom);
 
   const {
-    register,
     handleSubmit,
     formState: { errors },
     control

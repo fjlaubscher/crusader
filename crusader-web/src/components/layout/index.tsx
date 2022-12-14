@@ -1,10 +1,10 @@
-import React from 'react';
+import { useCallback } from 'react';
 import classnames from 'classnames';
 import { Link, useLocation } from 'react-router-dom';
-import { FaHammer, FaHome, FaListAlt, FaPlus, FaUser } from 'react-icons/fa';
+import { FaHammer, FaHome, FaListAlt, FaShareAlt, FaUsers } from 'react-icons/fa';
 import { Helmet } from 'react-helmet';
 import { useRecoilValue } from 'recoil';
-import { Layout } from '@fjlaubscher/matter';
+import { Button, Layout, useToast } from '@fjlaubscher/matter';
 
 // components
 import LinkButton from '../button/link';
@@ -25,7 +25,38 @@ interface Props {
 
 const AppLayout = ({ children, title, description, image, action, isLoading }: Props) => {
   const { pathname } = useLocation();
+  const toast = useToast();
   const player = useRecoilValue(PlayerAtom);
+
+  const handleShare = useCallback(async () => {
+    try {
+      const shareLink = `${window.location.origin}${pathname}`;
+      const shareData: ShareData = {
+        title: 'Crusader',
+        text: title,
+        url: shareLink
+      };
+
+      if (!navigator.canShare || !navigator.canShare(shareData)) {
+        await navigator.clipboard.writeText(shareLink);
+        toast({
+          variant: 'success',
+          text: 'Link copied to your clipboard'
+        });
+      } else {
+        await navigator.share(shareData);
+        toast({
+          variant: 'success',
+          text: 'Shared'
+        });
+      }
+    } catch (ex: any) {
+      toast({
+        variant: 'error',
+        text: ex.message || 'Unable to share'
+      });
+    }
+  }, [pathname, toast]);
 
   return (
     <Layout
@@ -46,14 +77,14 @@ const AppLayout = ({ children, title, description, image, action, isLoading }: P
             Home
           </LinkButton>
           <LinkButton
-            leftIcon={<FaPlus />}
+            leftIcon={<FaUsers />}
             className={classnames(
               styles.action,
-              pathname === '/crusade' ? styles.active : undefined
+              pathname === '/crusades' ? styles.active : undefined
             )}
-            to="/crusade"
+            to="/crusades"
           >
-            New Crusade
+            Crusades
           </LinkButton>
           <LinkButton
             leftIcon={<FaListAlt />}
@@ -62,16 +93,9 @@ const AppLayout = ({ children, title, description, image, action, isLoading }: P
           >
             Lists
           </LinkButton>
-          <LinkButton
-            leftIcon={<FaUser />}
-            className={classnames(
-              styles.action,
-              pathname === `/player/${player?.id}` ? styles.active : undefined
-            )}
-            to={`/player/${player?.id}`}
-          >
-            Profile
-          </LinkButton>
+          <Button leftIcon={<FaShareAlt />} className={styles.action} onClick={handleShare}>
+            Share
+          </Button>
         </>
       }
       isLoading={isLoading}

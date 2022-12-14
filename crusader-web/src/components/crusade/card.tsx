@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import { Card, Tag, TagGroup } from '@fjlaubscher/matter';
@@ -12,7 +11,7 @@ interface Props {
   crusade: Crusader.Crusade;
 }
 
-const CrusadeCard: React.FC<Props> = ({ crusade }) => (
+const CrusadeCard = ({ crusade }: Props) => (
   <Link className={styles.card} to={`/crusade/${crusade.id}`}>
     <Card title={crusade.name}>
       {crusade.avatar && (

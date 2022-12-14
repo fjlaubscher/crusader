@@ -1,4 +1,3 @@
-import React from 'react';
 import classnames from 'classnames';
 import { Button, Field } from '@fjlaubscher/matter';
 
@@ -13,7 +12,7 @@ interface Props {
   value?: boolean;
 }
 
-const QuestionField: React.FC<Props> = ({ errorMessage, onChange, label, name, value }) => (
+const QuestionField = ({ errorMessage, onChange, label, name, value }: Props) => (
   <Field error={errorMessage}>
     <label htmlFor={name}>{label}</label>
     <div className={classnames(styles.buttons, styles.yesNo)}>

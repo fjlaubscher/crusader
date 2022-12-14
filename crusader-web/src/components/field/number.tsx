@@ -1,4 +1,3 @@
-import React from 'react';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 import { Button, Field } from '@fjlaubscher/matter';
 
@@ -17,7 +16,7 @@ interface Props {
   maximum?: number;
 }
 
-const NumberField: React.FC<Props> = ({
+const NumberField = ({
   placeholder,
   errorMessage,
   onChange,
@@ -28,7 +27,7 @@ const NumberField: React.FC<Props> = ({
   step = 1,
   minimum = 0,
   maximum = -1
-}) => (
+}: Props) => (
   <Field error={errorMessage}>
     <label htmlFor={name}>{`${label} ${!required ? '(optional)' : ''}`}</label>
     <input

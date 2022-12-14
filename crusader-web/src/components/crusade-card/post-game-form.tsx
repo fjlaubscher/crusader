@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useController, useForm } from 'react-hook-form';
 import { Button, Card, Form, TextAreaField } from '@fjlaubscher/matter';
 
@@ -7,7 +7,7 @@ import NumberField from '../field/number';
 import QuestionField from '../field/question';
 
 // helpers
-import { getCrusadePointsFromXP, getCrusadePointIncrement } from '../../helpers/crusade-points';
+import { getCrusadePointIncrement } from '../../helpers/crusade-points';
 
 import styles from './crusade-card.module.scss';
 
@@ -73,11 +73,11 @@ const CrusadeCardPostGameForm = ({ initialValues, onSubmit }: Props) => {
     control,
     name: 'powerRating'
   });
-  const { field: crusadePointsField, fieldState: crusadePointsFieldState } = useController({
+  const { field: crusadePointsField } = useController({
     control,
     name: 'crusadePoints'
   });
-  const { field: experiencePointsField, fieldState: experiencePointsFieldState } = useController({
+  const { field: experiencePointsField } = useController({
     control,
     name: 'experiencePoints'
   });
@@ -170,22 +170,6 @@ const CrusadeCardPostGameForm = ({ initialValues, onSubmit }: Props) => {
       setIsMarkedForGreatness
     ]
   );
-
-  useEffect(() => {
-    if (experiencePointsFieldState.isDirty && !crusadePointsFieldState.isDirty) {
-      const oldCP = crusadePointsField.value;
-      const newCP = getCrusadePointsFromXP(experiencePointsField.value, powerRatingField.value);
-      const deltaCP = oldCP - newCP;
-
-      crusadePointsField.onChange(newCP + deltaCP);
-    }
-  }, [
-    experiencePointsFieldState,
-    experiencePointsField,
-    crusadePointsFieldState,
-    crusadePointsField,
-    powerRatingField
-  ]);
 
   const id = getValues('id');
   useEffect(() => {

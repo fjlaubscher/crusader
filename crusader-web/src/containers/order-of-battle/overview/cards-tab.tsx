@@ -1,4 +1,3 @@
-import React from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { useRecoilValue } from 'recoil';
 import { Alert, Grid } from '@fjlaubscher/matter';
@@ -17,7 +16,7 @@ interface Props {
   orderOfBattle: Crusader.OrderOfBattle;
 }
 
-const CardsTab: React.FC<Props> = ({ cards, orderOfBattle }) => {
+const CardsTab = ({ cards, orderOfBattle }: Props) => {
   const player = useRecoilValue(PlayerAtom);
 
   const isOwner = orderOfBattle.playerId === player?.id;

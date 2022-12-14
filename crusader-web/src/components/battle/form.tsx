@@ -1,4 +1,3 @@
-import React from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 import { Form, Grid, InputField, SelectField, TextAreaField } from '@fjlaubscher/matter';
 

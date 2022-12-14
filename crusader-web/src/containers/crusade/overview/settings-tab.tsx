@@ -9,7 +9,6 @@ import { deleteCrusadeAsync } from '../../../api/crusade';
 
 // components
 import DeleteModal from '../../../components/delete-modal';
-import ShareButton from '../../../components/button/share';
 
 // state
 import { PlayerAtom } from '../../../state/player';
@@ -30,7 +29,6 @@ const SettingsTab: React.FC<Props> = ({ crusade }) => {
 
   return (
     <div className={styles.settings}>
-      <ShareButton link={`/crusade/${crusade.id}`} title={crusade.name} />
       {isOwner && (
         <Button variant="error" onClick={() => setShowModal(true)} leftIcon={<FaTrash />}>
           Delete

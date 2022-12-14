@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useAsync } from 'react-use';
 import { FaSave } from 'react-icons/fa';
-import slugify from 'slugify';
 import { Alert, IconButton, useToast } from '@fjlaubscher/matter';
+import slugify from 'slugify';
 
 // api
 import { getCrusadeAsync } from '../../api/crusade';
@@ -20,7 +20,6 @@ import JoinCrusadeForm from '../../components/crusade/join-form';
 import { PLAYER } from '../../helpers/storage';
 
 // state
-import { CrusadeAtom } from '../../state/crusade';
 import { PlayerAtom } from '../../state/player';
 import { PlayerOrdersOfBattleAtom } from '../../state/order-of-battle';
 
@@ -30,15 +29,15 @@ const JoinCrusade = () => {
   const toast = useToast();
 
   const [hasPrefilledForm, setHasPrefilledForm] = useState(false);
-  const [currentCrusade, setCurrentCrusade] = useRecoilState(CrusadeAtom);
   const [ordersOfBattle, setOrdersOfBattle] = useRecoilState(PlayerOrdersOfBattleAtom);
   const [player, setPlayer] = useRecoilState(PlayerAtom);
 
-  const { loading } = useAsync(async () => {
-    const crusade = id ? await getCrusadeAsync(id) : undefined;
-    if (crusade) {
-      setCurrentCrusade(crusade);
+  const { loading, value: crusade } = useAsync(async () => {
+    if (id) {
+      return getCrusadeAsync(id);
     }
+
+    return undefined;
   }, [id]);
 
   const form = useForm<Crusader.OrderOfBattle>({
@@ -74,12 +73,12 @@ const JoinCrusade = () => {
         isLoading={loading}
       >
         <Alert variant="info" title="😎 You're invited!">
-          Complete the form below to join {currentCrusade ? currentCrusade.name : 'the Crusade'}
+          Complete the form below to join {crusade ? crusade.name : 'the Crusade'}
         </Alert>
         <JoinCrusadeForm
           onSubmit={async (values) => {
             try {
-              if (currentCrusade) {
+              if (crusade) {
                 let playerId = player ? player.id : 0;
 
                 if (!playerId) {
@@ -106,7 +105,7 @@ const JoinCrusade = () => {
                   const newOrderOfBattle = await createOrderOfBattleAsync({
                     ...values,
                     playerId,
-                    crusadeId: currentCrusade.id,
+                    crusadeId: crusade.id,
                     supplyLimit: 50,
                     requisition: 5,
                     battles: 0,
@@ -117,7 +116,7 @@ const JoinCrusade = () => {
                   if (newOrderOfBattle) {
                     toast({
                       variant: 'success',
-                      text: `Joined ${currentCrusade.name}`
+                      text: `Joined ${crusade.name}`
                     });
                     setOrdersOfBattle(
                       ordersOfBattle ? [...ordersOfBattle, newOrderOfBattle] : [newOrderOfBattle]

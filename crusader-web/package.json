@@ -6,7 +6,7 @@
     "start": "vite",
     "build": "tsc && vite build",
     "format": "prettier --write \"**/src/**/*.{js,jsx,ts,tsx}\"",
-    "lint": "prettier --check \"**/src/**/*.{js,jsx,ts,tsx}\"",
+    "lint": "tsc && prettier --check \"**/src/**/*.{js,jsx,ts,tsx}\"",
     "test": "jest"
   },
   "keywords": [],
@@ -23,6 +23,7 @@
     "react-icons": "^4.4.0",
     "react-markdown": "^8.0.3",
     "react-router-dom": "^6.3.0",
+    "react-swipeable": "^7.0.0",
     "react-use": "^17.4.0",
     "recoil": "^0.7.5",
     "sass": "^1.55.0",

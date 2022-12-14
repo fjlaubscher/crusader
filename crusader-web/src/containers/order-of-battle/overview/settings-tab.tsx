@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
@@ -9,7 +9,6 @@ import { deleteOrderOfBattleAsync } from '../../../api/order-of-battle';
 
 // components
 import DeleteModal from '../../../components/delete-modal';
-import ShareButton from '../../../components/button/share';
 
 // state
 import { PlayerAtom } from '../../../state/player';
@@ -20,7 +19,7 @@ interface Props {
   orderOfBattle: Crusader.OrderOfBattle;
 }
 
-const SettingsTab: React.FC<Props> = ({ orderOfBattle }) => {
+const SettingsTab = ({ orderOfBattle }: Props) => {
   const navigate = useNavigate();
   const toast = useToast();
   const player = useRecoilValue(PlayerAtom);
@@ -30,7 +29,6 @@ const SettingsTab: React.FC<Props> = ({ orderOfBattle }) => {
 
   return (
     <div className={styles.settings}>
-      <ShareButton link={`/order-of-battle/${orderOfBattle.id}`} title={orderOfBattle.name} />
       {isOwner && (
         <Button variant="error" onClick={() => setShowModal(true)} leftIcon={<FaTrash />}>
           Delete

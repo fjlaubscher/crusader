@@ -1,4 +1,3 @@
-import React from 'react';
 import { RouteProps } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 

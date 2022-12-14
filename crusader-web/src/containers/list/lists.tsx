@@ -1,4 +1,3 @@
-import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';
 import { FaPlus } from 'react-icons/fa';

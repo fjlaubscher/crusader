@@ -1,4 +1,3 @@
-import React from 'react';
 import { Grid } from '@fjlaubscher/matter';
 
 // components
@@ -8,7 +7,7 @@ interface Props {
   ordersOfBattle: Crusader.OrderOfBattle[];
 }
 
-const OrdersOfBattleTab: React.FC<Props> = ({ ordersOfBattle }) => (
+const OrdersOfBattleTab = ({ ordersOfBattle }: Props) => (
   <Grid>
     {ordersOfBattle.map((oob) => (
       <OrderOfBattleCard key={oob.id} orderOfBattle={oob} showPlayerName />

@@ -1,13 +1,14 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import { useAsync } from 'react-use';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { useAsync, useSessionStorage } from 'react-use';
 import { parseISO, format } from 'date-fns';
 import { FaArrowLeft, FaCalculator, FaPen, FaUsers } from 'react-icons/fa';
 import { IconButton, Stat, Tabs, Tag, TagGroup } from '@fjlaubscher/matter';
 
 // api
 import { getBattleAsync } from '../../../api/battle';
+import { getCrusadeBattlesAsync } from '../../../api/crusade';
 import { getOrderOfBattleAsync } from '../../../api/order-of-battle';
 
 // components
@@ -16,9 +17,12 @@ import Layout from '../../../components/layout';
 import LinkButton from '../../../components/button/link';
 
 // helpers
+import { BATTLE_TAB } from '../../../helpers/storage';
 import { getBattleStatusColor } from '../../../helpers/status';
+import useSwipeNavigation from '../../../helpers/use-swipe-navigation';
 
 // state
+import { BattlesAtom } from '../../../state/battle';
 import { PlayerOrdersOfBattleAtom } from '../../../state/order-of-battle';
 
 // styles
@@ -32,31 +36,41 @@ import OrdersOfBattleTab from './orders-of-battle-tab';
 const Battle = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = useSessionStorage<number | undefined>(`${BATTLE_TAB}-${id}`);
+
+  const [attacker, setAttacker] = useState<Crusader.OrderOfBattle | undefined>(undefined);
+  const [defender, setDefender] = useState<Crusader.OrderOfBattle | undefined>(undefined);
+  const [battles, setBattles] = useRecoilState(BattlesAtom);
   const playerOrdersOfBattle = useRecoilValue(PlayerOrdersOfBattleAtom);
 
-  const { loading: loadingBattle, value: battle } = useAsync(async () => {
+  const battle = useMemo(() => {
+    if (id && battles.length) {
+      const filteredBattles = battles.filter((b) => b.id === parseInt(id));
+      return filteredBattles.length ? filteredBattles[0] : undefined;
+    }
+
+    return undefined;
+  }, [id, battles]);
+
+  const { loading } = useAsync(async () => {
     if (id) {
-      return await getBattleAsync(id);
+      const currentBattle = battle || (await getBattleAsync(id));
+
+      if (currentBattle) {
+        const [battles, attacker, defender] = await Promise.all([
+          getCrusadeBattlesAsync(currentBattle.crusadeId),
+          getOrderOfBattleAsync(currentBattle.attackerOrderOfBattleId),
+          getOrderOfBattleAsync(currentBattle.defenderOrderOfBattleId)
+        ]);
+
+        setBattles(battles || []);
+        setAttacker(attacker);
+        setDefender(defender);
+      }
     }
 
     return undefined;
-  }, [id]);
-
-  const { loading: loadingAttacker, value: attacker } = useAsync(async () => {
-    if (battle) {
-      return await getOrderOfBattleAsync(battle.attackerOrderOfBattleId);
-    }
-
-    return undefined;
-  }, [battle]);
-  const { loading: loadingDefender, value: defender } = useAsync(async () => {
-    if (battle) {
-      return await getOrderOfBattleAsync(battle.defenderOrderOfBattleId);
-    }
-
-    return undefined;
-  }, [battle]);
+  }, []);
 
   const isPlayerBattle = useMemo(() => {
     if (battle && playerOrdersOfBattle) {
@@ -68,6 +82,8 @@ const Battle = () => {
       );
     }
   }, [battle, playerOrdersOfBattle]);
+
+  const { ref } = useSwipeNavigation('battle', battles, id);
 
   return (
     <Layout
@@ -81,7 +97,7 @@ const Battle = () => {
           </IconButton>
         )
       }
-      isLoading={loadingBattle || loadingAttacker || loadingDefender}
+      isLoading={loading}
     >
       {battle && attacker && defender && (
         <>
@@ -93,29 +109,31 @@ const Battle = () => {
           >
             {battle.crusade}
           </LinkButton>
-          <Stat
-            title={battle.mission}
-            value={battle.name}
-            description={format(parseISO(battle.createdDate), 'yyyy-MM-dd')}
-          />
-          {battle.avatar && (
-            <Avatar className={styles.avatar} src={battle.avatar} alt={battle.name} />
-          )}
-          <TagGroup className={styles.tags}>
-            <Tag variant="info">{battle.size}PR</Tag>
-            <Tag variant={getBattleStatusColor(battle.statusId)}>{battle.status}</Tag>
-          </TagGroup>
-          <div className={styles.stats}>
+          <div ref={ref}>
             <Stat
-              title="Attacker"
-              value={battle.attackerScore}
-              description={battle.attackerOrderOfBattle}
+              title={battle.mission}
+              value={battle.name}
+              description={format(parseISO(battle.createdDate), 'yyyy-MM-dd')}
             />
-            <Stat
-              title="Defender"
-              value={battle.defenderScore}
-              description={battle.defenderOrderOfBattle}
-            />
+            {battle.avatar && (
+              <Avatar className={styles.avatar} src={battle.avatar} alt={battle.name} />
+            )}
+            <TagGroup className={styles.tags}>
+              <Tag variant="info">{battle.size}PR</Tag>
+              <Tag variant={getBattleStatusColor(battle.statusId)}>{battle.status}</Tag>
+            </TagGroup>
+            <div className={styles.stats}>
+              <Stat
+                title="Attacker"
+                value={battle.attackerScore}
+                description={battle.attackerOrderOfBattle}
+              />
+              <Stat
+                title="Defender"
+                value={battle.defenderScore}
+                description={battle.defenderOrderOfBattle}
+              />
+            </div>
           </div>
           {isPlayerBattle && (
             <LinkButton
@@ -127,7 +145,11 @@ const Battle = () => {
               Update Score
             </LinkButton>
           )}
-          <Tabs active={tabIndex} onChange={setTabIndex} tabs={['About', 'Crusaders', 'Settings']}>
+          <Tabs
+            active={tabIndex || 0}
+            onChange={setTabIndex}
+            tabs={['About', 'Crusaders', 'Settings']}
+          >
             <AboutTab battle={battle} />
             <OrdersOfBattleTab ordersOfBattle={[attacker, defender]} />
             <SettingsTab battle={battle} isOwner={isPlayerBattle || false} />

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { FiChevronRight } from 'react-icons/fi';
 
@@ -9,7 +8,7 @@ interface Props {
   to: string;
 }
 
-const LinkCard: React.FC<Props> = ({ children, to }) => (
+const LinkCard = ({ children, to }: Props) => (
   <Link className={styles.link} to={to}>
     <div>{children}</div>
     <FiChevronRight />

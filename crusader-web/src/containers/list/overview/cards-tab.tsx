@@ -1,4 +1,3 @@
-import React from 'react';
 import { Alert, Grid } from '@fjlaubscher/matter';
 
 // components
@@ -11,7 +10,7 @@ interface Props {
   isOwner: boolean;
 }
 
-const CardsTab: React.FC<Props> = ({ cards, isOwner }) => {
+const CardsTab = ({ cards, isOwner }: Props) => {
   const hasCards = cards.length > 0;
 
   return hasCards ? (

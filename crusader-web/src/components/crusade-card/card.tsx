@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, Tag, TagGroup } from '@fjlaubscher/matter';
 
@@ -13,7 +12,7 @@ interface Props {
   onClick?: () => void;
 }
 
-const CrusadeCard: React.FC<Props> = ({ className, crusadeCard, onClick }) => (
+const CrusadeCard = ({ className, crusadeCard, onClick }: Props) => (
   <Card className={className} title={crusadeCard.name} onClick={onClick}>
     {crusadeCard.avatar && (
       <Avatar className={styles.avatar} src={crusadeCard.avatar} alt={crusadeCard.name} />
@@ -30,7 +29,7 @@ const CrusadeCard: React.FC<Props> = ({ className, crusadeCard, onClick }) => (
   </Card>
 );
 
-const WrappedCrusadeCard: React.FC<Props> = ({ className, crusadeCard, onClick }) =>
+const WrappedCrusadeCard = ({ className, crusadeCard, onClick }: Props) =>
   onClick ? (
     <CrusadeCard className={className} crusadeCard={crusadeCard} onClick={onClick} />
   ) : (

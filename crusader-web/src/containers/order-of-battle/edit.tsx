@@ -1,7 +1,6 @@
-import React from 'react';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useAsync } from 'react-use';
 import { FaSave, FaArrowLeft } from 'react-icons/fa';
 import { IconButton, useToast } from '@fjlaubscher/matter';
@@ -15,7 +14,7 @@ import LinkButton from '../../components/button/link';
 import OrderOfBattleForm from '../../components/order-of-battle/form';
 
 // state
-import { OrderOfBattleAtom } from '../../state/order-of-battle';
+import { PlayerOrdersOfBattleAtom, OrdersOfBattleAtom } from '../../state/order-of-battle';
 import { PlayerAtom } from '../../state/player';
 
 import styles from './order-of-battle.module.scss';
@@ -25,7 +24,8 @@ const EditOrderOfBattle = () => {
   const navigate = useNavigate();
   const toast = useToast();
 
-  const [currentOrderOfBattle, setCurrentOrderOfBattle] = useRecoilState(OrderOfBattleAtom);
+  const setPlayerOrdersOfBattle = useSetRecoilState(PlayerOrdersOfBattleAtom);
+  const setOrdersOfBattle = useSetRecoilState(OrdersOfBattleAtom);
   const player = useRecoilValue(PlayerAtom);
 
   const form = useForm<Crusader.Crusade>({ mode: 'onChange' });
@@ -34,28 +34,19 @@ const EditOrderOfBattle = () => {
     formState: { isSubmitting, isValid }
   } = form;
 
-  const { loading } = useAsync(async () => {
+  const { loading, value: orderOfBattle } = useAsync(async () => {
     if (id) {
-      if (!currentOrderOfBattle || currentOrderOfBattle.id !== parseInt(id)) {
-        const orderOfBattle = await getOrderOfBattleAsync(id);
+      const orderOfBattle = await getOrderOfBattleAsync(id);
 
-        if (orderOfBattle) {
-          setCurrentOrderOfBattle(orderOfBattle);
-          reset(orderOfBattle);
-        }
-      } else if (currentOrderOfBattle) {
-        reset(currentOrderOfBattle);
+      if (orderOfBattle) {
+        reset(orderOfBattle);
       }
+
+      return orderOfBattle;
     }
-  }, [id, currentOrderOfBattle, reset]);
 
-  const playerId = player ? player.id : 0;
-  const createdById = currentOrderOfBattle ? currentOrderOfBattle.playerId : 0;
-  const isOwner = playerId && createdById && playerId === createdById;
-
-  if (!loading && !isOwner) {
-    return <Navigate to={`/order-of-battle/${id}`} />;
-  }
+    return undefined;
+  }, [id, reset]);
 
   return (
     <FormProvider {...form}>
@@ -84,9 +75,9 @@ const EditOrderOfBattle = () => {
         <OrderOfBattleForm
           onSubmit={async (values) => {
             try {
-              if (currentOrderOfBattle && player) {
+              if (orderOfBattle && player) {
                 const updatedOrderOfBattle = await updateOrderOfBattleAsync({
-                  ...currentOrderOfBattle,
+                  ...orderOfBattle,
                   ...values
                 });
 
@@ -96,7 +87,10 @@ const EditOrderOfBattle = () => {
                     text: 'Order of Battle updated'
                   });
 
-                  setCurrentOrderOfBattle(updatedOrderOfBattle);
+                  // force a refresh of recoil state
+                  setPlayerOrdersOfBattle([]);
+                  setOrdersOfBattle([]);
+
                   navigate(`/order-of-battle/${updatedOrderOfBattle.id}`);
                 }
               }

@@ -8,7 +8,7 @@ import { IconButton, Tabs, Stat } from '@fjlaubscher/matter';
 // api
 import { getCrusadeOrdersOfBattleAsync } from '../../../api/order-of-battle';
 import { getOrderOfBattleCrusadeCardsAsync } from '../../../api/crusade-card';
-import { getOrderOfBattleAsync, getOrderOfBattleBattlesAsync } from '../../../api/order-of-battle';
+import { getOrderOfBattleAsync } from '../../../api/order-of-battle';
 
 // components
 import Avatar from '../../../components/avatar';
@@ -20,7 +20,6 @@ import { ORDER_OF_BATTLE_TAB } from '../../../helpers/storage';
 import useSwipeNavigation from '../../../helpers/use-swipe-navigation';
 
 // state
-import { BattlesAtom } from '../../../state/battle';
 import { CrusadeCardsAtom } from '../../../state/crusade-card';
 import { OrdersOfBattleAtom } from '../../../state/order-of-battle';
 import { PlayerAtom } from '../../../state/player';

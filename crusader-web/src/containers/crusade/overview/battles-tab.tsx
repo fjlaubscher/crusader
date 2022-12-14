@@ -1,4 +1,3 @@
-import React from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { Grid } from '@fjlaubscher/matter';
 
@@ -14,7 +13,7 @@ interface Props {
   hasJoinedCrusade: boolean;
 }
 
-const BattlesTab: React.FC<Props> = ({ battles, crusade, hasJoinedCrusade }) => (
+const BattlesTab = ({ battles, crusade, hasJoinedCrusade }: Props) => (
   <div className={styles.battles}>
     {hasJoinedCrusade && (
       <LinkButton

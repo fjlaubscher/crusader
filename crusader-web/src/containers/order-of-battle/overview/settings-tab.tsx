@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
@@ -19,7 +19,7 @@ interface Props {
   orderOfBattle: Crusader.OrderOfBattle;
 }
 
-const SettingsTab: React.FC<Props> = ({ orderOfBattle }) => {
+const SettingsTab = ({ orderOfBattle }: Props) => {
   const navigate = useNavigate();
   const toast = useToast();
   const player = useRecoilValue(PlayerAtom);

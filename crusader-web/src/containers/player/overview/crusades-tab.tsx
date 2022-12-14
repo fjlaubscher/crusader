@@ -1,4 +1,3 @@
-import React from 'react';
 import { Alert, Grid } from '@fjlaubscher/matter';
 
 // components
@@ -9,7 +8,7 @@ interface Props {
   player: Crusader.Player;
 }
 
-const CrusadesTab: React.FC<Props> = ({ crusades, player }) => {
+const CrusadesTab = ({ crusades, player }: Props) => {
   const hasCrusades = crusades.length > 0;
 
   return hasCrusades ? (

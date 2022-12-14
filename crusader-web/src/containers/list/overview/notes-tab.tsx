@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Alert } from '@fjlaubscher/matter';
 
@@ -8,7 +7,7 @@ interface Props {
   list: Crusader.List;
 }
 
-const NotesTab: React.FC<Props> = ({ list }) =>
+const NotesTab = ({ list }: Props) =>
   list.notes ? (
     <ReactMarkdown linkTarget="_blank" className={styles.markdown}>
       {list.notes}

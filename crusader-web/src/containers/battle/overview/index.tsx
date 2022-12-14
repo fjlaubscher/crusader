@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useAsync, useSessionStorage } from 'react-use';
@@ -19,6 +19,7 @@ import LinkButton from '../../../components/button/link';
 // helpers
 import { BATTLE_TAB } from '../../../helpers/storage';
 import { getBattleStatusColor } from '../../../helpers/status';
+import useSwipeNavigation from '../../../helpers/use-swipe-navigation';
 
 // state
 import { BattlesAtom } from '../../../state/battle';
@@ -31,7 +32,6 @@ import styles from './overview.module.scss';
 import AboutTab from './about-tab';
 import SettingsTab from './settings-tab';
 import OrdersOfBattleTab from './orders-of-battle-tab';
-import useSwipeNavigation from '../../../helpers/use-swipe-navigation';
 
 const Battle = () => {
   const { id } = useParams();

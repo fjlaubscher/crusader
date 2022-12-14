@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import { ReactNode, useCallback, useState } from 'react';
 import { FaTrash, FaUndo } from 'react-icons/fa';
 import { Button, Modal, useToast } from '@fjlaubscher/matter';
 
@@ -6,19 +6,13 @@ import styles from './delete-modal.module.scss';
 
 interface Props {
   show: boolean;
-  children: React.ReactNode;
+  children: ReactNode;
   onDeleteClick: () => Promise<boolean | undefined>;
   onDeleteSuccess: () => void;
   onCloseClick: () => void;
 }
 
-const DeleteModal: React.FC<Props> = ({
-  show,
-  children,
-  onDeleteClick,
-  onDeleteSuccess,
-  onCloseClick
-}) => {
+const DeleteModal = ({ show, children, onDeleteClick, onDeleteSuccess, onCloseClick }: Props) => {
   const toast = useToast();
   const [isBusy, setIsBusy] = useState(false);
 

@@ -1,22 +1,20 @@
-import React, { useState } from 'react';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';
 import { IconButton, useToast } from '@fjlaubscher/matter';
 import { FaArrowLeft, FaSave } from 'react-icons/fa';
+import { useSetRecoilState } from 'recoil';
 
 // api
 import { getCrusadeCardAsync, updateCrusadeCardAsync } from '../../api/crusade-card';
-import { getOrderOfBattleAsync } from '../../api/order-of-battle';
+
+// state
+import { CrusadeCardsAtom } from '../../state/crusade-card';
 
 // components
 import CrusadeCardForm from '../../components/crusade-card/form';
 import Layout from '../../components/layout';
 import LinkButton from '../../components/button/link';
-
-// state
-import { PlayerAtom } from '../../state/player';
 
 import styles from './crusade-card.module.scss';
 
@@ -25,8 +23,7 @@ const EditCrusadeCard = () => {
   const navigate = useNavigate();
   const toast = useToast();
 
-  const player = useRecoilValue(PlayerAtom);
-  const [createdPlayerId, setCreatedPlayerId] = useState<number | undefined>(undefined);
+  const setCrusadeCards = useSetRecoilState(CrusadeCardsAtom);
 
   const form = useForm<Crusader.CrusadeCard>({ mode: 'onChange' });
   const {
@@ -39,19 +36,10 @@ const EditCrusadeCard = () => {
 
     if (crusadeCard) {
       reset(crusadeCard);
-      const orderOfBattle = await getOrderOfBattleAsync(crusadeCard.orderOfBattleId);
-      setCreatedPlayerId(orderOfBattle ? orderOfBattle.playerId : undefined);
     }
 
     return crusadeCard;
-  }, [id, setCreatedPlayerId, reset]);
-
-  const playerId = player ? player.id : 0;
-  const isOwner = playerId && createdPlayerId && playerId === createdPlayerId;
-
-  if (!loading && !isOwner) {
-    return <Navigate to={`/crusade-care/${id}`} />;
-  }
+  }, [id, reset]);
 
   return (
     <FormProvider {...form}>
@@ -88,6 +76,8 @@ const EditCrusadeCard = () => {
                     text: 'Crusade Card updated'
                   });
 
+                  // force a refresh of recoil state
+                  setCrusadeCards([]);
                   navigate(`/crusade-card/${updatedCrusadeCard.id}`);
                 }
               }

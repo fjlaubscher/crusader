@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { Button, useToast } from '@fjlaubscher/matter';
@@ -16,7 +16,7 @@ interface Props {
   isOwner: boolean;
 }
 
-const SettingsTab: React.FC<Props> = ({ list, isOwner }) => {
+const SettingsTab = ({ list, isOwner }: Props) => {
   const navigate = useNavigate();
   const toast = useToast();
   const [showModal, setShowModal] = useState(false);

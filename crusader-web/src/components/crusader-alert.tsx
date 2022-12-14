@@ -1,11 +1,10 @@
-import React from 'react';
 import { Alert } from '@fjlaubscher/matter';
 
 interface Props {
   playerName: string;
 }
 
-const CrusaderAlert: React.FC<Props> = ({ playerName }) => (
+const CrusaderAlert = ({ playerName }: Props) => (
   <Alert variant="info" title={`👋 Hey ${playerName}!`}>
     Crusader is a free and open-source Warhammer 40,000 Crusade assistant.
     <br />

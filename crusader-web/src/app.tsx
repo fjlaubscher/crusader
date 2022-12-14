@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useAsync } from 'react-use';
 import { Loader } from '@fjlaubscher/matter';

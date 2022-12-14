@@ -8,7 +8,6 @@ import { deleteListAsync } from '../../../api/list';
 
 // components
 import DeleteModal from '../../../components/delete-modal';
-import ShareButton from '../../../components/button/share';
 
 import styles from './overview.module.scss';
 
@@ -24,7 +23,6 @@ const SettingsTab: React.FC<Props> = ({ list, isOwner }) => {
 
   return (
     <div className={styles.settings}>
-      <ShareButton link={`/list/${list.id}`} title={list.name} />
       {isOwner && (
         <Button variant="error" onClick={() => setShowModal(true)} leftIcon={<FaTrash />}>
           Delete

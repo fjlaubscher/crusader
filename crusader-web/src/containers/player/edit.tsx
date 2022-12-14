@@ -48,7 +48,7 @@ const EditPlayer = () => {
   return (
     <FormProvider {...form}>
       <Layout
-        title="Edit Player"
+        title="Settings"
         action={
           <IconButton
             disabled={!isValid || isSubmitting}
@@ -61,7 +61,7 @@ const EditPlayer = () => {
           </IconButton>
         }
       >
-        <LinkButton className={styles.back} leftIcon={<FaArrowLeft />} to={`/player/${id}`}>
+        <LinkButton className={styles.back} leftIcon={<FaArrowLeft />} to="/">
           Back
         </LinkButton>
         <PlayerForm

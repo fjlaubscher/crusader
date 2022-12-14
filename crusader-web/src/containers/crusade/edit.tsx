@@ -1,8 +1,7 @@
-import React from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { FaArrowLeft, FaSave } from 'react-icons/fa';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { useAsync } from 'react-use';
 import { IconButton, useToast } from '@fjlaubscher/matter';
 
@@ -15,7 +14,6 @@ import Layout from '../../components/layout';
 import LinkButton from '../../components/button/link';
 
 // state
-import { CrusadeAtom } from '../../state/crusade';
 import { PlayerAtom } from '../../state/player';
 
 import styles from './crusade.module.scss';
@@ -25,7 +23,6 @@ const EditCrusade = () => {
   const navigate = useNavigate();
   const toast = useToast();
 
-  const [currentCrusade, setCurrentCrusade] = useRecoilState(CrusadeAtom);
   const player = useRecoilValue(PlayerAtom);
 
   const form = useForm<Crusader.Crusade>({ mode: 'onChange' });
@@ -34,23 +31,22 @@ const EditCrusade = () => {
     formState: { isSubmitting, isValid }
   } = form;
 
-  const { loading } = useAsync(async () => {
+  const { loading, value: crusade } = useAsync(async () => {
     if (id) {
-      if (!currentCrusade || currentCrusade.id !== parseInt(id)) {
-        const crusade = await getCrusadeAsync(id);
+      const crusade = await getCrusadeAsync(id);
 
-        if (crusade) {
-          setCurrentCrusade(crusade);
-          reset(crusade);
-        }
-      } else if (currentCrusade) {
-        reset(currentCrusade);
+      if (crusade) {
+        reset(crusade);
       }
+
+      return crusade;
     }
-  }, [id, currentCrusade, reset]);
+
+    return undefined;
+  }, []);
 
   const playerId = player ? player.id : 0;
-  const createdById = currentCrusade ? currentCrusade.createdById : 0;
+  const createdById = crusade ? crusade.createdById : 0;
   const isOwner = playerId && createdById && playerId === createdById;
 
   if (!loading && !isOwner) {
@@ -80,9 +76,9 @@ const EditCrusade = () => {
         <CrusadeForm
           onSubmit={async (values) => {
             try {
-              if (currentCrusade && player) {
+              if (crusade && player) {
                 const updatedCrusade = await updateCrusadeAsync({
-                  ...currentCrusade,
+                  ...crusade,
                   ...values
                 });
 
@@ -92,7 +88,6 @@ const EditCrusade = () => {
                     text: 'Crusade updated'
                   });
 
-                  setCurrentCrusade(updatedCrusade);
                   navigate(`/crusade/${updatedCrusade.id}`);
                 }
               }

@@ -8,7 +8,6 @@ import { deleteBattleAsync } from '../../../api/battle';
 
 // components
 import DeleteModal from '../../../components/delete-modal';
-import ShareButton from '../../../components/button/share';
 
 import styles from './overview.module.scss';
 
@@ -24,7 +23,6 @@ const SettingsTab: React.FC<Props> = ({ battle, isOwner }) => {
 
   return (
     <div className={styles.settings}>
-      <ShareButton link={`/battle/${battle.id}`} title={battle.name} />
       {isOwner && (
         <Button variant="error" onClick={() => setShowModal(true)} leftIcon={<FaTrash />}>
           Delete

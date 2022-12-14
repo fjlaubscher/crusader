@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FaPen, FaUserPlus } from 'react-icons/fa';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -19,7 +18,8 @@ import LinkButton from '../../../components/button/link';
 import { CRUSADE_TAB } from '../../../helpers/storage';
 
 // state
-import { CrusadeAtom } from '../../../state/crusade';
+import { BattlesAtom } from '../../../state/battle';
+import { OrdersOfBattleAtom } from '../../../state/order-of-battle';
 import { PlayerAtom } from '../../../state/player';
 
 // tabs
@@ -33,19 +33,15 @@ import styles from './overview.module.scss';
 const Crusade = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [tabIndex, setTabIndex] = useSessionStorage<number | undefined>(CRUSADE_TAB);
+  const [tabIndex, setTabIndex] = useSessionStorage<number | undefined>(`${CRUSADE_TAB}-${id}`);
 
   const player = useRecoilValue(PlayerAtom);
-  const [currentCrusade, setCurrentCrusade] = useRecoilState(CrusadeAtom);
+  const [battles, setBattles] = useRecoilState(BattlesAtom);
+  const [ordersOfBattle, setOrdersOfBattle] = useRecoilState(OrdersOfBattleAtom);
 
-  const [battles, setBattles] = useState<Crusader.Battle[]>([]);
-  const [ordersOfBattle, setOrdersOfBattle] = useState<Crusader.OrderOfBattle[]>([]);
-
-  const { loading } = useAsync(async () => {
+  const { loading, value: crusade } = useAsync(async () => {
     const crusade = id ? await getCrusadeAsync(id) : undefined;
     if (crusade) {
-      setCurrentCrusade(crusade);
-
       const [battles, orders] = await Promise.all([
         getCrusadeBattlesAsync(crusade.id),
         getCrusadeOrdersOfBattleAsync(crusade.id)
@@ -59,10 +55,12 @@ const Crusade = () => {
         setOrdersOfBattle(orders);
       }
     }
-  }, [id]);
+
+    return crusade;
+  }, []);
 
   const playerId = player ? player.id : 0;
-  const isOwner = currentCrusade ? currentCrusade.createdById === playerId : false;
+  const isOwner = crusade ? crusade.createdById === playerId : false;
   const hasJoined = playerId
     ? ordersOfBattle.filter((o) => o.playerId === playerId).length > 0
     : false;
@@ -70,8 +68,8 @@ const Crusade = () => {
   return (
     <Layout
       title="Crusade"
-      description={currentCrusade?.name}
-      image={currentCrusade?.avatar}
+      description={crusade?.name}
+      image={crusade?.avatar}
       action={
         isOwner && (
           <IconButton onClick={() => navigate(`/crusade/${id}/edit`)}>
@@ -81,19 +79,15 @@ const Crusade = () => {
       }
       isLoading={loading}
     >
-      {currentCrusade && (
+      {crusade && (
         <>
           <Stat
-            title={`@${currentCrusade.createdBy}'s`}
-            value={currentCrusade.name}
-            description={`Created on ${format(parseISO(currentCrusade.createdDate), 'yyyy-MM-dd')}`}
+            title={`@${crusade.createdBy}'s`}
+            value={crusade.name}
+            description={`Created on ${format(parseISO(crusade.createdDate), 'yyyy-MM-dd')}`}
           />
-          {currentCrusade.avatar && (
-            <Avatar
-              className={styles.avatar}
-              src={currentCrusade.avatar}
-              alt={currentCrusade.name}
-            />
+          {crusade.avatar && (
+            <Avatar className={styles.avatar} src={crusade.avatar} alt={crusade.name} />
           )}
           {!hasJoined && (
             <LinkButton
@@ -111,10 +105,10 @@ const Crusade = () => {
             onChange={setTabIndex}
             tabs={['About', 'Battles', 'Crusaders', 'Settings']}
           >
-            <AboutTab crusade={currentCrusade} />
-            <BattlesTab battles={battles} crusade={currentCrusade} hasJoinedCrusade={hasJoined} />
+            <AboutTab crusade={crusade} />
+            <BattlesTab battles={battles} crusade={crusade} hasJoinedCrusade={hasJoined} />
             <OrdersOfBattleTab ordersOfBattle={ordersOfBattle} />
-            <SettingsTab crusade={currentCrusade} />
+            <SettingsTab crusade={crusade} />
           </Tabs>
         </>
       )}

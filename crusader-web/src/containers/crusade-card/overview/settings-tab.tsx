@@ -8,7 +8,6 @@ import { deleteCrusadeCardAsync } from '../../../api/crusade-card';
 
 // components
 import DeleteModal from '../../../components/delete-modal';
-import ShareButton from '../../../components/button/share';
 
 import styles from './overview.module.scss';
 
@@ -24,7 +23,6 @@ const SettingsTab: React.FC<Props> = ({ crusadeCard, isOwner }) => {
 
   return (
     <div className={styles.settings}>
-      <ShareButton link={`/crusade-card/${crusadeCard.id}`} title={crusadeCard.name} />
       {isOwner && (
         <Button variant="error" onClick={() => setShowModal(true)} leftIcon={<FaTrash />}>
           Delete

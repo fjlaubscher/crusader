@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAsync } from 'react-use';
 import { useRecoilValue } from 'recoil';
 import { FaPen } from 'react-icons/fa';
-import { IconButton, Stat, Tabs } from '@fjlaubscher/matter';
+import { IconButton, Tabs } from '@fjlaubscher/matter';
 
 // api
 import { getPlayerCrusadesAsync } from '../../../api/crusade';
@@ -21,7 +21,6 @@ import { PlayerAtom } from '../../../state/player';
 import AboutTab from './about-tab';
 import CrusadesTab from './crusades-tab';
 import OrdersOfBattleTab from './orders-of-battle-tab';
-import SettingsTab from './settings-tab';
 
 import styles from './overview.module.scss';
 
@@ -48,7 +47,7 @@ const Player = () => {
 
   return (
     <Layout
-      title="Profile"
+      title={player ? player.name : 'Profile'}
       description={player?.name}
       image={player?.avatar}
       isLoading={loadingPlayer || loadingOrdersOfBattle || loadingCrusades}
@@ -62,19 +61,17 @@ const Player = () => {
     >
       {player && ordersOfBattle && crusades && (
         <>
-          <Stat title="Crusader" value={`@${player.name}`} />
           {player.avatar && (
             <Avatar className={styles.avatar} src={player.avatar} alt={player.name} />
           )}
           <Tabs
             active={tabIndex}
             onChange={setTabIndex}
-            tabs={['About', 'Crusades', 'Orders of Battle', 'Settings']}
+            tabs={['About', 'Crusades', 'Orders of Battle']}
           >
             <AboutTab player={player} />
             <CrusadesTab crusades={crusades} player={player} />
             <OrdersOfBattleTab player={player} ordersOfBattle={ordersOfBattle} />
-            <SettingsTab player={player} />
           </Tabs>
         </>
       )}

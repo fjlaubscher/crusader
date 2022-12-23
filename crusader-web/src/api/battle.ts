@@ -6,6 +6,9 @@ export const createBattleAsync = (body: Crusader.Battle) =>
 export const getBattleAsync = (id: string | number) =>
   Fetch<Crusader.Battle>(`/api/battle/${id}`, { method: 'GET' });
 
+export const getPlayerBattlesAsync = (id: string | number) =>
+  Fetch<Crusader.Battle>(`/api/player/${id}/battles`, { method: 'GET' });
+
 export const updateBattleAsync = (body: Crusader.Battle) =>
   Fetch<Crusader.Battle>('/api/battle', { method: 'PUT', body });
 

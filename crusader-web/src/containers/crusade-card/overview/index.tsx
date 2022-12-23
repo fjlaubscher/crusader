@@ -64,7 +64,7 @@ const CrusadeCard = () => {
         }
       }
     }
-  }, []);
+  }, [id]);
 
   const { ref } = useSwipeNavigation('crusade-card', crusadeCards, id);
 

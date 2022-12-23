@@ -106,6 +106,7 @@ const JoinCrusade = () => {
                     ...values,
                     playerId,
                     crusadeId: crusade.id,
+                    avatar: '',
                     supplyLimit: 50,
                     requisition: 5,
                     battles: 0,

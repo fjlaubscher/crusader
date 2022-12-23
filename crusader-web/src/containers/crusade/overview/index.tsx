@@ -57,7 +57,7 @@ const Crusade = () => {
     }
 
     return crusade;
-  }, []);
+  }, [id]);
 
   const playerId = player ? player.id : 0;
   const isOwner = crusade ? crusade.createdById === playerId : false;

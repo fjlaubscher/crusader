@@ -100,6 +100,26 @@ export const getBattlesByOrderOfBattleIdAsync = async (orderOfBattleId: number) 
   return mapFromPSQL<Crusader.Battle>(rows);
 };
 
+export const getBattlesByPlayerIdAsync = async (playerId: number) => {
+  const client = new Client();
+  await client.connect();
+
+  const query = `
+    SELECT battle.*, crusade.name as crusade, battle_status.name as status, attacker.name as attacker_order_of_battle, defender.name as defender_order_of_battle
+    FROM battle
+    INNER JOIN crusade ON battle.crusade_id = crusade.id
+    INNER JOIN battle_status ON battle.status_id = battle_status.id
+    INNER JOIN order_of_battle attacker ON battle.attacker_order_of_battle_id = attacker.id
+    INNER JOIN order_of_battle defender ON battle.defender_order_of_battle_id = defender.id
+    WHERE attacker.player_id = $1 OR defender.player_id = $1
+    ORDER BY battle.created_date DESC
+  `;
+  const { rows } = await client.query<TableRow>(query, [playerId]);
+  await client.end();
+
+  return mapFromPSQL<Crusader.Battle>(rows);
+}
+
 export const updateBattleAsync = async (input: Crusader.Battle) => {
   const client = new Client();
   await client.connect();

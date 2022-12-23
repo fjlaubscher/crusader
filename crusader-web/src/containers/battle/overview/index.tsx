@@ -70,7 +70,7 @@ const Battle = () => {
     }
 
     return undefined;
-  }, []);
+  }, [id]);
 
   const isPlayerBattle = useMemo(() => {
     if (battle && playerOrdersOfBattle) {

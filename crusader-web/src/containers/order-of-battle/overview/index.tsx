@@ -65,7 +65,7 @@ const OrderOfBattle = () => {
         setOrdersOfBattle(orders || []);
       }
     }
-  }, []);
+  }, [id]);
 
   const playerId = player ? player.id : 0;
   const isOwner = orderOfBattle ? orderOfBattle.playerId === playerId : false;

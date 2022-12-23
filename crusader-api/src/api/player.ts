@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 // db
+import { getBattlesByPlayerIdAsync } from '../db/battle';
 import { getCrusadesByPlayerIdAsync } from '../db/crusade';
 import { getListsByPlayerIdAsync } from '../db/list';
 import { getOrdersOfBattleByPlayerIdAsync } from '../db/order-of-battle';
@@ -45,6 +46,16 @@ router.get('/:id/crusades', async (req, res) => {
   try {
     const playerId = parseInt(req.params.id);
     const crusades = await getCrusadesByPlayerIdAsync(playerId);
+    return res.status(200).json({ status: 'ok', data: crusades });
+  } catch (ex: any) {
+    return res.status(500).json({ status: 'error', data: ex.message });
+  }
+});
+
+router.get('/:id/battles', async (req, res) => {
+  try {
+    const playerId = parseInt(req.params.id);
+    const crusades = await getBattlesByPlayerIdAsync(playerId);
     return res.status(200).json({ status: 'ok', data: crusades });
   } catch (ex: any) {
     return res.status(500).json({ status: 'error', data: ex.message });
